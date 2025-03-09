@@ -1,5 +1,5 @@
 import {HomeLayout, Landing, Error, Register, Login, Products, SingleProduct, Cart, Checkout, Orders} from "./pages";
-import { Button } from "./components/button";
+import { Button } from "./components/ui/button";
 import {useAppSelector} from "./hooks";
 
 function App() {
