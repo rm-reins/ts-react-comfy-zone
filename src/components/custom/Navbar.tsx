@@ -8,7 +8,7 @@ import {
 
 function Navbar() {
   return (
-    <nav className="bg-muted py-4">
+    <nav className="bg-muted py-4 shadow-md">
       <div className="align-element flex justify-between items-center">
         <Logo />
         <LinksDropdown />

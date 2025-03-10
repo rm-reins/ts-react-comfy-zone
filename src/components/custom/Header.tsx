@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components";
 import { useState } from "react";
 
@@ -24,7 +24,7 @@ function Header() {
           <div className="flex gap-x-2 sm:pr-2 sm:gap-x-8 items-center">
             <p className="text-xs sm:text-sm">Hello, {user.username}</p>
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
               onClick={handleLogout}
             >
@@ -33,7 +33,7 @@ function Header() {
           </div>
         ) : (
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={handleLogin}
           >

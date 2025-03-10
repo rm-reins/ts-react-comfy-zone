@@ -50,21 +50,21 @@
     --primary: 152 47% 21%; /* #1A472A */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 152 47% 16%;
+    --secondary: 152 47% 26%; /* Lighter variation of primary */
     --secondary-foreground: 150 30% 98%;
 
-    --muted: 152 47% 16%;
-    --muted-foreground: 150 20% 70%;
+    --muted: 152 47% 30%; /* Even lighter variation of primary */
+    --muted-foreground: 150 20% 85%;
 
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
+    --accent: 152 47% 35%; /* Lightest variation of primary */
+    --accent-foreground: 150 30% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 152 30% 25%; /* Gradient variation of primary */
+    --input: 152 30% 25%; /* Gradient variation of primary */
+    --ring: 152 26.8% 40%; /* Lighter gradient variation of primary */
   }
 }
 
@@ -122,17 +122,17 @@
   --popover-foreground: oklch(0.98 0.01 155);
   --primary: oklch(0.28 0.06 155); /* #1A472A in OKLCH */
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.25 0.05 155);
+  --secondary: oklch(0.35 0.06 155); /* Lighter variation of primary */
   --secondary-foreground: oklch(0.98 0.01 155);
-  --muted: oklch(0.25 0.05 155);
-  --muted-foreground: oklch(0.7 0.03 155);
-  --accent: oklch(0.25 0.05 155);
+  --muted: oklch(0.4 0.05 155); /* Even lighter variation of primary */
+  --muted-foreground: oklch(0.85 0.02 155);
+  --accent: oklch(0.45 0.05 155); /* Lightest variation of primary */
   --accent-foreground: oklch(0.98 0.01 155);
   --destructive: oklch(0.396 0.141 25.723);
   --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
+  --border: oklch(0.32 0.05 155); /* Gradient variation of primary */
+  --input: oklch(0.32 0.05 155); /* Gradient variation of primary */
+  --ring: oklch(0.38 0.05 155); /* Lighter gradient variation of primary */
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -190,6 +190,9 @@
 @layer components {
   .align-element {
     @apply mx-auto max-w-6xl px-8;
+  }
+  .outline-button {
+    @apply border border-input bg-background shadow-xs;
   }
 }
 
