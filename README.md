@@ -1,2 +1,1 @@
 # This is a new version of old react project [comfy-zone](https://github.com/Freemasoid/react-comfy-zone)
-# The goal is to build something with TS and not die in a process, so rebuilding an old project seems like a good idea.
