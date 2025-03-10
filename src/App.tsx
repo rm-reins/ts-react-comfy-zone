@@ -8,9 +8,8 @@ import {
   Cart,
   Checkout,
   Orders,
-} from "./pages";
+} from "@/pages";
 import HomeLayout from "./layouts/HomeLayout";
-import { Button } from "./components/ui/Button";
 import { useAppSelector } from "./hooks";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
