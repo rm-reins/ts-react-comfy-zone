@@ -1,13 +1,14 @@
 import {
-  Landing,
-  Error,
-  Register,
-  Login,
-  Products,
-  SingleProduct,
+  About,
   Cart,
   Checkout,
+  Error,
+  Landing,
+  Login,
   Orders,
+  Products,
+  Register,
+  SingleProduct,
 } from "@/pages";
 import HomeLayout from "./layouts/HomeLayout";
 import { useAppSelector } from "./hooks";
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayout />,
+    errorElement: <Error />,
     children: [
       {
         index: true,
@@ -42,15 +44,21 @@ const router = createBrowserRouter([
         path: "/orders",
         element: <Orders />,
       },
+      {
+        path: "/about",
+        element: <About />,
+      },
     ],
   },
   {
     path: "/register",
     element: <Register />,
+    errorElement: <Error />,
   },
   {
     path: "/login",
     element: <Login />,
+    errorElement: <Error />,
   },
 ]);
 
