@@ -6,12 +6,12 @@ This is a new version of the old React project [comfy-zone](https://github.com/F
 
 ### Frontend
 
-- **Functionality**: React, Typescript, ReactRouter, ReduxToolKit, Axios.
-- **Styling**: TailwindCSS, RadixUI, Lucide, shadcn/ui.
+- **Functionality**: React, Typescript, ReactRouter, ReduxToolKit, Axios, Clerk, tRPC
+- **Styling**: TailwindCSS, RadixUI, Lucide, shadcn/ui
 
 ### Backend
 
-- Node.js, TypeScript, Express.js, MongoDB (maybe other DB)
+- Node.js, TypeScript, Express.js, MongoDB, Clerk, tRPC
 
 ## Current Status
 
