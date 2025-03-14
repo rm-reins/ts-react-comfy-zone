@@ -1,6 +1,11 @@
+import { FeaturedProducts, Hero } from "@/components";
+
 function Landing() {
   return (
-    <h1 className="text-2xl font-bold">Landing</h1>
-  )
+    <>
+      <Hero />
+      <FeaturedProducts />
+    </>
+  );
 }
-export default Landing
+export default Landing;

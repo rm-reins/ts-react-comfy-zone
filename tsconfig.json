@@ -13,6 +13,11 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./server/types",
+      "./server/node_modules/@types"
+    ],
 
     /* Linting */
     "strict": true,

@@ -4,15 +4,38 @@ import {
   Checkout,
   Error,
   Landing,
-  Login,
   Orders,
   Products,
-  Register,
   SingleProduct,
 } from "@/pages";
-import HomeLayout from "./layouts/HomeLayout";
-import { useAppSelector } from "./hooks";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import HomeLayout from "@/layouts/HomeLayout";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  Navigate,
+} from "react-router-dom";
+import {
+  SignIn,
+  SignUp,
+  SignedOut,
+  RedirectToSignIn,
+  useAuth,
+} from "@clerk/clerk-react";
+import { ReactNode } from "react";
+
+interface ProtectedRouteProps {
+  children: ReactNode;
+}
+
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const { isSignedIn } = useAuth();
+
+  if (!isSignedIn) {
+    return <RedirectToSignIn />;
+  }
+
+  return children;
+};
 
 const router = createBrowserRouter([
   {
@@ -38,11 +61,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/checkout",
-        element: <Checkout />,
+        element: (
+          <ProtectedRoute>
+            <Checkout />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/orders",
-        element: <Orders />,
+        element: (
+          <ProtectedRoute>
+            <Orders />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/about",
@@ -51,20 +82,48 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/register",
-    element: <Register />,
-    errorElement: <Error />,
+    path: "/sign-in/*",
+    element: (
+      <SignedOut>
+        <SignIn
+          routing="path"
+          path="/sign-in"
+        />
+      </SignedOut>
+    ),
+  },
+  {
+    path: "/sign-up/*",
+    element: (
+      <SignedOut>
+        <SignUp
+          routing="path"
+          path="/sign-up"
+        />
+      </SignedOut>
+    ),
   },
   {
     path: "/login",
-    element: <Login />,
-    errorElement: <Error />,
+    element: (
+      <Navigate
+        to="/sign-in"
+        replace
+      />
+    ),
+  },
+  {
+    path: "/register",
+    element: (
+      <Navigate
+        to="/sign-up"
+        replace
+      />
+    ),
   },
 ]);
 
 function App() {
-  const { name } = useAppSelector((state) => state.userState);
-
   return <RouterProvider router={router} />;
 }
 
