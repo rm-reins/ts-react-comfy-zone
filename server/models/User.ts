@@ -78,7 +78,6 @@ const UserSchema = new Schema<IUser>(
     deliveryAddress: DeliveryAddressSchema,
     phoneNumber: {
       type: String,
-      required: [true, "Please provide your phone number"],
     },
   },
   { timestamps: true }

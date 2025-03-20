@@ -68,10 +68,6 @@ const ProductSchema = new Schema<IProduct>(
       type: Boolean,
       default: false,
     },
-    freeShipping: {
-      type: Boolean,
-      default: false,
-    },
     inventory: {
       type: Number,
       required: true,

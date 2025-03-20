@@ -16,6 +16,7 @@ interface IOrder extends Document {
   total: number;
   orderItems: ISingleOrderItem[];
   status: "pending" | "failed" | "paid" | "delivered" | "cancelled";
+  paymentId: string;
   user: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -71,6 +72,9 @@ const OrderSchema = new Schema<IOrder>(
       type: String,
       enum: ["pending", "failed", "paid", "delivered", "cancelled"],
       default: "pending",
+    },
+    paymentId: {
+      type: String,
     },
     user: {
       type: Schema.Types.ObjectId,
