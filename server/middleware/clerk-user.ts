@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import { StatusCodes } from "http-status-codes";
 import { User } from "../models/User";
 import "../types/clerk";
 
@@ -20,7 +21,7 @@ export const syncClerkUser = (
       const user = await User.findOne({ clerkId: clerkUserId });
 
       if (!user) {
-        return res.status(403).json({
+        return res.status(StatusCodes.FORBIDDEN).json({
           success: false,
           message:
             "Please complete registration before you will be able to access this resource.",
