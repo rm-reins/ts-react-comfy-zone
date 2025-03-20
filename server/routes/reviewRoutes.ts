@@ -19,12 +19,12 @@ const authMiddleware = requireAuth({
 router
   .route("/")
   .get(getAllReviews)
-  .post([authMiddleware, syncClerkUser], createReview);
+  .post(authMiddleware, syncClerkUser, createReview);
 
 router
   .route("/:id")
   .get(getSingleReview)
-  .patch([authMiddleware, syncClerkUser], updateReview)
-  .delete([authMiddleware, syncClerkUser], deleteReview);
+  .patch(authMiddleware, syncClerkUser, updateReview)
+  .delete(authMiddleware, syncClerkUser, deleteReview);
 
 export { router as reviewRouter };

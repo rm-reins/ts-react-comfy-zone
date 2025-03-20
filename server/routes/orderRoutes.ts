@@ -18,16 +18,16 @@ const authMiddleware = requireAuth({
 
 router
   .route("/")
-  .get([authMiddleware, syncClerkUser, isAdmin], getAllOrders)
-  .post([authMiddleware, syncClerkUser], createOrder);
+  .get(authMiddleware, syncClerkUser, isAdmin, getAllOrders)
+  .post(authMiddleware, syncClerkUser, createOrder);
 
 router
   .route("/show-all-my-orders")
-  .get([authMiddleware, syncClerkUser], getCurrentUserOrders);
+  .get(authMiddleware, syncClerkUser, getCurrentUserOrders);
 
 router
   .route("/:id")
-  .get([authMiddleware, syncClerkUser], getSingleOrder)
-  .patch([authMiddleware, syncClerkUser, isAdmin], updateOrder);
+  .get(authMiddleware, syncClerkUser, getSingleOrder)
+  .patch(authMiddleware, syncClerkUser, isAdmin, updateOrder);
 
 export { router as orderRouter };

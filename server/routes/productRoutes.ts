@@ -20,18 +20,18 @@ const authMiddleware = requireAuth({
 
 router
   .route("/")
-  .post([authMiddleware, syncClerkUser, isAdmin], createProduct)
+  .post(authMiddleware, syncClerkUser, isAdmin, createProduct)
   .get(getAllProducts);
 
 router
   .route("/uploadImage")
-  .post([authMiddleware, syncClerkUser, isAdmin], uploadImage);
+  .post(authMiddleware, syncClerkUser, isAdmin, uploadImage);
 
 router
   .route("/:id")
   .get(getSingleProduct)
-  .patch([authMiddleware, syncClerkUser, isAdmin], updateProduct)
-  .delete([authMiddleware, syncClerkUser, isAdmin], deleteProduct);
+  .patch(authMiddleware, syncClerkUser, isAdmin, updateProduct)
+  .delete(authMiddleware, syncClerkUser, isAdmin, deleteProduct);
 
 router.route("/:id/reviews").get(getSingleProductReviews);
 

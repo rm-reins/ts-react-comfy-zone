@@ -5,12 +5,12 @@ import { Request, Response } from "express";
 import { NotFoundError, BadRequestError } from "../errors/custom-errors.js";
 import "../types/clerk";
 
-const getAllOrders = async (req: Request, res: Response) => {
+const getAllOrders = async (req: Request, res: Response): Promise<void> => {
   const orders = await Order.find({});
   res.status(StatusCodes.OK).json({ orders });
 };
 
-const getSingleOrder = async (req: Request, res: Response) => {
+const getSingleOrder = async (req: Request, res: Response): Promise<void> => {
   const { id: orderId } = req.params;
   const order = await Order.findOne({ _id: orderId });
 
@@ -21,12 +21,15 @@ const getSingleOrder = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ order });
 };
 
-const getCurrentUserOrders = async (req: Request, res: Response) => {
+const getCurrentUserOrders = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const orders = await Order.find({ user: req.user?.clerkId });
   res.status(StatusCodes.OK).json({ orders, count: orders.length });
 };
 
-const createOrder = async (req: Request, res: Response) => {
+const createOrder = async (req: Request, res: Response): Promise<void> => {
   const { cartItems } = req.body;
 
   if (!cartItems || cartItems.length < 1) {
@@ -76,7 +79,7 @@ const createOrder = async (req: Request, res: Response) => {
   res.status(StatusCodes.CREATED).json({ order });
 };
 
-const updateOrder = async (req: Request, res: Response) => {
+const updateOrder = async (req: Request, res: Response): Promise<void> => {
   const { id: orderId } = req.params;
   const { paymentId } = req.body;
   const order = await Order.findOne({ _id: orderId });

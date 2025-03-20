@@ -10,6 +10,6 @@ const authMiddleware = requireAuth({
   debug: true,
 });
 
-router.route("/register").post([authMiddleware, syncClerkUser], register);
+router.route("/register").post(authMiddleware, syncClerkUser, register);
 
 export { router as authRouter };

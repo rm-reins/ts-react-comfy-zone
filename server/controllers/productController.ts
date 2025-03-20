@@ -10,18 +10,18 @@ import "../types/clerk";
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const createProduct = async (req: Request, res: Response) => {
+const createProduct = async (req: Request, res: Response): Promise<void> => {
   req.body.user = req.user?.clerkId;
   const product = await Product.create(req.body);
   res.status(StatusCodes.CREATED).json({ product });
 };
 
-const getAllProducts = async (req: Request, res: Response) => {
+const getAllProducts = async (req: Request, res: Response): Promise<void> => {
   const products = await Product.find({});
   res.status(StatusCodes.OK).json({ products });
 };
 
-const getSingleProduct = async (req: Request, res: Response) => {
+const getSingleProduct = async (req: Request, res: Response): Promise<void> => {
   const { id: productId } = req.params;
   const product = await Product.findOne({ _id: productId }).populate("reviews");
 
@@ -32,7 +32,7 @@ const getSingleProduct = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ product });
 };
 
-const updateProduct = async (req: Request, res: Response) => {
+const updateProduct = async (req: Request, res: Response): Promise<void> => {
   const { id: productId } = req.params;
   const product = await Product.findOneAndUpdate({ _id: productId }, req.body, {
     new: true,
@@ -46,7 +46,7 @@ const updateProduct = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ product });
 };
 
-const deleteProduct = async (req: Request, res: Response) => {
+const deleteProduct = async (req: Request, res: Response): Promise<void> => {
   const { id: productId } = req.params;
   const product = await Product.findOne({ _id: productId });
 
@@ -60,7 +60,7 @@ const deleteProduct = async (req: Request, res: Response) => {
 
 // TODO implement image upload
 
-const uploadImage = async (req: Request, res: Response) => {};
+const uploadImage = async (req: Request, res: Response): Promise<void> => {};
 
 export {
   createProduct,

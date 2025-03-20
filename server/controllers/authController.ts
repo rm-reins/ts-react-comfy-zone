@@ -3,13 +3,14 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import "../types/clerk";
 
-const register = async (req: Request, res: Response) => {
+const register = async (req: Request, res: Response): Promise<void> => {
   try {
     if (!req.auth || !req.auth.userId) {
       res.status(StatusCodes.UNAUTHORIZED).json({
         success: false,
         message: "Authentication required",
       });
+      return;
     }
 
     const existingUser = await User.findOne({ clerkId: req?.auth?.userId });
@@ -18,6 +19,7 @@ const register = async (req: Request, res: Response) => {
         success: false,
         message: "User already exists",
       });
+      return;
     }
 
     const { name, surname, phoneNumber } = req.body;
@@ -26,6 +28,7 @@ const register = async (req: Request, res: Response) => {
         success: false,
         message: "Please fill out all the required fields.",
       });
+      return;
     }
 
     const clerkUser =

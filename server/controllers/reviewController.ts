@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import { NotFoundError, BadRequestError } from "../errors/custom-errors.js";
 import "../types/clerk";
 
-const createReview = async (req: Request, res: Response) => {
+const createReview = async (req: Request, res: Response): Promise<void> => {
   const { product: productId } = req.body;
   const isValidProduct = await Product.findOne({ _id: productId });
 
@@ -28,7 +28,7 @@ const createReview = async (req: Request, res: Response) => {
   res.status(StatusCodes.CREATED).json({ review });
 };
 
-const getAllReviews = async (req: Request, res: Response) => {
+const getAllReviews = async (req: Request, res: Response): Promise<void> => {
   const reviews = await Review.find({}).populate({
     path: "product",
     select: "name company price",
@@ -37,7 +37,7 @@ const getAllReviews = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ reviews });
 };
 
-const getSingleReview = async (req: Request, res: Response) => {
+const getSingleReview = async (req: Request, res: Response): Promise<void> => {
   const { id: reviewId } = req.params;
   const review = await Review.findOne({ _id: reviewId });
 
@@ -48,7 +48,7 @@ const getSingleReview = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ review });
 };
 
-const updateReview = async (req: Request, res: Response) => {
+const updateReview = async (req: Request, res: Response): Promise<void> => {
   const { id: reviewId } = req.params;
   const { rating, title, comment } = req.body;
   const review = await Review.findOne({ _id: reviewId });
@@ -65,7 +65,7 @@ const updateReview = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ review });
 };
 
-const deleteReview = async (req: Request, res: Response) => {
+const deleteReview = async (req: Request, res: Response): Promise<void> => {
   const { id: reviewId } = req.params;
   const review = await Review.findOne({ _id: reviewId });
 
@@ -77,7 +77,10 @@ const deleteReview = async (req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ msg: "Review deleted" });
 };
 
-const getSingleProductReviews = async (req: Request, res: Response) => {
+const getSingleProductReviews = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { id: productId } = req.params;
   const reviews = await Review.find({ product: productId });
 
