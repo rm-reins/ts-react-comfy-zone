@@ -36,3 +36,19 @@ export const syncClerkUser = (
     }
   });
 };
+
+export const isAdmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  if (!req.user || req.user.role !== "admin") {
+    res.status(StatusCodes.FORBIDDEN).json({
+      success: false,
+      message: "Access denied. Admin privileges required.",
+    });
+    return;
+  }
+
+  next();
+};

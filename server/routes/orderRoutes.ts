@@ -1,6 +1,6 @@
 import express from "express";
 import { requireAuth } from "@clerk/express";
-import { syncClerkUser } from "../middleware/clerk-user";
+import { syncClerkUser, isAdmin } from "../middleware/clerk-user";
 import {
   getAllOrders,
   createOrder,
@@ -11,7 +11,6 @@ import {
 
 const router = express.Router();
 
-// Configure requireAuth with signIn options
 const authMiddleware = requireAuth({
   signInUrl: "/sign-in",
   debug: true,
@@ -19,16 +18,16 @@ const authMiddleware = requireAuth({
 
 router
   .route("/")
-  .get(authMiddleware, syncClerkUser, getAllOrders)
-  .post(authMiddleware, syncClerkUser, createOrder);
+  .get([authMiddleware, syncClerkUser, isAdmin], getAllOrders)
+  .post([authMiddleware, syncClerkUser], createOrder);
 
 router
   .route("/show-all-my-orders")
-  .get(authMiddleware, syncClerkUser, getCurrentUserOrders);
+  .get([authMiddleware, syncClerkUser], getCurrentUserOrders);
 
 router
   .route("/:id")
-  .get(authMiddleware, syncClerkUser, getSingleOrder)
-  .patch(authMiddleware, syncClerkUser, updateOrder);
+  .get([authMiddleware, syncClerkUser], getSingleOrder)
+  .patch([authMiddleware, syncClerkUser, isAdmin], updateOrder);
 
 export { router as orderRouter };
