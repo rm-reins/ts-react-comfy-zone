@@ -2,6 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { Request, Response } from "express";
 import { config } from "../config/index.js";
 import { logger } from "../utils/logger.js";
+import "../types/clerk";
 
 const errorHandlerMiddleware = (
   err: Error & {

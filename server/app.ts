@@ -7,11 +7,21 @@ import { logger, enhancedErrorHandler } from "./middleware/error-handler.js";
 import { config } from "./config/index.js";
 import { setupCommonMiddleware } from "./middleware/index.js";
 import { setupRoutes } from "./routes/index.js";
+import { appRouter } from "./tRPC/routers/appRouter.js";
+import { clerkMiddleware } from "@clerk/express";
+import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { createContext } from "./tRPC/context.js";
 
 const app = express();
 
 setupCommonMiddleware(app);
 setupRoutes(app);
+
+app.use(
+  "/api/trpc",
+  clerkMiddleware(),
+  createExpressMiddleware({ router: appRouter, createContext })
+);
 
 app.use(notFoundMiddleware);
 app.use(enhancedErrorHandler);
