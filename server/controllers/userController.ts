@@ -2,7 +2,7 @@ import { User } from "../models/User.js";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { NotFoundError } from "../errors/custom-errors.js";
-import "../types/clerk";
+import "../types/express-auth";
 
 const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {

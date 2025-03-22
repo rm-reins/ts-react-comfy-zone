@@ -3,7 +3,7 @@ import Product from "../models/Product.js";
 import { StatusCodes } from "http-status-codes";
 import { Request, Response } from "express";
 import { NotFoundError, BadRequestError } from "../errors/custom-errors.js";
-import "../types/clerk";
+import "../types/express-auth";
 
 const getAllOrders = async (req: Request, res: Response): Promise<void> => {
   const orders = await Order.find({});

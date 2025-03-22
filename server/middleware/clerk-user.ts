@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import { User } from "../models/User";
-import "../types/clerk";
+import "../types/express-auth";
 
 // This middleware will be used after Clerk's requireAuth middleware
 // It will check if the authenticated Clerk user exists in our database

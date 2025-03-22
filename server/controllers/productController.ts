@@ -4,7 +4,7 @@ import Product from "../models/Product.js";
 import { NotFoundError } from "../errors/custom-errors.js";
 import path from "path";
 import url from "url";
-import "../types/clerk";
+import "../types/express-auth";
 
 //__dirname and __filename are not used in ESM, this is a workaround
 const __filename = url.fileURLToPath(import.meta.url);

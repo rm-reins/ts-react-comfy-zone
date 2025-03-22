@@ -1,7 +1,7 @@
 import { User } from "../models/User.js";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import "../types/clerk";
+import "../types/express-auth";
 
 const register = async (req: Request, res: Response): Promise<void> => {
   try {
