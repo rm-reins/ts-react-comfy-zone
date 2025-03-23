@@ -16,6 +16,8 @@ const productInputSchema = z.object({
   inventory: z.number().int().nonnegative().optional().default(0),
   averageRating: z.number().optional().default(0),
   numOfReviews: z.number().int().optional().default(0),
+  createdAt: z.date().default(() => new Date()),
+  updatedAt: z.date().default(() => new Date()),
 });
 
 export const productRouter = router({
