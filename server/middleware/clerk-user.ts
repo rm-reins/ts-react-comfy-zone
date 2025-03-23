@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { User } from "../models/User";
+import { User } from "../models/User.js";
+import { Admin } from "../models/Admin.js";
 import "../types/express-auth";
 
 // This middleware will be used after Clerk's requireAuth middleware
@@ -17,6 +18,13 @@ export const syncClerkUser = (
       }
 
       const clerkUserId = req.auth.userId;
+
+      const admin = await Admin.findOne({ clerkId: clerkUserId });
+
+      if (admin) {
+        req.user = admin;
+        return next();
+      }
 
       const user = await User.findOne({ clerkId: clerkUserId });
 
@@ -42,7 +50,7 @@ export const isAdmin = (
   res: Response,
   next: NextFunction
 ): void => {
-  if (!req.user || req.user.role !== "admin") {
+  if (!req.user || !("role" in req.user) || req.user.role !== "admin") {
     res.status(StatusCodes.FORBIDDEN).json({
       success: false,
       message: "Access denied. Admin privileges required.",

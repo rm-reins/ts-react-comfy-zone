@@ -1,10 +1,11 @@
 // Make this file a module
 import { IUser } from "../models/User";
+import { IAdmin } from "../models/Admin";
 
 declare global {
   namespace Express {
     interface Request {
-      user?: IUser;
+      user?: IUser | IAdmin;
       id?: string;
       auth?: {
         userId: string;

@@ -1,52 +1,19 @@
 import mongoose, { Schema, Document } from "mongoose";
 import validator from "validator";
 
-interface IDeliveryAddress {
-  street: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
-}
-
-interface IUser extends Document {
+interface IAdmin extends Document {
   name: string;
   surname: string;
   email: string;
   phone: string;
   clerkId?: string;
   role: string;
-  deliveryAddress: IDeliveryAddress;
   phoneNumber: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-const DeliveryAddressSchema = new Schema<IDeliveryAddress>({
-  street: {
-    type: String,
-    required: [true, "Please provide street address"],
-  },
-  city: {
-    type: String,
-    required: [true, "Please provide city"],
-  },
-  state: {
-    type: String,
-    required: [true, "Please provide state/province"],
-  },
-  postalCode: {
-    type: String,
-    required: [true, "Please provide postal code"],
-  },
-  country: {
-    type: String,
-    required: [true, "Please provide country"],
-    default: "Germany",
-  },
-});
-
-const UserSchema = new Schema<IUser>(
+const AdminSchema = new Schema<IAdmin>(
   {
     name: {
       type: String,
@@ -77,17 +44,13 @@ const UserSchema = new Schema<IUser>(
     },
     role: {
       type: String,
-      enum: ["user"],
-      default: "user",
-    },
-    deliveryAddress: DeliveryAddressSchema,
-    phoneNumber: {
-      type: String,
+      enum: ["admin"],
+      default: "admin",
     },
   },
   { timestamps: true }
 );
 
-const User = mongoose.model<IUser>("User", UserSchema);
+const Admin = mongoose.model<IAdmin>("Admin", AdminSchema);
 
-export { User, IUser };
+export { Admin, IAdmin };

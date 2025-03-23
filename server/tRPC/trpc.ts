@@ -60,7 +60,7 @@ export const adminProcedure = t.procedure.use(({ ctx, next }) => {
     });
   }
 
-  if (ctx.user.role !== "admin") {
+  if (!("role" in ctx.user) || ctx.user.role !== "admin") {
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "Access denied. Admin privileges required",
