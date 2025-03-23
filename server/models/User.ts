@@ -13,6 +13,7 @@ interface IUser extends Document {
   name: string;
   surname: string;
   email: string;
+  phone: string;
   clerkId?: string;
   role: string;
   deliveryAddress: IDeliveryAddress;
@@ -50,19 +51,23 @@ const UserSchema = new Schema<IUser>(
     name: {
       type: String,
       required: [true, "Please provide your name"],
-      minLength: [3, "Name must be at least 3 characters long"],
+      minLength: [2, "Name must be at least 2 characters long"],
       maxLength: [50, "Name must be less than 50 characters long"],
     },
     surname: {
       type: String,
       required: [true, "Please provide your surname"],
-      minLength: [3, "Surname must be at least 3 characters long"],
+      minLength: [2, "Surname must be at least 2 characters long"],
       maxLength: [50, "Surname must be less than 50 characters long"],
     },
     email: {
       type: String,
       required: [true, "Please provide your email"],
       validate: [validator.isEmail, "Please provide a valid email"],
+      unique: true,
+    },
+    phone: {
+      type: String,
       unique: true,
     },
     clerkId: {
