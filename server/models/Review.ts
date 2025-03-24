@@ -6,7 +6,7 @@ interface IProduct extends Document {
   numOfReviews: number;
 }
 
-interface IReview extends Document {
+export interface IReview extends Document {
   rating: number;
   title: string;
   comment: string;
@@ -16,7 +16,7 @@ interface IReview extends Document {
   updatedAt: Date;
 }
 
-interface IReviewModel extends Model<IReview> {
+export interface IReviewModel extends Model<IReview> {
   calcAvgRating(productId: mongoose.Types.ObjectId | string): Promise<void>;
   model(name: string): mongoose.Model<IProduct>;
 }

@@ -5,39 +5,105 @@ import {
   adminProcedure,
 } from "../trpc.js";
 import { z } from "zod";
-import Review from "../../models/Review.js";
+import Review, { IReviewModel } from "../../models/Review.js";
 import Product from "../../models/Product.js";
 import { TRPCError } from "@trpc/server";
+import {
+  paginationSchema,
+  PaginationResponse,
+  getPagination,
+} from "../../utils/pagination.js";
 
 export const reviewRouter = router({
-  getAllReviews: publicProcedure.query(async () => {
-    try {
-      const reviews = await Review.find({})
-        .populate({
-          path: "product",
-          select: "name company price",
-        })
-        .populate({
-          path: "user",
-          select: "name",
+  getAllReviews: publicProcedure
+    .input(z.object({ pagination: paginationSchema }))
+    .query(async ({ input }): Promise<PaginationResponse<typeof Review>> => {
+      try {
+        const { page, limit } = input.pagination;
+        const skip = (page - 1) * limit;
+        const totalReviews = await Review.countDocuments();
+
+        const reviews = await Review.find({})
+          .populate({
+            path: "user",
+            select: "name",
+          })
+          .populate({
+            path: "product",
+            select: "name",
+          })
+          .sort({ createdAt: -1 })
+          .skip(skip)
+          .limit(limit);
+
+        const { totalPages, hasNextPage, hasPrevPage } = getPagination({
+          page,
+          limit,
+          total: totalReviews,
         });
 
-      return reviews;
-    } catch (error) {
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: "Failed to fetch reviews",
-        cause: error,
-      });
-    }
-  }),
+        return {
+          docs: reviews as unknown as IReviewModel[],
+          totalDocs: totalReviews,
+          totalPages,
+          currentPage: page,
+          hasNextPage,
+          hasPrevPage,
+        };
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch reviews",
+          cause: error,
+        });
+      }
+    }),
 
   getSingleProductReviews: publicProcedure
-    .input(z.string().regex(/^[0-9a-fA-F]{24}$/))
-    .query(async ({ input: productId }) => {
+    .input(
+      z.object({
+        productId: z.string().regex(/^[0-9a-fA-F]{24}$/),
+        pagination: paginationSchema,
+      })
+    )
+    .query(async ({ input }): Promise<PaginationResponse<typeof Review>> => {
       try {
-        const reviews = await Review.find({ product: productId });
-        return reviews;
+        const {
+          productId,
+          pagination: { page, limit },
+        } = input;
+        const skip = (page - 1) * limit;
+
+        const product = await Product.findById(productId);
+        if (!product) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: `No product with id: ${productId}`,
+          });
+        }
+
+        const total = await Review.countDocuments({ product: productId });
+
+        const reviews = await Review.find({ product: productId })
+          .populate("user", "name")
+          .sort({ createdAt: -1 })
+          .skip(skip)
+          .limit(limit);
+
+        const { totalPages, hasNextPage, hasPrevPage } = getPagination({
+          page,
+          limit,
+          total,
+        });
+
+        return {
+          docs: reviews as unknown as IReviewModel[],
+          totalDocs: total,
+          totalPages,
+          currentPage: page,
+          hasNextPage,
+          hasPrevPage,
+        };
       } catch (error) {
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
