@@ -2,7 +2,11 @@ import { Request, Response } from "express";
 import Review from "../models/Review.js";
 import Product from "../models/Product.js";
 import { StatusCodes } from "http-status-codes";
-import { NotFoundError, BadRequestError } from "../errors/custom-errors.js";
+import {
+  NotFoundError,
+  BadRequestError,
+  UnauthorizedError,
+} from "../errors/custom-errors.js";
 import "../types/express-auth";
 
 const createReview = async (req: Request, res: Response): Promise<void> => {
@@ -55,6 +59,10 @@ const updateReview = async (req: Request, res: Response): Promise<void> => {
 
   if (!review) {
     throw NotFoundError("No review with id: ${reviewId}");
+  }
+
+  if (review.user.toString() !== req.user?.clerkId) {
+    throw UnauthorizedError("You are not authorized to view this order");
   }
 
   review.rating = rating;

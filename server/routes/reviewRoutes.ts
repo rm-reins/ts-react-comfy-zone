@@ -10,12 +10,12 @@ import { isAdmin } from "../middleware/clerk-user";
 
 const router = express.Router();
 
-router.route("/").get(getAllReviews).post(isAdmin, createReview);
+router.route("/").get(getAllReviews).post(createReview);
 
 router
   .route("/:id")
   .get(getSingleReview)
-  .patch(isAdmin, updateReview)
+  .patch(updateReview)
   .delete(isAdmin, deleteReview);
 
 export { router as reviewRouter };
