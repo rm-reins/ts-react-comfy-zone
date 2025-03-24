@@ -36,6 +36,7 @@ export const orderRouter = router({
   getAllOrders: adminProcedure.query(async () => {
     try {
       const orders = await Order.find({});
+
       return orders;
     } catch (error) {
       throw new TRPCError({
@@ -49,6 +50,7 @@ export const orderRouter = router({
   getCurrentUserOrders: protectedProcedure.query(async ({ ctx }) => {
     try {
       const orders = await Order.find({ user: ctx.user?.clerkId });
+
       return orders;
     } catch (error) {
       throw new TRPCError({
@@ -61,7 +63,7 @@ export const orderRouter = router({
 
   getSingleOrder: protectedProcedure
     .input(z.string().regex(/^[0-9a-fA-F]{24}$/))
-    .query(async ({ input: orderId }) => {
+    .query(async ({ ctx, input: orderId }) => {
       try {
         const order = await Order.findById(orderId);
 
@@ -69,6 +71,16 @@ export const orderRouter = router({
           throw new TRPCError({
             code: "NOT_FOUND",
             message: `No order with id: ${orderId}`,
+          });
+        }
+
+        if (
+          ctx.user?.role !== "admin" &&
+          order.user.toString() !== ctx.user?.clerkId
+        ) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "You are not authorized to view this order",
           });
         }
 
