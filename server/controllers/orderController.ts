@@ -50,7 +50,7 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
     const { name, price, _id } = dbProduct;
 
     const singleOrderItem = {
-      amount: item.amount,
+      quantity: item.quantity,
       name,
       price,
       image: item.image,
@@ -59,7 +59,7 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
     };
 
     orderItems.push(singleOrderItem);
-    subtotal += price * item.amount;
+    subtotal += price * item.quantity;
   }
 
   const tax = Math.ceil(subtotal * 0.21);
