@@ -12,6 +12,7 @@ cloudinary.config({
 });
 
 // Define extended params interface
+// otherwise params show type error even with any
 interface CloudinaryParams {
   folder: string;
   allowed_formats: string[];
