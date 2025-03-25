@@ -1,16 +1,19 @@
 import "dotenv/config";
 import "express-async-errors";
 import express from "express";
+import { Server } from "http";
 import connectDB from "./db/connect.js";
+import { config } from "./config/index.js";
+import { setupRoutes } from "./routes/index.js";
+import { clerkMiddleware } from "@clerk/express";
+// Middleware
 import { notFoundMiddleware } from "./middleware/not-found.js";
 import { logger, enhancedErrorHandler } from "./middleware/error-handler.js";
-import { config } from "./config/index.js";
 import { setupCommonMiddleware } from "./middleware/index.js";
-import { setupRoutes } from "./routes/index.js";
-import { appRouter } from "./tRPC/routers/appRouter.js";
-import { clerkMiddleware } from "@clerk/express";
+// tRPC
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { createContext } from "./tRPC/context.js";
+import { appRouter } from "./tRPC/routers/appRouter.js";
 
 const app = express();
 
@@ -20,13 +23,16 @@ setupRoutes(app);
 app.use(
   "/api/trpc",
   clerkMiddleware(),
-  createExpressMiddleware({ router: appRouter, createContext })
+  createExpressMiddleware({
+    router: appRouter,
+    createContext,
+  })
 );
 
 app.use(notFoundMiddleware);
 app.use(enhancedErrorHandler);
 
-const gracefulShutdown = (server) => {
+const gracefulShutdown = (server: Server): void => {
   process.on("SIGTERM", () => {
     logger.info("SIGTERM received, shutting down gracefully");
     server.close(() => {
@@ -44,7 +50,7 @@ const gracefulShutdown = (server) => {
   });
 };
 
-const start = async () => {
+const start = async (): Promise<void> => {
   try {
     await connectDB(config.mongoUri as string);
     const server = app.listen(config.port, () =>
