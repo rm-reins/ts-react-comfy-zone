@@ -1,10 +1,16 @@
-import mongoose, { Schema, Document, Model, Types } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
-// Define Product interface for type safety
 interface IProduct extends Document {
   averageRating: number;
   numOfReviews: number;
 }
+
+interface IReviewImage {
+  url: string;
+  filename: string;
+}
+
+const arrayLimit = (val: IReviewImage[]) => val.length <= 5;
 
 export interface IReview extends Document {
   rating: number;
@@ -12,6 +18,7 @@ export interface IReview extends Document {
   comment: string;
   user: mongoose.Types.ObjectId;
   product: mongoose.Types.ObjectId;
+  images: IReviewImage[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -48,6 +55,15 @@ const ReviewSchema = new Schema<IReview, IReviewModel>(
       type: Schema.Types.ObjectId,
       ref: "Product",
       required: true,
+    },
+    images: {
+      type: [
+        {
+          url: String,
+          filename: String,
+        },
+      ],
+      validate: [arrayLimit, "You can only upload 5 images"],
     },
   },
   { timestamps: true }

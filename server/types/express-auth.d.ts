@@ -1,4 +1,3 @@
-// Make this file a module
 import { IUser } from "../models/User";
 import { IAdmin } from "../models/Admin";
 

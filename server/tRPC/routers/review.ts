@@ -120,11 +120,12 @@ export const reviewRouter = router({
         rating: z.number().min(1).max(5),
         title: z.string().min(2).max(100),
         comment: z.string().max(300),
+        images: z.array(z.string().url()).max(5).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        const { product: productId, rating, title, comment } = input;
+        const { product: productId, rating, title, comment, images } = input;
 
         const product = await Product.findById(productId);
         if (!product) {
@@ -152,6 +153,7 @@ export const reviewRouter = router({
           rating,
           title,
           comment,
+          images,
         });
 
         const allProductReviews = await Review.find({ product: productId });

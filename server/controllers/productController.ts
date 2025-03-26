@@ -2,13 +2,9 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import Product from "../models/Product.js";
 import { NotFoundError } from "../errors/custom-errors.js";
-import path from "path";
-import url from "url";
 import "../types/express-auth";
 
 //__dirname and __filename are not used in ESM, this is a workaround
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const createProduct = async (req: Request, res: Response): Promise<void> => {
   req.body.user = req.user?.clerkId;
@@ -58,15 +54,10 @@ const deleteProduct = async (req: Request, res: Response): Promise<void> => {
   res.status(StatusCodes.OK).json({ msg: "Product removed" });
 };
 
-// TODO implement image upload
-
-const uploadImage = async (req: Request, res: Response): Promise<void> => {};
-
 export {
   createProduct,
   getAllProducts,
   getSingleProduct,
   updateProduct,
   deleteProduct,
-  uploadImage,
 };

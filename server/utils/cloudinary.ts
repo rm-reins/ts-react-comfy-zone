@@ -17,9 +17,8 @@ interface CloudinaryParams {
   folder: string;
   allowed_formats: string[];
   transformation: Array<{
-    width: number;
-    height: number;
-    crop: string;
+    format: string;
+    quality: string;
   }>;
 }
 
@@ -30,9 +29,8 @@ const productStorage = new CloudinaryStorage({
     allowed_formats: ["jpg", "png", "jpeg"],
     transformation: [
       {
-        width: 1000,
-        height: 1000,
-        crop: "limit",
+        format: "auto",
+        quality: "auto:good",
       },
     ],
   } as CloudinaryParams,
@@ -43,7 +41,12 @@ const reviewStorage = new CloudinaryStorage({
   params: {
     folder: "comfy-zone/reviews",
     allowed_formats: ["jpg", "png", "jpeg"],
-    transformation: [{ width: 1000, height: 1000, crop: "limit" }],
+    transformation: [
+      {
+        format: "auto",
+        quality: "auto:good",
+      },
+    ],
   } as CloudinaryParams,
 });
 
@@ -70,3 +73,5 @@ export const reviewImageUpload = multer({
     }
   },
 });
+
+export default cloudinary;
