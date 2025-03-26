@@ -16,7 +16,7 @@ This is a new version of the old React project [comfy-zone](https://github.com/F
 ## Current Status
 
 - **Frontend**: In progress. The front-end application is actively being developed with TypeScript.
-- **Server Integration**: In progress. The backend is being freshly integrated and it's based on the existing API [node-e-commerce-api](https://github.com/Freemasoid/node-e-commerce-api), which is being converted to TypeScript, while being improved and expanded.
+- **Server Integration**: Done. Backend has been integrated and converted to TypeScript from the original [node-e-commerce-api](https://github.com/Freemasoid/node-e-commerce-api). Minor improvements and tweaks may be added in future updates.
 
 ## Setup
 
