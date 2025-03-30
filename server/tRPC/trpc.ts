@@ -3,7 +3,7 @@ import { ZodError } from "zod";
 import { Context } from "./context.js";
 import { logger } from "../utils/logger.js";
 
-const t = initTRPC.context<Context>().create({
+const trpcServer = initTRPC.context<Context>().create({
   errorFormatter: (opts) => {
     const { error, type, path, input } = opts;
 
@@ -37,7 +37,7 @@ const t = initTRPC.context<Context>().create({
   },
 });
 
-export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
+export const protectedProcedure = trpcServer.procedure.use(({ ctx, next }) => {
   if (!ctx.user) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
@@ -52,7 +52,7 @@ export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
   });
 });
 
-export const adminProcedure = t.procedure.use(({ ctx, next }) => {
+export const adminProcedure = trpcServer.procedure.use(({ ctx, next }) => {
   if (!ctx.user) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
@@ -72,7 +72,7 @@ export const adminProcedure = t.procedure.use(({ ctx, next }) => {
   });
 });
 
-export const router = t.router;
-export const publicProcedure = t.procedure;
+export const router = trpcServer.router;
+export const publicProcedure = trpcServer.procedure;
 
 export { TRPCError };
