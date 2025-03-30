@@ -13,6 +13,14 @@ This is a new version of the old React project [comfy-zone](https://github.com/F
 
 - Node.js, TypeScript, Express.js, MongoDB, Clerk, tRPC
 
+### API Architecture
+
+This project uses a hybrid API approach:
+
+- tRPC: Used for most data operations (products, orders, users, reviews) to provide type-safe, end-to-end typings between client and server.
+
+- REST API: Used specifically for file uploads (product/review images) where REST's multipart/form-data handling and streaming capabilities offer better performance and compatibility with file processing libraries.
+
 ## Current Status
 
 - **Frontend**: In progress. The front-end application is actively being developed with TypeScript.
