@@ -124,8 +124,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
       cloudinary:
-        specifier: ^2.6.0
-        version: 2.6.0
+        specifier: ^1.21.0
+        version: 1.21.0
       compression:
         specifier: ^1.8.0
         version: 1.8.0
@@ -176,7 +176,7 @@ importers:
         version: 1.4.5-lts.2
       multer-storage-cloudinary:
         specifier: ^4.0.0
-        version: 4.0.0(cloudinary@2.6.0)
+        version: 4.0.0(cloudinary@1.21.0)
       validator:
         specifier: ^13.15.0
         version: 13.15.0
@@ -1409,9 +1409,9 @@ packages:
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
-  cloudinary@2.6.0:
-    resolution: {integrity: sha512-FIlny9RR5LPgkMioG4V7yUpC6ASyIFQMWfx4TgOi/xBeLxJTegbyQc3itiXL0b0lDlSaL0KyT2THEw6osrKqpQ==}
-    engines: {node: '>=9'}
+  cloudinary@1.21.0:
+    resolution: {integrity: sha512-am8wpHbHl8bcpy9oGSlWrpWLNQ9szkW/jmhcJdEpMjaL23BYt05V1frWyrXDlo8Jt7aCo5NE6EO0CM9Zaynd5g==}
+    engines: {node: '>=0.6'}
 
   clsx@2.1.1:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
@@ -4054,7 +4054,7 @@ snapshots:
     dependencies:
       clsx: 2.1.1
 
-  cloudinary@2.6.0:
+  cloudinary@1.21.0:
     dependencies:
       lodash: 4.17.21
       q: 1.5.1
@@ -4865,9 +4865,9 @@ snapshots:
 
   ms@2.1.3: {}
 
-  multer-storage-cloudinary@4.0.0(cloudinary@2.6.0):
+  multer-storage-cloudinary@4.0.0(cloudinary@1.21.0):
     dependencies:
-      cloudinary: 2.6.0
+      cloudinary: 1.21.0
 
   multer@1.4.5-lts.2:
     dependencies:
