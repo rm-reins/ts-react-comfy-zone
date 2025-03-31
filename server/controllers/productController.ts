@@ -2,9 +2,6 @@ import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import Product from "../models/Product.js";
 import { NotFoundError } from "../errors/custom-errors.js";
-import "../types/express-auth";
-
-//__dirname and __filename are not used in ESM, this is a workaround
 
 const createProduct = async (req: Request, res: Response): Promise<void> => {
   req.body.user = req.user?.clerkId;

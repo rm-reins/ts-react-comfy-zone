@@ -1,13 +1,12 @@
-import { Request, Response } from "express";
 import Review from "../models/Review.js";
 import Product from "../models/Product.js";
+import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import {
   NotFoundError,
   BadRequestError,
   UnauthorizedError,
 } from "../errors/custom-errors.js";
-import "../types/express-auth";
 
 const createReview = async (req: Request, res: Response): Promise<void> => {
   const { product: productId } = req.body;

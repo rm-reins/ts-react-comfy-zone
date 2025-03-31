@@ -1,3 +1,4 @@
+import express from "express";
 import {
   createReview,
   getAllReviews,
@@ -5,8 +6,7 @@ import {
   updateReview,
   deleteReview,
 } from "../controllers/reviewController.js";
-import express from "express";
-import { isAdmin } from "../middleware/clerk-user";
+import { isAdmin } from "../middleware/clerk-user.js";
 
 const router = express.Router();
 

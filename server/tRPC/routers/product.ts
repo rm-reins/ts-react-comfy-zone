@@ -1,6 +1,6 @@
 import { router, publicProcedure, adminProcedure } from "../trpc.js";
 import { z } from "zod";
-import Product from "../../models/Product";
+import Product from "../../models/Product.js";
 import { TRPCError } from "@trpc/server";
 
 const productInputSchema = z.object({

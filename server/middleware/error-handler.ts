@@ -2,7 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import { Request, Response } from "express";
 import { config } from "../config/index.js";
 import { logger } from "../utils/logger.js";
-import "../types/express-auth";
 
 const errorHandlerMiddleware = (
   err: Error & {
@@ -42,7 +41,17 @@ const errorHandlerMiddleware = (
   return res.status(customError.statusCode).json({ msg: customError.msg });
 };
 
-const enhancedErrorHandler = (err, req: Request, res: Response) => {
+const enhancedErrorHandler = (
+  err: Error & {
+    statusCode?: number;
+    code?: number;
+    errors?: Record<string, { message: string }>;
+    keyPattern?: Record<string, unknown>;
+    value?: string;
+  },
+  req: Request & { auth?: { userId?: string } },
+  res: Response
+) => {
   logger.error({
     message: err.message,
     stack: err.stack,

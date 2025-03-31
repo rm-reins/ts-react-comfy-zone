@@ -5,7 +5,7 @@ import { reviewRouter } from "./reviewRoutes.js";
 import { orderRouter } from "./orderRoutes.js";
 import { Application } from "express";
 import { requireAuth } from "@clerk/express";
-import { syncClerkUser } from "../middleware/clerk-user";
+import { syncClerkUser } from "../middleware/clerk-user.js";
 import { adminRouter } from "./adminRoutes.js";
 import { uploadImageRouter } from "./uploadImageRoutes.js";
 

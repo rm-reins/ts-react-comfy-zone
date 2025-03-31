@@ -1,8 +1,7 @@
-import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import type { IUser } from "../models/User.js";
 import { User } from "../models/User.js";
 import { Admin, type IAdmin } from "../models/Admin.js";
-import "../types/express-auth";
+import { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 
 export interface Context {
   user?: IUser | IAdmin;

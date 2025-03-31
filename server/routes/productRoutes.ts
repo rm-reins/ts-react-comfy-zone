@@ -1,13 +1,13 @@
+import express from "express";
 import {
-  createProduct,
   getAllProducts,
   getSingleProduct,
+  createProduct,
   updateProduct,
   deleteProduct,
 } from "../controllers/productController.js";
 import { getSingleProductReviews } from "../controllers/reviewController.js";
-import { isAdmin } from "../middleware/clerk-user";
-import express from "express";
+import { isAdmin } from "../middleware/clerk-user.js";
 
 const router = express.Router();
 

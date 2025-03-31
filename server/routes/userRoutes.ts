@@ -1,11 +1,11 @@
+import express from "express";
 import {
   getAllUsers,
   getSingleUser,
   showCurrentUser,
   updateUser,
 } from "../controllers/userController.js";
-import express from "express";
-import { isAdmin } from "../middleware/clerk-user";
+import { isAdmin } from "../middleware/clerk-user.js";
 
 const router = express.Router();
 

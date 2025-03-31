@@ -3,7 +3,6 @@ import { Admin } from "../models/Admin.js";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { NotFoundError } from "../errors/custom-errors.js";
-import "../types/express-auth";
 
 const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -65,7 +64,7 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "Error updating profile",
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
     });
   }
 };

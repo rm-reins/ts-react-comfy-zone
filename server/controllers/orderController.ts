@@ -7,7 +7,6 @@ import {
   BadRequestError,
   UnauthorizedError,
 } from "../errors/custom-errors.js";
-import "../types/express-auth";
 
 const getAllOrders = async (req: Request, res: Response): Promise<void> => {
   const orders = await Order.find({});

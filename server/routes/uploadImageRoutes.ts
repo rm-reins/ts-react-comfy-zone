@@ -2,8 +2,8 @@ import {
   uploadProductImage,
   uploadReviewImage,
   deleteImage,
-} from "../controllers/uploadController";
-import { isAdmin } from "../middleware/clerk-user";
+} from "../controllers/uploadController.js";
+import { isAdmin } from "../middleware/clerk-user.js";
 import express from "express";
 
 const router = express.Router();

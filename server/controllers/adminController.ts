@@ -2,11 +2,23 @@ import { Admin } from "../models/Admin.js";
 import { User } from "../models/User.js";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import "../types/express-auth";
+import { logger } from "../utils/logger.js";
 
 const getAllAdmins = async (req: Request, res: Response): Promise<void> => {
-  const admins = await Admin.find({});
-  res.status(StatusCodes.OK).json({ admins });
+  try {
+    const admins = await Admin.find({});
+    res.status(StatusCodes.OK).json({ admins });
+  } catch (error) {
+    logger.error({
+      message: "Error retrieving all admins",
+      error: error instanceof Error ? error.message : String(error),
+    });
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "Error retrieving all admins",
+      error: error instanceof Error ? error.message : String(error),
+    });
+  }
 };
 
 const updateAdmin = async (req: Request, res: Response): Promise<void> => {
@@ -38,10 +50,14 @@ const updateAdmin = async (req: Request, res: Response): Promise<void> => {
       admin: updatedAdmin,
     });
   } catch (error) {
+    logger.error({
+      message: "Error updating admin",
+      error: error instanceof Error ? error.message : String(error),
+    });
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "Error updating profile",
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
     });
   }
 };
@@ -76,10 +92,14 @@ const promoteToAdmin = async (req: Request, res: Response): Promise<void> => {
       admin,
     });
   } catch (error) {
+    logger.error({
+      message: "Error promoting user",
+      error: error instanceof Error ? error.message : String(error),
+    });
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "Error promoting user",
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
     });
   }
 };
@@ -124,10 +144,14 @@ const demoteToUser = async (req: Request, res: Response): Promise<void> => {
       user,
     });
   } catch (error) {
+    logger.error({
+      message: "Error demoting admin",
+      error: error instanceof Error ? error.message : String(error),
+    });
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "Error demoting admin",
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
     });
   }
 };

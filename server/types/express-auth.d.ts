@@ -1,5 +1,5 @@
-import { IUser } from "../models/User";
-import { IAdmin } from "../models/Admin";
+import { IUser } from "../models/User.js";
+import { IAdmin } from "../models/Admin.js";
 
 declare global {
   namespace Express {

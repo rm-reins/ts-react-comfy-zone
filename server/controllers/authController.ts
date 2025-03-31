@@ -2,7 +2,6 @@ import { User } from "../models/User.js";
 import { Admin } from "../models/Admin.js";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import "../types/express-auth.js";
 
 const register = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -69,7 +68,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       success: false,
       message: "Registration failed",
-      error: error.message,
+      error: error instanceof Error ? error.message : String(error),
     });
     return;
   }
