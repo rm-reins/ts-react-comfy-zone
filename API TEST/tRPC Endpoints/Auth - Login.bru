@@ -1,0 +1,41 @@
+meta {
+  name: Auth - Login
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/trpc/auth.login
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": "user@example.com",
+    "password": "password123"
+  }
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "result": {
+      "data": {
+        "json": {
+          "user": {
+            "id": "user123",
+            "name": "John Doe",
+            "email": "user@example.com",
+            "role": "user"
+          },
+          "token": "jwt_token_here"
+        }
+      }
+    }
+  }
+}

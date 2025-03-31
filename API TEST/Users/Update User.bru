@@ -1,0 +1,39 @@
+meta {
+  name: Update User
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/v1/users/updateUser
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Updated Name",
+    "surname": "Updated Surname",
+    "phoneNumber": "9876543210",
+    "deliveryAddress": "123 Main St"
+  }
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "success": true,
+    "user": {
+      "name": "Updated Name",
+      "surname": "Updated Surname",
+      "phoneNumber": "9876543210",
+      "deliveryAddress": "123 Main St",
+      "clerkId": "clerk_user_id"
+    }
+  }
+} 

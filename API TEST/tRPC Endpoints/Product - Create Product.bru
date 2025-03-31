@@ -1,0 +1,55 @@
+meta {
+  name: Product - Create Product
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/trpc/product.create
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{authToken}}
+}
+
+body:json {
+  {
+    "name": "New Product",
+    "price": 99.99,
+    "description": "This is a detailed description of the new product",
+    "image": "image_url",
+    "category": "electronics",
+    "company": "BrandName",
+    "featured": true,
+    "inventory": 50
+  }
+}
+
+docs {
+  statusCode: 201
+  body: {
+    "result": {
+      "data": {
+        "json": {
+          "id": "product123",
+          "name": "New Product",
+          "price": 99.99,
+          "description": "This is a detailed description of the new product",
+          "image": "image_url",
+          "category": "electronics",
+          "company": "BrandName",
+          "featured": true,
+          "inventory": 50,
+          "averageRating": 0,
+          "numOfReviews": 0,
+          "user": "user123",
+          "createdAt": "2023-10-10T10:00:00.000Z",
+          "updatedAt": "2023-10-10T10:00:00.000Z"
+        }
+      }
+    }
+  }
+}

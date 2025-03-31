@@ -1,0 +1,48 @@
+meta {
+  name: Review - Create Review
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/trpc/review.createReview
+  body: json
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{authToken}}
+}
+
+body:json {
+  {
+    "product": {
+      "productId": "{{productId}}"
+    },
+    "rating": 5,
+    "title": "Excellent product",
+    "comment": "This is an excellent product, highly recommended!"
+  }
+}
+
+docs {
+  statusCode: 201
+  body: {
+    "result": {
+      "data": {
+        "json": {
+          "review": {
+            "id": "review123",
+            "title": "Excellent product",
+            "comment": "This is an excellent product, highly recommended!",
+            "rating": 5,
+            "user": "user123",
+            "product": "product123",
+            "createdAt": "2023-10-10T10:00:00.000Z"
+          }
+        }
+      }
+    }
+  }
+}

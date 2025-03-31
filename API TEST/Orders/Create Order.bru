@@ -1,0 +1,43 @@
+meta {
+  name: Create Order
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/v1/orders
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "tax": 10,
+    "shippingFee": 5,
+    "subtotal": 100,
+    "total": 115,
+    "orderItems": [
+      {
+        "name": "Product Name",
+        "price": 50,
+        "image": "https://example.com/product.jpg",
+        "quantity": 2,
+        "color": "red",
+        "size": "M",
+        "_id": "product_id"
+      }
+    ]
+  }
+}
+
+docs {
+  statusCode: 201
+  body: {
+    "order": {}
+  }
+} 

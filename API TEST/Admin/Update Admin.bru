@@ -1,0 +1,36 @@
+meta {
+  name: Update Admin
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseUrl}}/api/v1/admins/:id
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Admin Name",
+    "surname": "Admin Surname",
+    "phone": "1234567890"
+  }
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "success": true,
+    "admin": {
+      "name": "Admin Name",
+      "surname": "Admin Surname",
+      "phone": "1234567890"
+    }
+  }
+} 

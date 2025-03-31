@@ -1,0 +1,23 @@
+meta {
+  name: Get Product Reviews
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/v1/products/:id/reviews
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "reviews": [],
+    "count": 0
+  }
+} 

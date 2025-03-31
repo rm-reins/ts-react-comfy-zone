@@ -1,0 +1,30 @@
+meta {
+  name: Update Product
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/v1/products/:id
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Updated Product",
+    "price": 89.99
+  }
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "product": {}
+  }
+} 

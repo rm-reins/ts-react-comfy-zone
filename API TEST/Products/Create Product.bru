@@ -1,0 +1,36 @@
+meta {
+  name: Create Product
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/v1/products
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "Test Product",
+    "price": 99.99,
+    "description": "This is a test product description",
+    "image": "https://example.com/image.jpg",
+    "category": "electronics",
+    "company": "test-company",
+    "featured": false,
+    "inventory": 10
+  }
+}
+
+docs {
+  statusCode: 201
+  body: {
+    "product": {}
+  }
+} 

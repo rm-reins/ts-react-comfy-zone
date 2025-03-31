@@ -1,0 +1,27 @@
+meta {
+  name: Get Single User
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/v1/users/:id
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "user": {
+      "name": "John",
+      "surname": "Doe",
+      "phoneNumber": "1234567890",
+      "clerkId": "clerk_user_id"
+    }
+  }
+} 

@@ -1,0 +1,29 @@
+meta {
+  name: Upload Review Image
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/upload/review
+  body: form-data
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+body:form-data {
+  image: @file(path/to/image.jpg)
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "image": {
+      "src": "https://cloudinary-url.com/image.jpg",
+      "filename": "image.jpg"
+    }
+  }
+} 

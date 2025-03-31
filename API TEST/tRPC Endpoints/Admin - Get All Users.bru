@@ -1,0 +1,36 @@
+meta {
+  name: Admin - Get All Users
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/trpc/user.getAllUsers
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "result": {
+      "data": {
+        "json": [
+          {
+            "id": "user123",
+            "name": "John",
+            "surname": "Doe",
+            "email": "john@example.com",
+            "phoneNumber": "1234567890",
+            "role": "user",
+            "clerkId": "clerk_user_id"
+          }
+        ]
+      }
+    }
+  }
+}

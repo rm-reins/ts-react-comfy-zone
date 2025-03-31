@@ -1,0 +1,33 @@
+meta {
+  name: Create Review
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/v1/reviews
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "product": "product_id",
+    "rating": 5,
+    "title": "Great product",
+    "comment": "I really love this product.",
+    "images": ["https://example.com/review-image.jpg"]
+  }
+}
+
+docs {
+  statusCode: 201
+  body: {
+    "review": {}
+  }
+} 

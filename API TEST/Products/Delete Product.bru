@@ -1,0 +1,22 @@
+meta {
+  name: Delete Product
+  type: http
+  seq: 5
+}
+
+delete {
+  url: {{baseUrl}}/api/v1/products/:id
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "msg": "Success! Product removed"
+  }
+} 

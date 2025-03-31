@@ -1,0 +1,42 @@
+meta {
+  name: Product - Get Single Product
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/trpc/product.getSingleProduct?input={"id":"{{productId}}"}
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "result": {
+      "data": {
+        "json": {
+          "product": {
+            "id": "product123",
+            "name": "Sample Product",
+            "price": 99.99,
+            "description": "Product description",
+            "image": "image_url",
+            "category": "category",
+            "company": "company",
+            "featured": false,
+            "freeShipping": false,
+            "inventory": 10,
+            "averageRating": 4.5,
+            "numOfReviews": 5,
+            "user": "user123"
+          }
+        }
+      }
+    }
+  }
+}

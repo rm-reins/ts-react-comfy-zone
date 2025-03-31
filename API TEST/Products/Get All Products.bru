@@ -1,0 +1,33 @@
+meta {
+  name: Get All Products
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/products
+  body: none
+  auth: inherit
+}
+
+query {
+  name: 
+  featured: 
+  company: 
+  sort: price
+  fields: name,price,company
+  page: 1
+  limit: 10
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "products": [],
+    "count": 0
+  }
+} 

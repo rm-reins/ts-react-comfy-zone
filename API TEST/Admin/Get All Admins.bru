@@ -1,0 +1,22 @@
+meta {
+  name: Get All Admins
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/admins
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "admins": []
+  }
+} 

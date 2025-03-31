@@ -1,0 +1,23 @@
+meta {
+  name: Get All Reviews
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/reviews
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "reviews": [],
+    "count": 0
+  }
+} 

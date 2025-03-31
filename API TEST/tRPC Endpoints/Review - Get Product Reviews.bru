@@ -1,0 +1,42 @@
+meta {
+  name: Review - Get Product Reviews
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/trpc/review.getProductReviews?input={"productId":"{{productId}}"}
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "result": {
+      "data": {
+        "json": {
+          "reviews": [
+            {
+              "id": "review123",
+              "title": "Great product",
+              "comment": "This is a great product",
+              "rating": 5,
+              "user": {
+                "id": "user123",
+                "name": "John Doe"
+              },
+              "product": "product123",
+              "createdAt": "2023-10-10T10:00:00.000Z"
+            }
+          ],
+          "count": 1
+        }
+      }
+    }
+  }
+}

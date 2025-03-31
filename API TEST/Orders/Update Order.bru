@@ -1,0 +1,30 @@
+meta {
+  name: Update Order
+  type: http
+  seq: 5
+}
+
+put {
+  url: {{baseUrl}}/api/v1/orders/:id
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "paymentId": "payment_id",
+    "status": "paid"
+  }
+}
+
+docs {
+  statusCode: 200
+  body: {
+    "order": {}
+  }
+} 
