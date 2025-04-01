@@ -7,6 +7,8 @@ import {
   Orders,
   Products,
   SingleProduct,
+  Login,
+  SignUpPage,
 } from "@/pages";
 import HomeLayout from "@/layouts/HomeLayout";
 import {
@@ -14,13 +16,7 @@ import {
   createBrowserRouter,
   Navigate,
 } from "react-router-dom";
-import {
-  SignIn,
-  SignUp,
-  SignedOut,
-  RedirectToSignIn,
-  useAuth,
-} from "@clerk/clerk-react";
+import { SignedOut, RedirectToSignIn, useAuth } from "@clerk/clerk-react";
 import { ReactNode } from "react";
 
 interface ProtectedRouteProps {
@@ -85,10 +81,7 @@ const router = createBrowserRouter([
     path: "/sign-in/*",
     element: (
       <SignedOut>
-        <SignIn
-          routing="path"
-          path="/sign-in"
-        />
+        <Login />
       </SignedOut>
     ),
   },
@@ -96,20 +89,8 @@ const router = createBrowserRouter([
     path: "/sign-up/*",
     element: (
       <SignedOut>
-        <SignUp
-          routing="path"
-          path="/sign-up"
-        />
+        <SignUpPage />
       </SignedOut>
-    ),
-  },
-  {
-    path: "/login",
-    element: (
-      <Navigate
-        to="/sign-in"
-        replace
-      />
     ),
   },
   {

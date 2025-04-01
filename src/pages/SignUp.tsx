@@ -1,17 +1,16 @@
-import { SignIn } from "@clerk/clerk-react";
+import { SignUp } from "@clerk/clerk-react";
 
-function Login() {
+function SignUpPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div className="flex justify-center items-center">
           <h2 className="text-3xl font-extrabold text-foreground">
-            Sign in to your account
+            Create your account
           </h2>
         </div>
-
         <div>
-          <SignIn
+          <SignUp
             appearance={{
               elements: {
                 rootBox: "mx-auto w-full",
@@ -31,8 +30,7 @@ function Login() {
               },
             }}
             routing="path"
-            path="/sign-in"
-            signUpUrl="/sign-up"
+            path="/sign-up"
             signInUrl="/sign-in"
           />
         </div>
@@ -41,4 +39,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUpPage;

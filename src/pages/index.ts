@@ -8,6 +8,7 @@ import Orders from "./Orders";
 import Products from "./Products";
 import Register from "./Register";
 import SingleProduct from "./SingleProduct";
+import SignUpPage from "./SignUp";
 
 export {
   About,
@@ -20,4 +21,5 @@ export {
   Products,
   Register,
   SingleProduct,
+  SignUpPage,
 };

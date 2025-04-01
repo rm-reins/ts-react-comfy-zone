@@ -1,20 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components";
-import { useState } from "react";
+import { useUser, useClerk } from "@clerk/clerk-react";
 
 function Header() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<{ username: string } | null>({
-    username: "demo user",
-  });
+  const { user } = useUser();
+  const { signOut } = useClerk();
 
-  const handleLogout = () => {
-    setUser(null);
+  const handleLogout = async () => {
+    await signOut();
     navigate("/");
   };
 
   const handleLogin = () => {
-    navigate("/login");
+    navigate("/sign-in");
   };
 
   return (
@@ -22,7 +21,7 @@ function Header() {
       <div className="align-element flex justify-center sm:justify-end py-2">
         {user ? (
           <div className="flex gap-x-2 sm:pr-2 sm:gap-x-8 items-center">
-            <p className="text-xs sm:text-sm">Hello, {user.username}</p>
+            <p className="text-xs sm:text-sm">Hello, {user.firstName}</p>
             <Button
               variant="outline"
               size="sm"
@@ -44,4 +43,5 @@ function Header() {
     </div>
   );
 }
+
 export default Header;
