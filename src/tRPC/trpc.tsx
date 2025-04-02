@@ -1,15 +1,18 @@
-import { httpBatchLink } from "@trpc/client";
 import { createTRPCReact } from "@trpc/react-query";
-import { QueryClient } from "@tanstack/react-query";
+import { httpBatchLink } from "@trpc/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import type { AppRouter } from "./types";
 
-const trpc = createTRPCReact<any>();
+// Create React tRPC hooks
+export const trpc = createTRPCReact<AppRouter>();
 
+// Provider component that sets up tRPC client and React Query
 export function TrpcProvider({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
-  const [trpcClient] = useState(() => {
-    // @ts-expect-error - Runtime works but TypeScript can't verify the type
-    return trpc.createClient({
+
+  const [trpcClient] = useState(() =>
+    trpc.createClient({
       links: [
         httpBatchLink({
           url: "http://localhost:5174/api/trpc",
@@ -21,18 +24,15 @@ export function TrpcProvider({ children }: { children: React.ReactNode }) {
           },
         }),
       ],
-    });
-  });
+    })
+  );
 
   return (
-    // @ts-expect-error - Runtime works but TypeScript can't verify the type
     <trpc.Provider
       client={trpcClient}
       queryClient={queryClient}
     >
-      {children}
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </trpc.Provider>
   );
 }
-// Export client for use in components
-export { trpc };
