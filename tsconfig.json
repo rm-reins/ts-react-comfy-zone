@@ -24,11 +24,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "types": ["node", "react", "react-dom"]
   },
+  "include": ["src"],
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },

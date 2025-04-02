@@ -7,9 +7,9 @@
     "dev": "vite",
     "dev:server": "cd server && npx tsc -w --preserveWatchOutput & cd server && node --watch dist/app.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run dev:server\"",
-    "build:client": "tsc -b && vite build",
-    "build:server": "cd server && tsc -b",
-    "build": "npm run build:client && npm run build:server",
+    "build:client": "vite build",
+    "build:server": "cd server && tsc -p tsconfig.server.json",
+    "build": "node build.js",
     "start": "cross-env NODE_ENV=production node server/dist/app.js",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
