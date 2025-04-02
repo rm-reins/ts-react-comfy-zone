@@ -1,4 +1,4 @@
-import { Button } from "@/components";
+import Button from "./Button";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -21,4 +21,5 @@ function CartButton() {
     </Button>
   );
 }
+
 export default CartButton;
