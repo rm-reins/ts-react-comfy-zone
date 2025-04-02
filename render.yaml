@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: comfy-zone
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        sync: false
+      - key: VITE_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false
+      - key: CLERK_WEBHOOK_SECRET
+        sync: false
+      - key: PORT
+        value: 10000 # Using Render's assigned port
+      - key: CLIENT_URL
+        fromService:
+          type: web
+          name: comfy-zone
+          property: url
+    healthCheckPath: /api/healthcheck
