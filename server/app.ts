@@ -42,7 +42,14 @@ app.use(
 app.use((req, res, next) => {
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' https://*.clerk.accounts.dev https://cdn.jsdelivr.net; connect-src 'self' https://*.clerk.accounts.dev https://api.clerk.dev; frame-src 'self' https://*.clerk.accounts.dev; img-src 'self' https://*.clerk.accounts.dev;"
+    "default-src 'self'; " +
+      "script-src 'self' https://*.clerk.accounts.dev https://cdn.jsdelivr.net; " +
+      "connect-src 'self' https://*.clerk.accounts.dev https://*.clerk.com https://api.clerk.dev; " +
+      "frame-src 'self' https://*.clerk.accounts.dev; " +
+      "img-src 'self' https://*.clerk.accounts.dev https://img.clerk.com; " +
+      "style-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev; " +
+      "worker-src 'self' blob:; " +
+      "font-src 'self' https://*.clerk.accounts.dev;"
   );
   next();
 });
