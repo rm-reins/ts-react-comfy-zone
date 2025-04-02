@@ -26,6 +26,37 @@ const app = express();
 // Setup common middleware
 setupCommonMiddleware(app);
 
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; " +
+      "script-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev https://cdn.jsdelivr.net https://github.githubassets.com https://challenges.cloudflare.com https://clerk-telemetry.com https://accounts.google.com; " +
+      "connect-src 'self' https://*.clerk.accounts.dev https://*.clerk.com https://api.clerk.dev https://collector.github.com https://api.github.com https://clerk-telemetry.com https://accounts.google.com; " +
+      "frame-src 'self' https://*.clerk.accounts.dev https://github.com https://accounts.google.com; " +
+      "img-src 'self' https://*.clerk.accounts.dev https://img.clerk.com https://github.githubassets.com https://avatars.githubusercontent.com https://*.googleusercontent.com; " +
+      "style-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev https://github.githubassets.com; " +
+      "worker-src 'self' blob:; " +
+      "font-src 'self' https://*.clerk.accounts.dev;"
+  );
+
+  // Add CORS headers
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://ts-react-comfy-zone.onrender.com"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  // Handle cookie domain issues
+  if (req.method === "OPTIONS") {
+    res.status(200).end();
+    return;
+  }
+
+  next();
+});
+
 // Setup routes for REST API
 setupRoutes(app);
 
@@ -38,21 +69,6 @@ app.use(
     createContext,
   })
 );
-
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; " +
-      "script-src 'self' https://*.clerk.accounts.dev https://cdn.jsdelivr.net; " +
-      "connect-src 'self' https://*.clerk.accounts.dev https://*.clerk.com https://api.clerk.dev; " +
-      "frame-src 'self' https://*.clerk.accounts.dev; " +
-      "img-src 'self' https://*.clerk.accounts.dev https://img.clerk.com; " +
-      "style-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev; " +
-      "worker-src 'self' blob:; " +
-      "font-src 'self' https://*.clerk.accounts.dev;"
-  );
-  next();
-});
 
 // Serve static frontend files in production
 if (process.env.NODE_ENV === "production") {
