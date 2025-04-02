@@ -67,7 +67,9 @@ async function build() {
     projectRoot,
     "dist"
   )} --emptyOutDir`;
-  if (!exec(clientBuildCommand, { cwd: projectRoot })) {
+  let clientBuildSuccess = exec(clientBuildCommand, { cwd: projectRoot });
+
+  if (!clientBuildSuccess) {
     log(
       "Client build with TypeScript failed, trying without TypeScript checks..."
     );
@@ -76,7 +78,54 @@ async function build() {
       projectRoot,
       "dist"
     )} --emptyOutDir`;
-    exec(fallbackCommand, { cwd: projectRoot });
+    clientBuildSuccess = exec(fallbackCommand, { cwd: projectRoot });
+  }
+
+  // Create fallback index.html if build failed
+  if (
+    !clientBuildSuccess ||
+    !fs.existsSync(path.join(projectRoot, "dist/index.html"))
+  ) {
+    log("Creating fallback index.html...");
+    const fallbackHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comfy Zone API</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      line-height: 1.6;
+    }
+    h1 {
+      color: #4338ca;
+    }
+    .container {
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      padding: 2rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Comfy Zone API Server</h1>
+    <p>The frontend build failed, but the API server is running.</p>
+    <p>API endpoints are available at <code>/api/*</code></p>
+  </div>
+</body>
+</html>`;
+
+    fs.writeFileSync(
+      path.join(projectRoot, "dist", "index.html"),
+      fallbackHTML
+    );
+    log("Fallback index.html created successfully");
   }
 
   // Debug the build output
