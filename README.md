@@ -2,6 +2,8 @@
 
 This is a new version of the old React project [comfy-zone](https://github.com/Freemasoid/react-comfy-zone). The project is being updated with server-side integration and a TypeScript conversion of the backend API.
 
+Hosting: [Live Demo](https://ts-react-comfy-zone.onrender.com)
+
 ## Technologies Used
 
 ### Frontend
