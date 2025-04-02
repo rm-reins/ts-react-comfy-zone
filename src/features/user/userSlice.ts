@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface DeliveryAddress {
+export interface DeliveryAddress {
   street: string;
   city: string;
   state: string;
@@ -8,7 +8,7 @@ interface DeliveryAddress {
   country: string;
 }
 
-interface User {
+export interface User {
   _id: string;
   name: string;
   surname: string;
@@ -22,7 +22,7 @@ interface User {
   updatedAt: Date;
 }
 
-interface UserState {
+export interface UserState {
   user: User | null;
   isLoading: boolean;
   error: string | null;

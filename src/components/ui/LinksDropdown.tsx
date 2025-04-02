@@ -5,8 +5,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu";
 import { AlignLeft } from "lucide-react";
-import { Button } from "@/components";
-import { links } from "@/utils";
+import Button from "./Button";
+import { links } from "@/utils/index";
 import { NavLink } from "react-router-dom";
 
 function LinksDropdown() {

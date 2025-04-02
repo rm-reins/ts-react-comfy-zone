@@ -1,5 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { themeReducer, userReducer, cartReducer } from "@/features";
+import { themeReducer, userReducer, cartReducer } from "@/features/index";
+import type { ThemeState } from "@/features/theme/themeSlice";
+import type { UserState } from "@/features/user/userSlice";
+import type { CartState } from "@/features/cart/cartSlice";
 
 export const store = configureStore({
   reducer: {
@@ -9,7 +12,12 @@ export const store = configureStore({
   },
 });
 
-export type RootState = ReturnType<typeof store.getState>;
+export type RootState = {
+  themeState: ThemeState;
+  cartState: CartState;
+  userState: UserState;
+};
+
 export type AppDispatch = typeof store.dispatch;
 
 export type ReduxStore = {
