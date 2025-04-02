@@ -28,12 +28,58 @@ This project uses a hybrid API approach:
 
 ## Setup
 
-1. Clone the repository:  
-   `git clone https://github.com/Freemasoid/react-comfy-zone.git`
-2. Install dependencies:  
-   `pnpm install`
-3. Run the development server:  
-   `pnpm start`
+1. Clone the repository:
+
+   ```
+   git clone https://github.com/Freemasoid/ts-react-comfy-zone.git
+   ```
+
+2. Install dependencies:
+
+   ```
+   pnpm install
+   ```
+
+3. Set up environment variables:
+
+   - Create a `.env` file in the root directory with the following variables:
+
+     ```
+     # Database
+     MONGO_URI=your_mongodb_connection_string
+
+     # Clerk Authentication
+     CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+     CLERK_SECRET_KEY=your_clerk_secret_key
+     CLERK_WEBHOOK_SECRET=your_clerk_webhook_secret
+     # Add this for dev
+     VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+
+     # Server
+     PORT=5174
+     CLIENT_URL=http://localhost:5173
+     ```
+
+4. Development mode:
+
+   - For frontend only:
+     ```
+     pnpm dev
+     ```
+   - For backend only:
+     ```
+     pnpm dev:server
+     ```
+   - For both concurrently:
+     ```
+     pnpm dev:all
+     ```
+
+5. Production build and start:
+   ```
+   pnpm build
+   pnpm start
+   ```
 
 ## Structure Overview
 
