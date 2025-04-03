@@ -103,26 +103,48 @@ export const handleWebhook = async (req: Request, res: Response) => {
     const { type } = evt;
 
     // Process the event based on its type
-    switch (type) {
-      case "user.created":
-        logger.info("Processing user.created event");
-        await handleUserCreated(evt.data);
-        break;
-      case "user.updated":
-        logger.info("Processing user.updated event");
-        await handleUserUpdated(evt.data);
-        break;
-      // Add more event types as needed
-      default:
-        logger.info(`Unhandled webhook event: ${type}`);
-    }
+    try {
+      switch (type) {
+        case "user.created":
+          logger.info("Processing user.created event");
+          await handleUserCreated(evt.data);
+          break;
+        case "user.updated":
+          logger.info("Processing user.updated event");
+          await handleUserUpdated(evt.data);
+          break;
+        // Add more event types as needed
+        default:
+          logger.info(`Unhandled webhook event: ${type}`);
+      }
 
-    // Return a 200 response
-    logger.info("Webhook processed successfully");
-    return res.status(StatusCodes.OK).json({
-      success: true,
-      message: "Webhook processed successfully",
-    });
+      // Return a 200 response
+      logger.info("Webhook processed successfully");
+      return res.status(StatusCodes.OK).json({
+        success: true,
+        message: "Webhook processed successfully",
+      });
+    } catch (processingError) {
+      // Handle specific event processing errors
+      logger.error({
+        message: `Error processing webhook event: ${type}`,
+        error:
+          processingError instanceof Error
+            ? processingError.message
+            : String(processingError),
+        stack:
+          processingError instanceof Error ? processingError.stack : undefined,
+      });
+
+      return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: `Error processing webhook event: ${type}`,
+        error:
+          processingError instanceof Error
+            ? processingError.message
+            : String(processingError),
+      });
+    }
   } catch (error) {
     logger.error({
       message: "Error processing webhook",
@@ -230,13 +252,12 @@ const handleUserCreated = async (data: ClerkUser) => {
       name: first_name || "User",
       surname: last_name || "",
       email,
-      phoneNumber: "",
-      // Add default delivery address to pass validation
+      phone: "",
       deliveryAddress: {
-        street: "Please update",
-        city: "Please update",
-        state: "Please update",
-        postalCode: "00000",
+        street: "Oranienplatz 1",
+        city: "Berlin",
+        state: "Berlin",
+        postalCode: "10115",
         country: "Germany",
       },
       role: "user",
@@ -287,6 +308,8 @@ const handleUserCreated = async (data: ClerkUser) => {
           validationErrors: JSON.stringify(dbError),
         });
       }
+
+      throw dbError;
     }
   } catch (error) {
     logger.error({

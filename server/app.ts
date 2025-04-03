@@ -1,6 +1,6 @@
 import "dotenv/config";
 import "express-async-errors";
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { Server } from "http";
 import connectDB from "./db/connect.js";
 import { config } from "./config/index.js";
@@ -26,7 +26,7 @@ const app = express();
 // Setup common middleware
 setupCommonMiddleware(app);
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader(
     "Content-Security-Policy",
     "default-src 'self'; " +
@@ -39,19 +39,21 @@ app.use((req, res, next) => {
       "font-src 'self' https://*.clerk.accounts.dev;"
   );
 
-  // Add CORS headers
+  // Set CORS headers
   res.setHeader(
     "Access-Control-Allow-Origin",
     "https://ts-react-comfy-zone.onrender.com"
   );
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type, Authorization, X-Requested-With, svix-id, svix-signature, svix-timestamp"
+  );
 
-  // Handle cookie domain issues
+  // Handle preflight requests
   if (req.method === "OPTIONS") {
     res.status(200).end();
-    return;
   }
 
   next();
@@ -69,6 +71,8 @@ app.use(
     createContext,
   })
 );
+
+app.use(express.json({ limit: "2mb" }));
 
 // Serve static frontend files in production
 if (process.env.NODE_ENV === "production") {

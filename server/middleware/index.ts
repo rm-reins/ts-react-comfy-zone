@@ -20,7 +20,7 @@ export const setupCommonMiddleware = (app: Application) => {
   app.use(compression());
 
   app.set("trust proxy", 1);
-  app.use(helmet()); // TODO implement CSP
+  app.use(helmet());
   app.use(cors(corsOptions));
   app.use(ExpressMongoSanitize());
 
@@ -34,7 +34,6 @@ export const setupCommonMiddleware = (app: Application) => {
     next();
   });
 
-  app.use(express.json({ limit: "2mb" }));
   app.use(cookieParser());
   app.use(express.urlencoded({ extended: true, limit: "2mb" }));
 
