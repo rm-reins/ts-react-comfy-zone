@@ -119,8 +119,13 @@ export default function HeroCarousel({
           onClick={onButtonClick}
           className="text-white font-medium text-base flex items-center gap-2 group"
         >
-          <span className="border-b border-white group-hover:border-opacity-100 border-opacity-70 pb-1">
+          <span className="border-b font-medium text-xl border-white group-hover:opacity-80 border-opacity-70 pb-1">
             {buttonText}
+            <ArrowUpRight
+              strokeWidth={2}
+              size={26}
+              className="inline-flex"
+            />
           </span>
         </button>
 

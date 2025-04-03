@@ -19,13 +19,18 @@ const images = [
 function Hero() {
   const navigate = useNavigate();
   return (
-    <HeroCarousel
-      images={images}
-      buttonText={"View Products"}
-      onButtonClick={() => {
-        navigate("/products");
-      }}
-    />
+    <>
+      <div className="flex justify-center items-center pb-10 gap-y-4">
+        <h1 className="md:text-8xl text-4xl font-bold uppercase">comfy-zone</h1>
+      </div>
+      <HeroCarousel
+        images={images}
+        buttonText={"View Products"}
+        onButtonClick={() => {
+          navigate("/products");
+        }}
+      />
+    </>
   );
 }
 export default Hero;
