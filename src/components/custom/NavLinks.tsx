@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 function NavLinks() {
   return (
-    <div className="hidden lg:flex justify-center items-center gap-x-4">
+    <div className="hidden md:flex justify-center items-center gap-x-4">
       {links.map((link) => {
         return (
           <NavLink

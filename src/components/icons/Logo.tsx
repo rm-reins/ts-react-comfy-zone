@@ -4,7 +4,7 @@ function Logo() {
   return (
     <Link
       to="/"
-      className="hidden lg:flex justify-center items-center rounded-4xl p-1.5 bg-white"
+      className="hidden md:flex justify-center items-center rounded-4xl p-1.5 bg-white"
     >
       <img
         src="./favicon-512x512.png"

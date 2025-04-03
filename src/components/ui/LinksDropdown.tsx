@@ -14,7 +14,7 @@ function LinksDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger
         asChild
-        className="lg:hidden"
+        className="md:hidden"
       >
         <Button
           variant="outline"
