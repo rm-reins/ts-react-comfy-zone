@@ -33,7 +33,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
       "script-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev https://cdn.jsdelivr.net https://github.githubassets.com https://challenges.cloudflare.com https://clerk-telemetry.com https://accounts.google.com; " +
       "connect-src 'self' https://*.clerk.accounts.dev https://*.clerk.com https://api.clerk.dev https://collector.github.com https://api.github.com https://clerk-telemetry.com https://accounts.google.com; " +
       "frame-src 'self' https://*.clerk.accounts.dev https://github.com https://accounts.google.com https://challenges.cloudflare.com; " +
-      "img-src 'self' https://*.clerk.accounts.dev https://img.clerk.com https://github.githubassets.com https://avatars.githubusercontent.com https://*.googleusercontent.com; " +
+      "img-src 'self' https://*.clerk.accounts.dev https://img.clerk.com https://github.githubassets.com https://avatars.githubusercontent.com https://*.googleusercontent.com https://res.cloudinary.com; " +
       "style-src 'self' 'unsafe-inline' https://*.clerk.accounts.dev https://github.githubassets.com; " +
       "worker-src 'self' blob:; " +
       "font-src 'self' https://*.clerk.accounts.dev;"
