@@ -14,6 +14,7 @@ import CartButton from "./ui/CartButton";
 import LinksDropdown from "./ui/LinksDropdown";
 import ModeToggle from "./ui/ModeToggle";
 import SectionTitle from "./ui/SectionTitle";
+import Image from "./ui/Image";
 
 export {
   FeaturedProducts,
@@ -32,4 +33,5 @@ export {
   LinksDropdown,
   ModeToggle,
   SectionTitle,
+  Image,
 };
