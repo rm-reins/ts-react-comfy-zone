@@ -20,12 +20,4 @@ export const links: Link[] = [
     href: "/about",
     label: "About",
   },
-  {
-    href: "/cart",
-    label: "Cart",
-  },
-  {
-    href: "/checkout",
-    label: "Checkout",
-  },
 ];

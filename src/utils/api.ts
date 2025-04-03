@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = `${process.env.CLIENT_URL}/api/trpc`;
+const API_URL = `${import.meta.env.CLIENT_URL}/api/trpc`;
 
 export const api = axios.create({
   baseURL: API_URL,
