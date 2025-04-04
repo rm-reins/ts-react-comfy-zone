@@ -1,7 +1,6 @@
 import About from "./About";
 import Cart from "./Cart";
 import Checkout from "./Checkout";
-import Error from "./Error";
 import Landing from "./Landing";
 import Login from "./Login";
 import Orders from "./Orders";
@@ -14,7 +13,6 @@ export {
   About,
   Cart,
   Checkout,
-  Error,
   Landing,
   Login,
   Orders,
