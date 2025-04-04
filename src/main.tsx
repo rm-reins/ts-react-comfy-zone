@@ -3,9 +3,9 @@ import "./index.css";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
-import { ThemeProvider } from "@/components";
+import { ThemeProvider } from "@/features/theme/components/ThemeProvider";
 import { ClerkProvider } from "@clerk/clerk-react";
-import { TrpcProvider } from "./tRPC/trpc";
+import { TrpcProvider } from "./trpc/trpc";
 
 const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 

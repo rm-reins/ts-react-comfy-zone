@@ -10,7 +10,7 @@ import {
   Login,
   SignUpPage,
 } from "@/pages";
-import HomeLayout from "@/layouts/HomeLayout";
+import HomeLayout from "@/shared/layouts/HomeLayout";
 import {
   RouterProvider,
   createBrowserRouter,

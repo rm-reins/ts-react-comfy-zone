@@ -3,7 +3,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/DropdownMenu";
+} from "./DropdownMenu";
 import { AlignLeft } from "lucide-react";
 import Button from "./Button";
 import { links } from "@/utils/index";
