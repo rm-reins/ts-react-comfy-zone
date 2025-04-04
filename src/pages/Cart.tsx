@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button } from "@/components";
+import { Button } from "@/shared/ui";
 
 function Cart() {
   return (

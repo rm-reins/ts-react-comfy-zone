@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components";
+import { Button } from "@/shared";
 import { useUser, useClerk } from "@clerk/clerk-react";
 
 function Header() {

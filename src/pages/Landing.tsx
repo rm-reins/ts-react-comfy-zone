@@ -1,4 +1,5 @@
-import { FeaturedProducts, Hero } from "@/components";
+import { FeaturedProducts } from "@/features/products";
+import { Hero } from "@/features/home";
 
 function Landing() {
   return (

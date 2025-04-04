@@ -1,6 +1,6 @@
 import { useState, useRef, type TouchEvent, type MouseEvent } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { Image } from "@/components";
+import { Image } from "@/shared";
 
 interface HeroCarouselProps {
   images: {
