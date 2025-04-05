@@ -39,6 +39,7 @@ export const en = {
     orders: "Orders",
     changeLanguage: "Change language",
     backToHome: "Back Home",
+    toggleLinks: "Toggle Links",
   },
   auth: {
     signIn: "Sign In",

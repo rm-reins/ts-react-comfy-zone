@@ -11,7 +11,7 @@ function About() {
           comfy
         </span>
       </h1>
-      <p className="mt-6 text-lg tracking-wide leading-8 max-w-2xl mx-auto">
+      <p className="mt-6 text-lg tracking-wide leading-8 max-w-2xl mx-auto text-justify">
         {t("about.description")}
       </p>
     </>

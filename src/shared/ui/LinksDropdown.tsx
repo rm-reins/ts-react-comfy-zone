@@ -6,7 +6,7 @@ import {
 } from "./DropdownMenu";
 import { AlignLeft } from "lucide-react";
 import Button from "./Button";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "@/i18n/useTranslation";
 
 type Link = {
@@ -16,6 +16,7 @@ type Link = {
 
 function LinksDropdown() {
   const { t } = useTranslation();
+  const location = useLocation();
 
   const links: Link[] = [
     {
@@ -43,17 +44,25 @@ function LinksDropdown() {
           size="icon"
         >
           <AlignLeft className="size-4" />
-          <span className="sr-only">Toggle links</span>
+          <span className="sr-only">{t("common.toggleLinks")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className="w-32 lg:hidden"
+        className="w-32 md:hidden"
         align="start"
         sideOffset={25}
       >
         {links.map((link) => (
-          <DropdownMenuItem key={link.href}>
-            <NavLink to={link.href}>{link.label}</NavLink>
+          <DropdownMenuItem
+            key={link.href}
+            className={link.href === location.pathname ? "bg-muted" : ""}
+          >
+            <NavLink
+              to={link.href}
+              className="text-foreground w-full"
+            >
+              {link.label}
+            </NavLink>
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

@@ -39,6 +39,7 @@ export const de = {
     orders: "Bestellungen",
     changeLanguage: "Sprache ändern",
     backToHome: "Zurück zur Startseite",
+    toggleLinks: "Links anzeigen",
   },
   auth: {
     signIn: "Anmelden",

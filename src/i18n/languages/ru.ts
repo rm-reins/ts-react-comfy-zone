@@ -39,6 +39,7 @@ export const ru = {
     orders: "Заказы",
     changeLanguage: "Изменить язык",
     backToHome: "Вернуться на главную",
+    toggleLinks: "Открыть ссылки",
   },
   auth: {
     signIn: "Вход",
