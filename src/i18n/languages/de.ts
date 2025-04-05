@@ -37,6 +37,8 @@ export const de = {
     cart: "Warenkorb",
     checkout: "Zur Kasse",
     orders: "Bestellungen",
+    changeLanguage: "Sprache ändern",
+    backToHome: "Zurück zur Startseite",
   },
   auth: {
     signIn: "Anmelden",
@@ -80,6 +82,10 @@ export const de = {
     writeReview: "Bewertung schreiben",
     relatedProducts: "Ähnliche Produkte",
     youMayAlsoLike: "Das könnte Sie auch interessieren",
+    viewProducts: "Produkte anzeigen",
+    comingSoon: "Demnächst verfügbar",
+    checkBackLater:
+      "Schauen Sie später wieder vorbei für unsere neuesten Produkte",
   },
   cart: {
     empty: "Ihr Warenkorb ist leer",
@@ -99,6 +105,7 @@ export const de = {
     freeShipping: "Kostenloser Versand",
     checkout: "Zur Kasse",
     continueShopping: "Weiter einkaufen",
+    title: "Warenkorb",
   },
   checkout: {
     billingAddress: "Rechnungsadresse",
@@ -174,5 +181,10 @@ export const de = {
     password: "Das Passwort muss mindestens 8 Zeichen lang sein.",
     passwordMismatch: "Die Passwörter stimmen nicht überein.",
     invalidCredentials: "Ungültige E-Mail oder Passwort.",
+  },
+  about: {
+    title: "Mit",
+    description:
+      "Bei Comfy-Zone bringen wir Komfort und Stil in Ihr Zuhause mit hochwertiger, erschwinglicher Möbel. Von gemütlichen Sofas bis hin zu eleganten Esstischgarnituren ist unsere Kollektion darauf ausgelegt, jeden Raum perfekt zu gestalten. Kaufen Sie bei uns und genießen Sie zeitlose Designs und maximalen Komfort!",
   },
 };

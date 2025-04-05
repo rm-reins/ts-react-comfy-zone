@@ -6,10 +6,32 @@ import {
 } from "./DropdownMenu";
 import { AlignLeft } from "lucide-react";
 import Button from "./Button";
-import { links } from "@/utils/index";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "@/i18n/useTranslation";
+
+type Link = {
+  href: string;
+  label: string;
+};
 
 function LinksDropdown() {
+  const { t } = useTranslation();
+
+  const links: Link[] = [
+    {
+      href: "/",
+      label: t("common.home"),
+    },
+    {
+      href: "/products",
+      label: t("common.products"),
+    },
+    {
+      href: "/about",
+      label: t("common.about"),
+    },
+  ];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger

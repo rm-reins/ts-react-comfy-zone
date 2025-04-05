@@ -6,10 +6,17 @@ import {
 } from "./DropdownMenu";
 import { Languages } from "lucide-react";
 import Button from "./Button";
-import { links } from "@/utils/index";
-import { NavLink } from "react-router-dom";
+import { useTranslation } from "@/i18n/useTranslation";
 
 function LanguageDropdown() {
+  const { language, setLanguage, t } = useTranslation();
+
+  const languages = [
+    { code: "en" as const, label: "English" },
+    { code: "de" as const, label: "Deutsch" },
+    { code: "ru" as const, label: "Русский" },
+  ];
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -18,7 +25,7 @@ function LanguageDropdown() {
           size="icon"
         >
           <Languages className="size-4" />
-          <span className="sr-only">Toggle language</span>
+          <span className="sr-only">{t("common.changeLanguage")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -26,9 +33,13 @@ function LanguageDropdown() {
         align="end"
         sideOffset={25}
       >
-        {links.map((link) => (
-          <DropdownMenuItem key={link.href}>
-            <NavLink to={link.href}>{link.label}</NavLink>
+        {languages.map((lang) => (
+          <DropdownMenuItem
+            key={lang.code}
+            onClick={() => setLanguage(lang.code)}
+            className={language === lang.code ? "bg-muted" : ""}
+          >
+            {lang.label}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>

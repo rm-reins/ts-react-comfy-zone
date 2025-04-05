@@ -37,6 +37,8 @@ export const en = {
     cart: "Cart",
     checkout: "Checkout",
     orders: "Orders",
+    changeLanguage: "Change language",
+    backToHome: "Back Home",
   },
   auth: {
     signIn: "Sign In",
@@ -80,6 +82,9 @@ export const en = {
     writeReview: "Write a Review",
     relatedProducts: "Related Products",
     youMayAlsoLike: "You May Also Like",
+    viewProducts: "View Products",
+    comingSoon: "Coming Soon",
+    checkBackLater: "Check back later for our latest products",
   },
   cart: {
     empty: "Your cart is empty",
@@ -99,6 +104,7 @@ export const en = {
     freeShipping: "Free Shipping",
     checkout: "Proceed to Checkout",
     continueShopping: "Continue Shopping",
+    title: "Shopping Cart",
   },
   checkout: {
     billingAddress: "Billing Address",
@@ -154,6 +160,11 @@ export const en = {
     privacyPolicy: "Privacy Policy",
     termsOfService: "Terms of Service",
     copyright: "© {{year}} Comfy Zone. All rights reserved.",
+  },
+  about: {
+    title: "With",
+    description:
+      "At Comfy-Zone, we bring comfort and style to your home with high-quality, affordable furniture. From cozy sofas to elegant dining sets, our collection is designed to make every space feel just right. Shop with us for a seamless experience and timeless designs!",
   },
   errors: {
     general: "Something went wrong. Please try again.",

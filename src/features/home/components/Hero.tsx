@@ -1,5 +1,6 @@
 import HeroCarousel from "./HeroCarousel";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "@/i18n/useTranslation";
 
 const images = [
   {
@@ -18,6 +19,8 @@ const images = [
 
 function Hero() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="flex justify-center items-center pb-10 gap-y-4">
@@ -27,7 +30,7 @@ function Hero() {
       </div>
       <HeroCarousel
         images={images}
-        buttonText={"View Products"}
+        buttonText={t("products.viewProducts")}
         onButtonClick={() => {
           navigate("/products");
         }}

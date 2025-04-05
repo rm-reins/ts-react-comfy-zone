@@ -1,21 +1,24 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/shared/ui";
+import { useTranslation } from "@/i18n/useTranslation";
 
 function Cart() {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <h1 className="text-4xl">Cart Page</h1>
+      <h1 className="text-4xl">{t("cart.title")}</h1>
       <Link
         to="/"
         className="text-7xl text-red-900"
       >
-        Back Home
+        {t("common.backToHome")}
       </Link>
       <Button
         asChild
         size="lg"
       >
-        <Link to="/products">View Products</Link>
+        <Link to="/products">{t("products.viewProducts")}</Link>
       </Button>
     </div>
   );
