@@ -4,10 +4,42 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* 
+  Design system with primary color #1A472A (Slytherin green)
+  Organized with a clean, organic, and modern approach
+*/
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 152 47% 21%; /* #1A472A converted to HSL */
+    /* Main color palette - HSL format */
+    --primary: 152 47% 21%; /* #1A472A - Main brand color */
+    --primary-light: 152 47% 30%; /* Lighter variation */
+    --primary-lighter: 152 47% 40%; /* Even lighter variation */
+    --primary-dark: 152 47% 15%; /* Darker variation */
+    --primary-darkest: 152 47% 10%; /* Darkest variation */
+
+    /* Complementary & neutral colors */
+    --neutral-50: 0 0% 98%;
+    --neutral-100: 0 0% 96%;
+    --neutral-200: 0 0% 90%;
+    --neutral-300: 0 0% 83%;
+    --neutral-400: 0 0% 64%;
+    --neutral-500: 0 0% 45%;
+    --neutral-600: 0 0% 32%;
+    --neutral-700: 0 0% 23%;
+    --neutral-800: 0 0% 15%;
+    --neutral-900: 0 0% 9%;
+    --neutral-950: 0 0% 5%;
+
+    /* Functional colors */
+    --success: 145 63% 42%;
+    --warning: 38 92% 50%;
+    --danger: 0 84% 60%;
+    --info: 200 98% 48%;
+
+    /* UI Variables - Light mode */
+    --background: 152 47% 95%; /* Changed from 0 0% 100% to accent color */
+    --foreground: 152 47% 21%;
 
     --card: 0 0% 100%;
     --card-foreground: 152 47% 21%;
@@ -15,31 +47,36 @@
     --popover: 0 0% 100%;
     --popover-foreground: 152 47% 21%;
 
-    --primary: 152 47% 21%; /* #1A472A */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 150 30% 96%;
+    --secondary: 152 30% 96%;
     --secondary-foreground: 152 47% 21%;
 
-    --muted: 150 30% 96%;
+    --muted: 152 30% 96%;
     --muted-foreground: 152 30% 40%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 152 47% 95%;
+    --accent-foreground: 152 47% 21%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 152 20% 90%;
+    --input: 152 20% 90%;
+    --ring: 152 47% 21%;
 
     --radius: 0.5rem;
+
+    /* Sidebar specific */
+    --sidebar: 152 47% 21%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-border: 152 30% 30%;
   }
 
   .dark {
-    --background: 152 47% 10%; /* Darker version of #1A472A */
-    --foreground: 150 30% 98%;
+    /* UI Variables - Dark mode */
+    --background: 152 47% 10%;
+    --foreground: 152 15% 98%;
 
     --card: 152 47% 12%;
     --card-foreground: 150 30% 98%;
@@ -47,107 +84,135 @@
     --popover: 152 47% 12%;
     --popover-foreground: 150 30% 98%;
 
-    --primary: 152 47% 21%; /* #1A472A */
+    --primary: 152 47% 25%; /* Slightly brighter in dark mode */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 152 47% 26%; /* Lighter variation of primary */
+    --secondary: 152 47% 20%;
     --secondary-foreground: 150 30% 98%;
 
-    --muted: 152 47% 30%; /* Even lighter variation of primary */
-    --muted-foreground: 150 20% 85%;
+    --muted: 152 30% 20%;
+    --muted-foreground: 152 15% 70%;
 
-    --accent: 152 47% 35%; /* Lightest variation of primary */
+    --accent: 152 30% 25%;
     --accent-foreground: 150 30% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 62% 30%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 152 30% 25%; /* Gradient variation of primary */
-    --input: 152 30% 25%; /* Gradient variation of primary */
-    --ring: 152 26.8% 40%; /* Lighter gradient variation of primary */
+    --border: 152 30% 25%;
+    --input: 152 30% 25%;
+    --ring: 152 40% 40%;
+
+    /* Sidebar specific */
+    --sidebar: 152 47% 18%;
+    --sidebar-foreground: 152 15% 98%;
+    --sidebar-border: 152 30% 30%;
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
+/* Single source of truth for color variables using modern OKLCH format */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.28 0.06 155); /* #1A472A in OKLCH */
+  /* Primary color and variations in OKLCH */
+  --primary-oklch: oklch(0.28 0.06 155); /* #1A472A */
+  --primary-light-oklch: oklch(0.35 0.06 155);
+  --primary-lighter-oklch: oklch(0.45 0.05 155);
+  --primary-dark-oklch: oklch(0.22 0.05 155);
+  --primary-darkest-oklch: oklch(0.18 0.05 155);
+
+  /* Mapping OKLCH colors to design system */
+  --background: oklch(
+    0.95 0.03 155
+  ); /* Changed from oklch(1 0 0) to match accent color */
+  --foreground: var(--primary-oklch);
+
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.28 0.06 155);
+  --card-foreground: var(--primary-oklch);
+
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.28 0.06 155);
-  --primary: oklch(0.28 0.06 155); /* #1A472A in OKLCH */
+  --popover-foreground: var(--primary-oklch);
+
+  --primary: var(--primary-oklch);
   --primary-foreground: oklch(1 0 0);
+
   --secondary: oklch(0.95 0.03 155);
-  --secondary-foreground: oklch(0.28 0.06 155);
+  --secondary-foreground: var(--primary-oklch);
+
   --muted: oklch(0.95 0.03 155);
   --muted-foreground: oklch(0.5 0.05 155);
+
   --accent: oklch(0.95 0.03 155);
-  --accent-foreground: oklch(0.28 0.06 155);
+  --accent-foreground: var(--primary-oklch);
+
   --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(1 0 0);
+
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: var(--primary-oklch);
+
+  --radius: 0.625rem;
+
+  /* Sidebar */
+  --sidebar: var(--primary-oklch);
+  --sidebar-foreground: oklch(0.98 0.01 155);
+  --sidebar-primary: var(--primary-oklch);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.25 0.05 155);
+  --sidebar-accent-foreground: oklch(0.98 0.01 155);
+  --sidebar-border: oklch(0.32 0.05 155);
+  --sidebar-ring: oklch(0.4 0.05 155);
+
+  /* Chart colors */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.22 0.05 155);
-  --sidebar-foreground: oklch(0.98 0.01 155);
-  --sidebar-primary: oklch(0.28 0.06 155);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.25 0.05 155);
-  --sidebar-accent-foreground: oklch(0.98 0.01 155);
-  --sidebar-border: oklch(0.25 0.05 155);
-  --sidebar-ring: oklch(0.4 0.05 155);
 }
 
 .dark {
-  --background: oklch(0.2 0.05 155); /* Darker version of #1A472A */
+  --background: var(--primary-darkest-oklch);
   --foreground: oklch(0.98 0.01 155);
-  --card: oklch(0.22 0.05 155);
+
+  --card: var(--primary-dark-oklch);
   --card-foreground: oklch(0.98 0.01 155);
-  --popover: oklch(0.22 0.05 155);
+
+  --popover: var(--primary-dark-oklch);
   --popover-foreground: oklch(0.98 0.01 155);
-  --primary: oklch(0.28 0.06 155); /* #1A472A in OKLCH */
+
+  --primary: var(--primary-light-oklch);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.35 0.06 155); /* Lighter variation of primary */
+
+  --secondary: var(--primary-light-oklch);
   --secondary-foreground: oklch(0.98 0.01 155);
-  --muted: oklch(0.4 0.05 155); /* Even lighter variation of primary */
+
+  --muted: oklch(0.35 0.05 155);
   --muted-foreground: oklch(0.85 0.02 155);
-  --accent: oklch(0.45 0.05 155); /* Lightest variation of primary */
+
+  --accent: var(--primary-lighter-oklch);
   --accent-foreground: oklch(0.98 0.01 155);
+
   --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.32 0.05 155); /* Gradient variation of primary */
-  --input: oklch(0.32 0.05 155); /* Gradient variation of primary */
-  --ring: oklch(0.38 0.05 155); /* Lighter gradient variation of primary */
+  --destructive-foreground: oklch(0.98 0.01 155);
+
+  --border: oklch(0.32 0.05 155);
+  --input: oklch(0.32 0.05 155);
+  --ring: oklch(0.38 0.05 155);
+
+  /* Sidebar */
+  --sidebar: var(--primary-dark-oklch);
+  --sidebar-foreground: oklch(0.98 0.01 155);
+  --sidebar-border: var(--primary-oklch);
+
+  /* Chart colors - adjusted for dark mode */
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.22 0.05 155);
-  --sidebar-foreground: oklch(0.98 0.01 155);
-  --sidebar-primary: oklch(0.28 0.06 155);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.25 0.05 155);
-  --sidebar-accent-foreground: oklch(0.98 0.01 155);
-  --sidebar-border: oklch(0.25 0.05 155);
-  --sidebar-ring: oklch(0.4 0.05 155);
 }
 
+/* Theme variables for ease of use */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -168,15 +233,21 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* Chart colors */
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
+  /* Border radius */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  /* Sidebar */
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -187,20 +258,112 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* Component styles */
 @layer components {
+  /* Layout utilities */
   .align-element {
     @apply mx-auto max-w-6xl px-8;
   }
-  .outline-button {
-    @apply border border-input bg-background shadow-xs;
+
+  /* Button styles */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md transition-colors;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90 px-4 py-2 rounded-md transition-colors;
+  }
+
+  .btn-outline {
+    @apply border border-input bg-background hover:bg-accent hover:text-accent-foreground px-4 py-2 rounded-md transition-colors;
+  }
+
+  .btn-ghost {
+    @apply hover:bg-accent hover:text-accent-foreground px-4 py-2 rounded-md transition-colors;
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-card text-card-foreground rounded-lg border border-border p-6 shadow-sm;
+  }
+
+  /* Form elements */
+  .input {
+    @apply bg-background border border-input rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+  }
+
+  .select {
+    @apply bg-background border border-input rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+  }
+
+  /* Link styles */
+  .link {
+    @apply text-primary hover:text-primary/80 underline-offset-4 hover:underline transition-colors;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply text-foreground hover:text-primary transition-colors px-3 py-2;
+  }
+
+  .nav-link-active {
+    @apply text-primary font-medium;
+  }
+
+  /* Sidebar navigation */
+  .sidebar-link {
+    @apply text-sidebar-foreground hover:bg-sidebar-accent px-4 py-2 rounded-md transition-colors;
+  }
+
+  .sidebar-link-active {
+    @apply bg-sidebar-accent text-sidebar-accent-foreground font-medium;
   }
 }
 
+/* Base styles */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-foreground font-medium;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl;
+  }
+
+  h4 {
+    @apply text-lg md:text-xl;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  a {
+    @apply text-primary hover:text-primary/70 transition-colors;
   }
 }
