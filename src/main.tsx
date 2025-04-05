@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/features/theme/components/ThemeProvider";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { TrpcProvider } from "./trpc/trpc";
 import { ErrorBoundary } from "@/shared";
+import { LanguageProvider } from "./i18n/LanguageContext";
 
 const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -20,7 +21,9 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <TrpcProvider>
         <Provider store={store}>
           <ThemeProvider>
-            <App />
+            <LanguageProvider>
+              <App />
+            </LanguageProvider>
           </ThemeProvider>
         </Provider>
       </TrpcProvider>
