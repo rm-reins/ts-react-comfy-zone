@@ -10,7 +10,7 @@ function CartButton() {
       asChild
       variant="outline"
       size="icon"
-      className="flex justify-center items-center relative shadow-none border-none"
+      className="flex justify-center items-center relative"
     >
       <Link to="/cart">
         <ShoppingCart />

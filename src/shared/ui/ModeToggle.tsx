@@ -18,7 +18,6 @@ function ModeToggle() {
     <Button
       variant="outline"
       size="icon"
-      className="shadow-none border-none"
       onClick={() =>
         theme === "light"
           ? handleThemeChange("dark")

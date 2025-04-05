@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "@/i18n/useTranslation";
+import { Button } from "@/shared/ui";
 
 type Link = {
   href: string;
@@ -25,17 +26,23 @@ function NavLinks() {
   ];
 
   return (
-    <div className="hidden md:flex p-4 bg-white rounded-b-xl justify-center items-center gap-x-4">
+    <div className="hidden md:flex p-4 rounded-b-xl justify-center items-center gap-x-2">
       {links.map((link) => {
         return (
           <NavLink
             key={link.href}
             to={link.href}
-            className={({ isActive }) =>
-              isActive ? "bg-primary text-white rounded-md px-3 py-1" : ""
-            }
+            className=""
           >
-            {link.label}
+            {({ isActive }) => (
+              <Button
+                variant={isActive ? "default" : "outline"}
+                size="sm"
+                className="rounded-md"
+              >
+                {link.label}
+              </Button>
+            )}
           </NavLink>
         );
       })}

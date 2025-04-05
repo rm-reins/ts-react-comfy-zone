@@ -38,7 +38,7 @@
     --info: 200 98% 48%;
 
     /* UI Variables - Light mode */
-    --background: 152 47% 95%; /* Changed from 0 0% 100% to accent color */
+    --background: 0 0% 100%;
     --foreground: 152 47% 21%;
 
     --card: 0 0% 100%;
@@ -120,9 +120,7 @@
   --primary-darkest-oklch: oklch(0.18 0.05 155);
 
   /* Mapping OKLCH colors to design system */
-  --background: oklch(
-    0.95 0.03 155
-  ); /* Changed from oklch(1 0 0) to match accent color */
+  --background: oklch(1 0 0);
   --foreground: var(--primary-oklch);
 
   --card: oklch(1 0 0);
