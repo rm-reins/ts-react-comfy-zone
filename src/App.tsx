@@ -3,11 +3,11 @@ import {
   Cart,
   Checkout,
   Landing,
-  Orders,
   Products,
   SingleProduct,
   Login,
   SignUpPage,
+  UserProfile,
 } from "@/pages";
 import HomeLayout from "@/shared/layouts/HomeLayout";
 import {
@@ -70,10 +70,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/orders",
+        path: "/profile",
         element: (
           <ProtectedRoute>
-            <Orders />
+            <UserProfile />
           </ProtectedRoute>
         ),
       },
