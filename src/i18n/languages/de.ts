@@ -40,6 +40,9 @@ export const de = {
     language: "Sprache",
     backToHome: "Zurück zur Startseite",
     toggleLinks: "Links anzeigen",
+    default: "Standard",
+    setAsDefault: "Als Standard festlegen",
+    user: "Benutzer",
   },
   auth: {
     signIn: "Anmelden",
@@ -154,6 +157,15 @@ export const de = {
     deleteAccount: "Konto löschen",
     confirmDeleteAccount:
       "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
+    addNewAddress: "Neue Adresse hinzufügen",
+  },
+  orders: {
+    orderId: "Bestellnummer",
+    date: "Datum",
+    paymentStatus: "Zahlungsstatus",
+    fulfillmentStatus: "Lieferstatus",
+    total: "Gesamt",
+    viewOrderDetails: "Bestelldetails ansehen",
   },
   footer: {
     aboutUs: "Über uns",

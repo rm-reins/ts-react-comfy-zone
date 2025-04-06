@@ -40,6 +40,9 @@ export const en = {
     language: "Language",
     backToHome: "Back Home",
     toggleLinks: "Toggle Links",
+    default: "Default",
+    setAsDefault: "Set as Default",
+    user: "User",
   },
   auth: {
     signIn: "Sign In",
@@ -151,6 +154,15 @@ export const en = {
     cancelChanges: "Cancel Changes",
     deleteAccount: "Delete Account",
     confirmDeleteAccount: "Are you sure you want to delete your account?",
+    addNewAddress: "Add New Address",
+  },
+  orders: {
+    orderId: "Order ID",
+    date: "Date",
+    paymentStatus: "Payment Status",
+    fulfillmentStatus: "Fulfillment Status",
+    total: "Total",
+    viewOrderDetails: "View Order Details",
   },
   footer: {
     aboutUs: "About Us",

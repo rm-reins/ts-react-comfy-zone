@@ -40,6 +40,9 @@ export const ru = {
     language: "Язык",
     backToHome: "Вернуться на главную",
     toggleLinks: "Открыть ссылки",
+    default: "Исходный",
+    setAsDefault: "Сделать исходным",
+    user: "Пользователь",
   },
   auth: {
     signIn: "Вход",
@@ -151,6 +154,15 @@ export const ru = {
     cancelChanges: "Отменить изменения",
     deleteAccount: "Удалить аккаунт",
     confirmDeleteAccount: "Вы уверены, что хотите удалить свой аккаунт?",
+    addNewAddress: "Добавить новый адрес",
+  },
+  orders: {
+    orderId: "Номер заказа",
+    date: "Дата",
+    paymentStatus: "Статус оплаты",
+    fulfillmentStatus: "Статус выполнения",
+    total: "Сумма",
+    viewOrderDetails: "Детали заказа",
   },
   footer: {
     aboutUs: "О нас",
