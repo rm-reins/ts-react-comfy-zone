@@ -37,7 +37,7 @@ export const de = {
     cart: "Warenkorb",
     checkout: "Zur Kasse",
     orders: "Bestellungen",
-    changeLanguage: "Sprache ändern",
+    language: "Sprache",
     backToHome: "Zurück zur Startseite",
     toggleLinks: "Links anzeigen",
   },

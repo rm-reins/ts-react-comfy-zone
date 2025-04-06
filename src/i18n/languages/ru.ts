@@ -37,7 +37,7 @@ export const ru = {
     cart: "Корзина",
     checkout: "Оформление заказа",
     orders: "Заказы",
-    changeLanguage: "Изменить язык",
+    language: "Язык",
     backToHome: "Вернуться на главную",
     toggleLinks: "Открыть ссылки",
   },

@@ -37,7 +37,7 @@ export const en = {
     cart: "Cart",
     checkout: "Checkout",
     orders: "Orders",
-    changeLanguage: "Change language",
+    language: "Language",
     backToHome: "Back Home",
     toggleLinks: "Toggle Links",
   },

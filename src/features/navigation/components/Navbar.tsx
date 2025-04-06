@@ -1,11 +1,6 @@
-import {
-  LinksDropdown,
-  ModeToggle,
-  CartButton,
-  Logo,
-  LanguageDropdown,
-} from "@/shared";
+import { LinksDropdown, ModeToggle, CartButton, Logo } from "@/shared";
 import { NavLinks } from "@/features/navigation";
+import { UserDropdown } from "@/shared";
 
 function Navbar() {
   return (
@@ -18,8 +13,8 @@ function Navbar() {
         </div>
         <div className="flex justify-center items-center gap-x-4">
           <ModeToggle />
-          <LanguageDropdown />
           <CartButton />
+          <UserDropdown />
         </div>
       </div>
     </nav>
