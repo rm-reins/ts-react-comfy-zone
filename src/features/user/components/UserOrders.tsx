@@ -138,7 +138,7 @@ function UserOrders() {
                   {orders.map((order) => (
                     <tr
                       key={order.id}
-                      className="border-t border-neutral-200 hover:bg-neutral-50 transition-colors"
+                      className="bg-white border-t border-neutral-200 hover:bg-neutral-50 transition-colors"
                     >
                       <td className="py-4 px-4 font-semibold text-primary truncate">
                         {order.id}

@@ -118,7 +118,7 @@ export const en = {
     orderSummary: "Order Summary",
     placeOrder: "Place Order",
     orderConfirmation: "Order Confirmation",
-    orderNumber: "Order Number",
+    orderNumber: "Order No.",
     orderDate: "Order Date",
     orderStatus: "Order Status",
     orderItems: "Order Items",
@@ -157,7 +157,7 @@ export const en = {
     addNewAddress: "Add New Address",
   },
   orders: {
-    orderId: "Order ID",
+    orderId: "Order No.",
     date: "Date",
     paymentStatus: "Payment Status",
     fulfillmentStatus: "Fulfillment Status",

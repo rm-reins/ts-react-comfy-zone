@@ -119,7 +119,7 @@ export const de = {
     orderSummary: "Bestellübersicht",
     placeOrder: "Bestellung aufgeben",
     orderConfirmation: "Bestellbestätigung",
-    orderNumber: "Bestellnummer",
+    orderNumber: "Best.-Nr.",
     orderDate: "Bestelldatum",
     orderStatus: "Bestellstatus",
     orderItems: "Bestellte Artikel",
@@ -160,7 +160,7 @@ export const de = {
     addNewAddress: "Neue Adresse hinzufügen",
   },
   orders: {
-    orderId: "Bestellnummer",
+    orderId: "Best.-Nr.",
     date: "Datum",
     paymentStatus: "Zahlungsstatus",
     fulfillmentStatus: "Lieferstatus",

@@ -90,7 +90,7 @@ function UserAddresses() {
                 </h2>
                 {address.isDefault && (
                   <span className="bg-primary-light text-white text-xs px-2 py-1 rounded-full">
-                    Default
+                    {t("common.default")}
                   </span>
                 )}
               </div>
@@ -103,11 +103,11 @@ function UserAddresses() {
               </div>
               <div className="mt-6 flex space-x-4">
                 <button className="text-primary hover:text-primary-light font-medium">
-                  Edit
+                  {t("common.edit")}
                 </button>
                 {!address.isDefault && (
                   <button className="text-neutral-600 hover:text-primary font-medium">
-                    Set as default
+                    {t("common.setAsDefault")}
                   </button>
                 )}
               </div>
@@ -117,7 +117,7 @@ function UserAddresses() {
 
         <div className="mt-8 text-center">
           <button className="bg-primary hover:bg-primary-light text-white font-medium py-3 px-6 rounded-full transition-colors">
-            Add new address
+            {t("account.addNewAddress")}
           </button>
         </div>
       </main>

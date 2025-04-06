@@ -118,7 +118,7 @@ export const ru = {
     orderSummary: "Сводка заказа",
     placeOrder: "Разместить заказ",
     orderConfirmation: "Подтверждение заказа",
-    orderNumber: "Номер заказа",
+    orderNumber: "Ном. заказа",
     orderDate: "Дата заказа",
     orderStatus: "Статус заказа",
     orderItems: "Товары заказа",
@@ -157,7 +157,7 @@ export const ru = {
     addNewAddress: "Добавить новый адрес",
   },
   orders: {
-    orderId: "Номер заказа",
+    orderId: "Ном. заказа",
     date: "Дата",
     paymentStatus: "Статус оплаты",
     fulfillmentStatus: "Статус выполнения",
