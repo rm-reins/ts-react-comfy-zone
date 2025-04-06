@@ -23,7 +23,7 @@ function UserProfile() {
                   : "text-neutral-600 hover:text-primary"
               }`}
             >
-              {t("account.orders")}
+              {t("account.myOrders")}
             </button>
             <button
               onClick={() => handleClick("addresses")}
@@ -33,7 +33,7 @@ function UserProfile() {
                   : "text-neutral-600 hover:text-primary"
               }`}
             >
-              {t("account.addresses")}
+              {t("account.myAddresses")}
             </button>
           </div>
         </div>
