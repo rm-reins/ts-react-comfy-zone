@@ -36,12 +36,6 @@
     --neutral-900: 0 0% 9%;
     --neutral-950: 0 0% 5%;
 
-    /* Functional colors - using standard names */
-    --success: 145 63% 42%;
-    --warning: 38 92% 50%;
-    --danger: 0 84% 60%;
-    --info: 200 98% 48%;
-
     /* UI Variables - map to standard green scale */
     --background: 0 0% 100%;
     --foreground: var(--green-800);
