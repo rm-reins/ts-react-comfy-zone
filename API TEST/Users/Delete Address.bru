@@ -1,0 +1,37 @@
+meta {
+  name: Delete Address
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/api/v1/users/address/{{addressId}}
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer {{authToken}}
+  Content-Type: application/json
+}
+
+vars {
+  addressId: 64f52a567c5fc5b9f81dc21e
+}
+
+docs {
+  description: Deletes the specified address from the user's delivery addresses
+  
+  statusCode: 200
+  body: {
+    "success": true,
+    "message": "Address deleted successfully",
+    "user": {
+      "name": "User Name",
+      "surname": "User Surname",
+      "email": "user@example.com",
+      "deliveryAddresses": [
+        // Address with ID 64f52a567c5fc5b9f81dc21e will be removed from the array
+      ]
+    }
+  }
+} 
