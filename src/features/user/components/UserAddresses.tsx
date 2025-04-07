@@ -31,10 +31,10 @@ function UserAddresses() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-12">
         <div className="flex items-center justify-center mb-12">
-          <h1 className="text-3xl font-bold text-primary">
+          <h1 className="text-3xl font-bold text-primary dark:text-white">
             {t("account.myAddresses")}
           </h1>
-          <span className="ml-2 bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+          <span className="ml-2 bg-primary text-white dark:bg-white dark:text-primary rounded-full w-6 h-6 flex items-center justify-center text-sm">
             {addresses.length}
           </span>
         </div>
@@ -116,7 +116,7 @@ function UserAddresses() {
         </div>
 
         <div className="mt-8 text-center">
-          <button className="bg-primary hover:bg-primary-light text-white font-medium py-3 px-6 rounded-full transition-colors">
+          <button className="bg-primary hover:bg-primary-light dark:bg-white dark:text-primary text-white font-medium py-3 px-6 rounded-full transition-colors">
             {t("account.addNewAddress")}
           </button>
         </div>

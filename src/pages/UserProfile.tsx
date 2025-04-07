@@ -10,14 +10,14 @@ function UserProfile() {
   };
 
   return (
-    <div className="min-h-screen/2 bg-neutral-100 rounded-xl">
+    <div className="min-h-screen/2 bg-secondary rounded-xl">
       {/* Navigation Bar */}
-      <nav className="bg-white shadow-sm px-4 py-4 rounded-t-xl">
+      <nav className="bg-white shadow-sm px-4 py-4 rounded-t-xl border ">
         <div className="max-w-7xl mx-auto flex justify-center items-center">
           <div className="flex space-x-12">
             <button
               onClick={() => handleClick("orders")}
-              className={`font-medium pb-1 ${
+              className={`font-medium pb-1  ${
                 activeTab === "orders"
                   ? "text-primary border-b-2 border-primary"
                   : "text-neutral-600 hover:text-primary"

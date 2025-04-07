@@ -95,10 +95,10 @@ function UserOrders() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-12">
         <div className="flex items-center justify-center mb-12">
-          <h1 className="text-3xl font-bold text-primary">
+          <h1 className="text-3xl font-bold dark:text-white text-primary">
             {t("account.myOrders")}
           </h1>
-          <span className="ml-2 bg-primary text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
+          <span className="ml-2 bg-primary text-white dark:bg-white dark:text-primary rounded-full w-6 h-6 flex items-center justify-center text-sm">
             {orders.length}
           </span>
         </div>
@@ -204,7 +204,7 @@ function UserOrders() {
                 </div>
               </div>
 
-              <button className="w-full mt-6 py-4 bg-primary hover:bg-primary-light text-white font-medium rounded-full transition-colors">
+              <button className="w-full mt-6 py-4 bg-primary  hover:bg-primary-light text-white font-medium rounded-full transition-colors">
                 {t("orders.viewOrderDetails")}
               </button>
             </div>
