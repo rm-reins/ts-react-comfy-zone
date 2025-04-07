@@ -11,14 +11,19 @@
 
 @layer base {
   :root {
-    /* Main color palette - HSL format */
-    --primary: 152 47% 21%; /* #1A472A - Main brand color */
-    --primary-light: 152 47% 30%; /* Lighter variation */
-    --primary-lighter: 152 47% 40%; /* Even lighter variation */
-    --primary-dark: 152 47% 15%; /* Darker variation */
-    --primary-darkest: 152 47% 10%; /* Darkest variation */
+    /* Replace custom primary variations with standard green scale */
+    --green-900: 152 47% 15%; /* was primary-dark */
+    --green-800: 152 47% 21%; /* was primary (main brand color) */
+    --green-700: 152 47% 30%; /* was primary-light */
+    --green-600: 152 47% 40%; /* was primary-lighter */
+    --green-500: 152 47% 50%;
+    --green-400: 152 47% 60%;
+    --green-300: 152 47% 70%;
+    --green-200: 152 47% 80%;
+    --green-100: 152 47% 90%;
+    --green-50: 152 47% 95%;
 
-    /* Complementary & neutral colors */
+    /* Keep neutral scale as is - it's already using standard naming */
     --neutral-50: 0 0% 98%;
     --neutral-100: 0 0% 96%;
     --neutral-200: 0 0% 90%;
@@ -31,82 +36,84 @@
     --neutral-900: 0 0% 9%;
     --neutral-950: 0 0% 5%;
 
-    /* Functional colors */
+    /* Functional colors - using standard names */
     --success: 145 63% 42%;
     --warning: 38 92% 50%;
     --danger: 0 84% 60%;
     --info: 200 98% 48%;
 
-    /* UI Variables - Light mode */
+    /* UI Variables - map to standard green scale */
     --background: 0 0% 100%;
-    --foreground: 152 47% 21%;
+    --foreground: var(--green-800);
 
     --card: 0 0% 100%;
-    --card-foreground: 152 47% 21%;
+    --card-foreground: var(--green-800);
 
     --popover: 0 0% 100%;
-    --popover-foreground: 152 47% 21%;
+    --popover-foreground: var(--green-800);
 
+    /* Use standard green scale for UI elements */
+    --primary: var(--green-800);
     --primary-foreground: 0 0% 100%;
 
     --secondary: 152 30% 96%;
-    --secondary-foreground: 152 47% 21%;
+    --secondary-foreground: var(--green-800);
 
     --muted: 152 30% 96%;
     --muted-foreground: 152 30% 40%;
 
-    --accent: 152 47% 95%;
-    --accent-foreground: 152 47% 21%;
+    --accent: var(--green-100);
+    --accent-foreground: var(--green-800);
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 152 20% 90%;
-    --input: 152 20% 90%;
-    --ring: 152 47% 21%;
+    --border: var(--green-100);
+    --input: var(--green-100);
+    --ring: var(--green-800);
 
     --radius: 0.5rem;
 
-    /* Sidebar specific */
-    --sidebar: 152 47% 21%;
+    /* Sidebar specific - using standard green scale */
+    --sidebar: var(--green-800);
     --sidebar-foreground: 0 0% 100%;
-    --sidebar-border: 152 30% 30%;
+    --sidebar-border: var(--green-700);
   }
 
   .dark {
-    /* UI Variables - Dark mode */
-    --background: 152 47% 10%;
+    /* Dark mode using standard green scale */
+    --background: var(--green-950);
     --foreground: 152 15% 98%;
 
-    --card: 152 47% 12%;
+    --card: var(--green-900);
     --card-foreground: 150 30% 98%;
 
-    --popover: 152 47% 12%;
+    --popover: var(--green-900);
     --popover-foreground: 150 30% 98%;
 
-    --primary: 152 47% 25%; /* Slightly brighter in dark mode */
+    --primary: var(--green-700);
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 152 47% 20%;
+    --secondary: var(--green-800);
     --secondary-foreground: 150 30% 98%;
 
-    --muted: 152 30% 20%;
+    --muted: var(--green-800);
     --muted-foreground: 152 15% 70%;
 
-    --accent: 152 30% 25%;
+    --accent: var(--green-700);
     --accent-foreground: 150 30% 98%;
 
     --destructive: 0 62% 30%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 152 30% 25%;
-    --input: 152 30% 25%;
-    --ring: 152 40% 40%;
+    --border: var(--green-700);
+    --input: var(--green-700);
+    --ring: var(--green-600);
 
-    /* Sidebar specific */
-    --sidebar: 152 47% 18%;
+    /* Sidebar in dark mode */
+    --sidebar: var(--green-900);
     --sidebar-foreground: 152 15% 98%;
-    --sidebar-border: 152 30% 30%;
+    --sidebar-border: var(--green-800);
   }
 }
 
