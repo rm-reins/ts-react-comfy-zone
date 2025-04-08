@@ -108,7 +108,7 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
         className="bg-white dark:bg-secondary rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
       >
         {/* Header */}
-        <div className="bg-secondary dark:bg-neutral-200 border-b border-neutral-200 dark:border-green-800 p-6">
+        <div className="bg-secondary dark:bg-neutral-50 border-b border-neutral-200 dark:border-green-800 p-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-primary">
               {t("orders.orderDetails")} {order.id}
@@ -281,11 +281,11 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
         </div>
 
         {/* Footer Actions */}
-        <div className="p-6 border-t border-neutral-200 dark:bg-neutral-200 dark:border-green-800 bg-neutral-50 rounded-b-xl">
+        <div className="p-6 border-t border-neutral-200 dark:border-green-800    rounded-b-xl">
           <div className="flex flex-col md:flex-row gap-4 justify-end">
             <button
               onClick={onClose}
-              className="px-6 py-3 border border-neutral-300 rounded-full text-neutral-700 hover:bg-neutral-100 transition-colors"
+              className="px-6 py-3 border bg-neutral-50 border-neutral-300 rounded-full text-neutral-700 hover:bg-neutral-300 transition-colors"
             >
               {t("common.close")}
             </button>

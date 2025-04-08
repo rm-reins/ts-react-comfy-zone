@@ -5,7 +5,7 @@ import {
   DropdownMenuItem,
   DropdownMenuPortal,
 } from "./DropdownMenu";
-import { ChevronLeftIcon } from "lucide-react";
+import { ChevronDownIcon } from "lucide-react";
 import { useTranslation } from "@/i18n/useTranslation";
 
 function LanguageMenuSub() {
@@ -21,12 +21,12 @@ function LanguageMenuSub() {
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>
         <div className="mr-auto">
-          <ChevronLeftIcon />
+          <ChevronDownIcon />
         </div>
         {t("common.language")}
       </DropdownMenuSubTrigger>
       <DropdownMenuPortal>
-        <DropdownMenuSubContent className="w-32 text-right">
+        <DropdownMenuSubContent className="w-32">
           {languages.map((lang) => (
             <DropdownMenuItem
               key={lang.code}
