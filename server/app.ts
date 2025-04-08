@@ -39,40 +39,55 @@ app.use((req: Request, res: Response, next: NextFunction) => {
       "font-src 'self' https://*.clerk.accounts.dev;"
   );
 
-  // Set CORS headers
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://ts-react-comfy-zone.onrender.com"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, X-Requested-With, svix-id, svix-signature, svix-timestamp"
-  );
-
   // Handle preflight requests
   if (req.method === "OPTIONS") {
     res.status(200).end();
+    return;
   }
 
   next();
 });
 
+// Add request debugging
+app.use((req: Request, res: Response, next: NextFunction) => {
+  logger.info({
+    message: "Incoming request",
+    method: req.method,
+    path: req.path,
+    headers: {
+      authorization: req.headers.authorization ? "Bearer [REDACTED]" : "none",
+      origin: req.headers.origin,
+      host: req.headers.host,
+    },
+  });
+  next();
+});
+
+// Parse JSON bodies BEFORE routes
+app.use(express.json({ limit: "2mb" }));
+
 // Setup routes for REST API
 setupRoutes(app);
 
-// Setup tRPC
+// Setup tRPC with debugging
 app.use(
   "/api/trpc",
   clerkMiddleware(),
+  (req, res, next) => {
+    logger.info({
+      message: "tRPC request",
+      path: req.path,
+      auth: req.auth ? "Auth present" : "No auth",
+      userId: req.auth?.userId || "none",
+      body: req.body,
+    });
+    next();
+  },
   createExpressMiddleware({
     router: appRouter,
     createContext,
   })
 );
-
-app.use(express.json({ limit: "2mb" }));
 
 // Serve static frontend files in production
 if (process.env.NODE_ENV === "production") {

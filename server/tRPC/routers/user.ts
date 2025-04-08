@@ -35,6 +35,29 @@ const adminSchema = z.object({
 });
 
 export const userRouter = router({
+  currentUser: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      const user = await User.findOne({ clerkId: ctx?.user?.clerkId });
+
+      if (!user) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "User profile not found",
+        });
+      }
+
+      return user;
+    } catch (error) {
+      if (error instanceof TRPCError) throw error;
+
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Failed to fetch user profile",
+        cause: error,
+      });
+    }
+  }),
+
   getUser: protectedProcedure.query(async ({ ctx }) => {
     try {
       const user = await User.findOne({ clerkId: ctx?.user?.clerkId });
@@ -126,7 +149,7 @@ export const userRouter = router({
       try {
         const updatedUser = await User.findOneAndUpdate(
           { clerkId: ctx?.user?.clerkId },
-          { deliveryAddress: input },
+          { deliveryAddresses: [input] },
           { new: true, runValidators: true }
         );
 
@@ -137,7 +160,7 @@ export const userRouter = router({
           });
         }
 
-        return updatedUser.deliveryAddress;
+        return updatedUser.deliveryAddresses?.[0];
       } catch (error) {
         if (error instanceof TRPCError) throw error;
 
