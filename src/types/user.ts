@@ -17,7 +17,6 @@ export interface User {
   clerkId?: string;
   role: "user";
   deliveryAddresses?: DeliveryAddress[];
-  phoneNumber?: string;
   createdAt: Date;
   updatedAt: Date;
 }

@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 
 const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, surname, phoneNumber } = req.body;
+    const { name, surname, phone } = req.body;
 
     if (!req.auth || !req.auth.userId) {
       res.status(StatusCodes.UNAUTHORIZED).json({
@@ -43,7 +43,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    if (!name || !surname || !phoneNumber) {
+    if (!name || !surname || !phone) {
       res.status(StatusCodes.BAD_REQUEST).json({
         success: false,
         message: "Please fill out all the required fields.",
@@ -56,7 +56,7 @@ const register = async (req: Request, res: Response): Promise<void> => {
       name,
       surname,
       email,
-      phoneNumber,
+      phone,
     });
 
     res.status(StatusCodes.CREATED).json({

@@ -19,7 +19,6 @@ interface IUser extends Document {
   clerkId?: string;
   role: string;
   deliveryAddresses: IDeliveryAddress[];
-  phoneNumber: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -87,9 +86,6 @@ const UserSchema = new Schema<IUser>(
       default: "user",
     },
     deliveryAddresses: [DeliveryAddressSchema],
-    phoneNumber: {
-      type: String,
-    },
   },
   { timestamps: true }
 );

@@ -41,7 +41,7 @@ export interface User {
   email: string;
   role: string;
   clerkId?: string;
-  phoneNumber?: string;
+  phone?: string;
   deliveryAddress?: DeliveryAddress;
   createdAt: string | Date;
   updatedAt: string | Date;

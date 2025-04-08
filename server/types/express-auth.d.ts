@@ -19,11 +19,7 @@ declare global {
             emailAddress: string;
             verification: Record<string, unknown>;
           }>;
-          phoneNumbers?: Array<{
-            id: string;
-            phoneNumber: string;
-            verification: Record<string, unknown>;
-          }>;
+          phone: string;
           [key: string]: unknown;
         };
         organization: Record<string, unknown> | null;

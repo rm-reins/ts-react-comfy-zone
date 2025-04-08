@@ -8,7 +8,6 @@ interface IAdmin extends Document {
   phone: string;
   clerkId?: string;
   role: string;
-  phoneNumber: string;
   createdAt: Date;
   updatedAt: Date;
 }

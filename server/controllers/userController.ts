@@ -6,13 +6,13 @@ import { NotFoundError } from "../errors/custom-errors.js";
 
 const updateUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, surname, phoneNumber, deliveryAddress, role } = req.body;
+    const { name, surname, phone, deliveryAddress, role } = req.body;
 
     if (role === "user") {
       const updates: Record<string, unknown> = {};
       if (name) updates.name = name;
       if (surname) updates.surname = surname;
-      if (phoneNumber) updates.phoneNumber = phoneNumber;
+      if (phone) updates.phone = phone;
       if (deliveryAddress) updates.deliveryAddress = deliveryAddress;
 
       const updatedUser = await User.findOneAndUpdate(
@@ -38,7 +38,7 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
       const updates: Record<string, unknown> = {};
       if (name) updates.name = name;
       if (surname) updates.surname = surname;
-      if (phoneNumber) updates.phoneNumber = phoneNumber;
+      if (phone) updates.phone = phone;
 
       const updatedAdmin = await Admin.findOneAndUpdate(
         { clerkId: req?.auth?.userId },
