@@ -1,0 +1,1402 @@
+{
+  "info": {
+    "name": "Comfy Zone API",
+    "description": "API collection for Comfy Zone",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John\",\n  \"surname\": \"Doe\",\n  \"phoneNumber\": \"1234567890\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "auth", "register"]
+            },
+            "description": "Register a new user"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products?name=&featured=&company=&sort=price&fields=name,price,company&page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "description": "Filter by product name"
+                },
+                {
+                  "key": "featured",
+                  "value": "",
+                  "description": "Filter featured products"
+                },
+                {
+                  "key": "company",
+                  "value": "",
+                  "description": "Filter by company"
+                },
+                {
+                  "key": "sort",
+                  "value": "price",
+                  "description": "Sort field"
+                },
+                {
+                  "key": "fields",
+                  "value": "name,price,company",
+                  "description": "Fields to return"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number"
+                },
+                {
+                  "key": "limit",
+                  "value": "10",
+                  "description": "Items per page"
+                }
+              ]
+            },
+            "description": "Get all products with filtering and pagination"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/products"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": {
+                "products": [],
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Single Product",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Product ID"
+                }
+              ]
+            },
+            "description": "Get a single product by ID"
+          }
+        },
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"price\": 0,\n  \"description\": \"string\",\n  \"company\": \"string\",\n  \"category\": \"string\",\n  \"colors\": [\"string\"],\n  \"featured\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products"]
+            },
+            "description": "Create a new product"
+          }
+        },
+        {
+          "name": "Update Product",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"price\": 0,\n  \"description\": \"string\",\n  \"company\": \"string\",\n  \"category\": \"string\",\n  \"colors\": [\"string\"],\n  \"featured\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Product ID"
+                }
+              ]
+            },
+            "description": "Update an existing product"
+          }
+        },
+        {
+          "name": "Delete Product",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Product ID"
+                }
+              ]
+            },
+            "description": "Delete a product"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Get All Reviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reviews"]
+            },
+            "description": "Get all reviews"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/reviews"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": {
+                "reviews": [],
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Single Review",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reviews/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reviews", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Review ID"
+                }
+              ]
+            },
+            "description": "Get a single review by ID"
+          }
+        },
+        {
+          "name": "Get Product Reviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/products/:productId/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "products", ":productId", "reviews"],
+              "variable": [
+                {
+                  "key": "productId",
+                  "value": "",
+                  "description": "Product ID"
+                }
+              ]
+            },
+            "description": "Get all reviews for a specific product"
+          }
+        },
+        {
+          "name": "Create Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"title\": \"string\",\n  \"comment\": \"string\",\n  \"product\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reviews"]
+            },
+            "description": "Create a new review"
+          }
+        },
+        {
+          "name": "Update Review",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"title\": \"string\",\n  \"comment\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reviews/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reviews", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Review ID"
+                }
+              ]
+            },
+            "description": "Update an existing review"
+          }
+        },
+        {
+          "name": "Delete Review",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/reviews/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "reviews", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Review ID"
+                }
+              ]
+            },
+            "description": "Delete a review"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "orders"]
+            },
+            "description": "Get all orders"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/orders"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": {
+                "orders": [],
+                "count": 0
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Single Order",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "orders", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Order ID"
+                }
+              ]
+            },
+            "description": "Get a single order by ID"
+          }
+        },
+        {
+          "name": "Get Current User Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders/showAllMyOrders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "orders", "showAllMyOrders"]
+            },
+            "description": "Get all orders for the current user"
+          }
+        },
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderItems\": [\n    {\n      \"name\": \"string\",\n      \"amount\": 1,\n      \"price\": 0,\n      \"image\": \"string\",\n      \"product\": \"string\"\n    }\n  ],\n  \"shippingAddress\": {\n    \"address\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"string\"\n  },\n  \"paymentMethod\": \"string\",\n  \"paymentResult\": {\n    \"id\": \"string\",\n    \"status\": \"string\",\n    \"update_time\": \"string\",\n    \"email_address\": \"string\"\n  },\n  \"totalPrice\": 0,\n  \"isPaid\": true,\n  \"paidAt\": \"string\",\n  \"isDelivered\": true,\n  \"deliveredAt\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "orders"]
+            },
+            "description": "Create a new order"
+          }
+        },
+        {
+          "name": "Update Order",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isPaid\": true,\n  \"paidAt\": \"string\",\n  \"isDelivered\": true,\n  \"deliveredAt\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/orders/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "orders", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Order ID"
+                }
+              ]
+            },
+            "description": "Update an existing order"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Uploads",
+      "item": [
+        {
+          "name": "Upload Product Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "upload"]
+            },
+            "description": "Upload a product image"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "key": "image",
+                      "type": "file",
+                      "src": []
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/upload"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": {
+                "image": {
+                  "src": "https://cloudinary-url.com/image.jpg",
+                  "filename": "image.jpg"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Upload Review Image",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "upload"]
+            },
+            "description": "Upload a review image"
+          }
+        },
+        {
+          "name": "Delete Image",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/upload/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "upload", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Image ID"
+                }
+              ]
+            },
+            "description": "Delete an uploaded image"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get All Admins",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admins",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admins"]
+            },
+            "description": "Get all admin users"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/admins"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": {
+                "admins": []
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Admin",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"surname\": \"string\",\n  \"phoneNumber\": \"string\",\n  \"role\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admins/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admins", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Admin ID"
+                }
+              ]
+            },
+            "description": "Update admin information"
+          }
+        },
+        {
+          "name": "Promote To Admin",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admins/:id/promote",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admins", ":id", "promote"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            },
+            "description": "Promote a user to admin"
+          }
+        },
+        {
+          "name": "Demote To User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admins/:id/demote",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "admins", ":id", "demote"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Admin ID"
+                }
+              ]
+            },
+            "description": "Demote an admin to regular user"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users"]
+            },
+            "description": "Retrieve all users"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{baseUrl}}/api/v1/users"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": {
+                "users": [
+                  {
+                    "name": "John",
+                    "surname": "Doe",
+                    "phoneNumber": "1234567890",
+                    "clerkId": "clerk_user_id"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Single User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            },
+            "description": "Retrieve a single user by ID"
+          }
+        },
+        {
+          "name": "Show Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "me"]
+            },
+            "description": "Get current authenticated user"
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"surname\": \"string\",\n  \"phoneNumber\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "User ID"
+                }
+              ]
+            },
+            "description": "Update user information"
+          }
+        },
+        {
+          "name": "Set Default Address",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"addressId\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/addresses/default",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "addresses", "default"]
+            },
+            "description": "Set default address for user"
+          }
+        },
+        {
+          "name": "Delete Address",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/addresses/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "users", "addresses", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Address ID"
+                }
+              ]
+            },
+            "description": "Delete user address"
+          }
+        }
+      ]
+    },
+    {
+      "name": "tRPC Endpoints",
+      "item": [
+        {
+          "name": "Auth - Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/auth.login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "auth.login"]
+            },
+            "description": "Login user with email and password"
+          },
+          "response": [
+            {
+              "name": "Success Response",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/trpc/auth.login"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "body": {
+                "result": {
+                  "data": {
+                    "json": {
+                      "user": {
+                        "id": "user123",
+                        "name": "John Doe",
+                        "email": "user@example.com",
+                        "role": "user"
+                      },
+                      "token": "jwt_token_here"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Auth - Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/auth.register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "auth.register"]
+            },
+            "description": "Register a new user"
+          }
+        },
+        {
+          "name": "Auth - Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/auth.logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "auth.logout"]
+            },
+            "description": "Logout current user"
+          }
+        },
+        {
+          "name": "User - Current User",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/user.currentUser",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "user.currentUser"]
+            },
+            "description": "Get current authenticated user"
+          }
+        },
+        {
+          "name": "Product - Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/product.getAllProducts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "product.getAllProducts"]
+            },
+            "description": "Get all products"
+          }
+        },
+        {
+          "name": "Product - Get Single Product",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/product.getSingleProduct",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "product.getSingleProduct"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "",
+                  "description": "Product ID"
+                }
+              ]
+            },
+            "description": "Get a single product by ID"
+          }
+        },
+        {
+          "name": "Product - Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"string\",\n  \"price\": 0,\n  \"description\": \"string\",\n  \"company\": \"string\",\n  \"category\": \"string\",\n  \"colors\": [\"string\"],\n  \"featured\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/product.createProduct",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "product.createProduct"]
+            },
+            "description": "Create a new product"
+          }
+        },
+        {
+          "name": "Review - Get Product Reviews",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/review.getProductReviews",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "review.getProductReviews"],
+              "query": [
+                {
+                  "key": "productId",
+                  "value": "",
+                  "description": "Product ID"
+                }
+              ]
+            },
+            "description": "Get all reviews for a product"
+          }
+        },
+        {
+          "name": "Review - Create Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rating\": 5,\n  \"title\": \"string\",\n  \"comment\": \"string\",\n  \"product\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/review.createReview",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "review.createReview"]
+            },
+            "description": "Create a new review"
+          }
+        },
+        {
+          "name": "Order - Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/order.getAllOrders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "order.getAllOrders"]
+            },
+            "description": "Get all orders"
+          }
+        },
+        {
+          "name": "Order - Get Current User Orders",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/order.getCurrentUserOrders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "order.getCurrentUserOrders"]
+            },
+            "description": "Get all orders for current user"
+          }
+        },
+        {
+          "name": "Order - Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderItems\": [\n    {\n      \"name\": \"string\",\n      \"amount\": 1,\n      \"price\": 0,\n      \"image\": \"string\",\n      \"product\": \"string\"\n    }\n  ],\n  \"shippingAddress\": {\n    \"address\": \"string\",\n    \"city\": \"string\",\n    \"postalCode\": \"string\",\n    \"country\": \"string\"\n  },\n  \"paymentMethod\": \"string\",\n  \"paymentResult\": {\n    \"id\": \"string\",\n    \"status\": \"string\",\n    \"update_time\": \"string\",\n    \"email_address\": \"string\"\n  },\n  \"totalPrice\": 0,\n  \"isPaid\": true,\n  \"paidAt\": \"string\",\n  \"isDelivered\": true,\n  \"deliveredAt\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/order.createOrder",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "order.createOrder"]
+            },
+            "description": "Create a new order"
+          }
+        },
+        {
+          "name": "Admin - Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/admin.getAllUsers",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "admin.getAllUsers"]
+            },
+            "description": "Get all users (admin only)"
+          }
+        },
+        {
+          "name": "Admin - Make Admin",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/admin.makeAdmin",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "admin.makeAdmin"]
+            },
+            "description": "Promote a user to admin (admin only)"
+          }
+        },
+        {
+          "name": "Admin - Make User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"string\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/trpc/admin.makeUser",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "trpc", "admin.makeUser"]
+            },
+            "description": "Demote an admin to user (admin only)"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "your_auth_token_here",
+      "type": "string"
+    }
+  ]
+}
