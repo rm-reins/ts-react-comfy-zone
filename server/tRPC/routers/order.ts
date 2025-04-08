@@ -18,6 +18,10 @@ const orderItemSchema = z.object({
 });
 
 const orderSchema = z.object({
+  _id: z
+    .string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .optional(),
   tax: z.number().min(0),
   shippingFee: z.number().min(0),
   subtotal: z.number().min(0),

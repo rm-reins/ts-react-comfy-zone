@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
-import OrderDetailsPopup, { Order, OrderItem } from "./OrderDetailsPopup";
+import OrderDetailsPopup, {
+  Order,
+  OrderItem,
+} from "../../orders/components/OrderDetailsPopup";
 
 function UserOrders() {
   const { t } = useTranslation();
