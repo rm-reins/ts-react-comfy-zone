@@ -1,30 +1,72 @@
 import { useTranslation } from "@/i18n/useTranslation";
+import { useState } from "react";
+import { User, DeliveryAddress } from "../userSlice";
+import AddressFormPopup from "./AddressFormPopup";
 
 function UserAddresses() {
   const { t } = useTranslation();
+  const [isAddressFormOpen, setIsAddressFormOpen] = useState(false);
+  const [selectedAddress, setSelectedAddress] =
+    useState<DeliveryAddress | null>(null);
+  const [currentMode, setCurrentMode] = useState<"add" | "edit">("add");
 
-  const addresses = [
-    {
-      id: "1",
-      name: "John Doe",
-      address: "123 Main St",
+  const handleEdit = (address: DeliveryAddress) => {
+    setSelectedAddress(address);
+    setCurrentMode("edit");
+    setIsAddressFormOpen(true);
+  };
+
+  const handleAdd = () => {
+    setSelectedAddress(null);
+    setCurrentMode("add");
+    setIsAddressFormOpen(true);
+  };
+
+  const handleSetAsDefault = (address: DeliveryAddress) => {
+    console.log("Set as default:", address);
+    // Here you would update the address as default in your database
+  };
+
+  const handleSave = (address: DeliveryAddress) => {
+    console.log("Address saved:", address);
+    setIsAddressFormOpen(false);
+    // Here you would save the address to your database
+  };
+
+  // Mock user data with delivery addresses
+  const user: User = {
+    _id: "1",
+    name: "John",
+    surname: "Doe",
+    email: "john.doe@example.com",
+    role: "user",
+    phone: "+1 555-123-4567",
+    deliveryAddress: {
+      street: "123 Main St",
       city: "New York",
       state: "NY",
-      zip: "10001",
+      postalCode: "10001",
       country: "United States",
-      isDefault: true,
     },
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  // Additional mock addresses for demonstration
+  const additionalAddresses: DeliveryAddress[] = [
     {
-      id: "2",
-      name: "John Doe",
-      address: "456 Oak Ave",
+      street: "456 Oak Ave",
       city: "Los Angeles",
       state: "CA",
-      zip: "90001",
+      postalCode: "90001",
       country: "United States",
-      isDefault: false,
     },
   ];
+
+  // Combine the user's delivery address and additional addresses for display
+  const addresses = user.deliveryAddress
+    ? [user.deliveryAddress, ...additionalAddresses]
+    : additionalAddresses;
 
   return (
     <>
@@ -41,34 +83,41 @@ function UserAddresses() {
 
         {/* Desktop View - Grid */}
         <div className="hidden bg-primary-light md:grid md:grid-cols-2 gap-6">
-          {addresses.map((address) => (
+          {addresses.map((address, index) => (
             <div
-              key={address.id}
+              key={index}
               className="bg-white rounded-lg border border-neutral-200 p-6 shadow-sm"
             >
               <div className="flex justify-between items-start mb-4">
                 <h2 className="text-xl font-bold text-primary">
-                  {address.name}
+                  {user.name} {user.surname}
                 </h2>
-                {address.isDefault && (
+                {index === 0 && (
                   <span className="bg-primary-light text-primary text-m px-2 py-1 rounded-full">
                     {t("common.default")}
                   </span>
                 )}
               </div>
               <div className="space-y-2 text-neutral-600">
-                <p>{address.address}</p>
+                <p>{address.street}</p>
                 <p>
-                  {address.city}, {address.state} {address.zip}
+                  {address.city}, {address.state} {address.postalCode}
                 </p>
                 <p>{address.country}</p>
+                <p>{user.phone}</p>
               </div>
               <div className="mt-6 flex space-x-4">
-                <button className="text-primary hover:text-primary-light font-medium">
+                <button
+                  onClick={() => handleEdit(address)}
+                  className="text-primary hover:text-primary-light font-medium"
+                >
                   {t("common.edit")}
                 </button>
-                {!address.isDefault && (
-                  <button className="text-neutral-600 hover:text-primary font-medium">
+                {index !== 0 && (
+                  <button
+                    onClick={() => handleSetAsDefault(address)}
+                    className="text-neutral-600 hover:text-primary font-medium"
+                  >
                     {t("common.setAsDefault")}
                   </button>
                 )}
@@ -79,34 +128,41 @@ function UserAddresses() {
 
         {/* Mobile View - Cards */}
         <div className="md:hidden space-y-6">
-          {addresses.map((address) => (
+          {addresses.map((address, index) => (
             <div
-              key={address.id}
+              key={index}
               className="bg-white rounded-lg border border-neutral-200 p-6 shadow-sm"
             >
               <div className="flex justify-between items-start mb-4">
                 <h2 className="text-xl font-bold text-primary">
-                  {address.name}
+                  {user.name} {user.surname}
                 </h2>
-                {address.isDefault && (
+                {index === 0 && (
                   <span className="bg-primary-light text-white text-xs px-2 py-1 rounded-full">
                     {t("common.default")}
                   </span>
                 )}
               </div>
               <div className="space-y-2 text-neutral-600">
-                <p>{address.address}</p>
+                <p>{address.street}</p>
                 <p>
-                  {address.city}, {address.state} {address.zip}
+                  {address.city}, {address.state} {address.postalCode}
                 </p>
                 <p>{address.country}</p>
+                <p>{user.phone}</p>
               </div>
               <div className="mt-6 flex space-x-4">
-                <button className="text-primary hover:text-primary-light font-medium">
+                <button
+                  onClick={() => handleEdit(address)}
+                  className="text-primary hover:text-primary-light font-medium"
+                >
                   {t("common.edit")}
                 </button>
-                {!address.isDefault && (
-                  <button className="text-neutral-600 hover:text-primary font-medium">
+                {index !== 0 && (
+                  <button
+                    onClick={() => handleSetAsDefault(address)}
+                    className="text-neutral-600 hover:text-primary font-medium"
+                  >
                     {t("common.setAsDefault")}
                   </button>
                 )}
@@ -116,11 +172,23 @@ function UserAddresses() {
         </div>
 
         <div className="mt-8 text-center">
-          <button className="bg-primary hover:bg-primary-light dark:bg-white dark:text-primary text-white font-medium py-3 px-6 rounded-full transition-colors">
+          <button
+            onClick={handleAdd}
+            className="bg-primary hover:bg-primary-light dark:bg-white dark:text-primary text-white font-medium py-3 px-6 rounded-full transition-colors"
+          >
             {t("account.addNewAddress")}
           </button>
         </div>
       </main>
+
+      {/* Use the external AddressFormPopup instead of inline component */}
+      <AddressFormPopup
+        address={selectedAddress}
+        mode={currentMode}
+        isOpen={isAddressFormOpen}
+        onClose={() => setIsAddressFormOpen(false)}
+        onSave={handleSave}
+      />
     </>
   );
 }

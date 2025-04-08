@@ -43,6 +43,7 @@ export const de = {
     default: "Standard",
     setAsDefault: "Als Standard festlegen",
     user: "Benutzer",
+    add: "Hinzufügen",
   },
   auth: {
     signIn: "Anmelden",
@@ -149,6 +150,7 @@ export const de = {
     phone: "Telefon",
     address: "Adresse",
     city: "Stadt",
+    street: "Straße",
     state: "Bundesland",
     zipCode: "Postleitzahl",
     country: "Land",
@@ -158,6 +160,8 @@ export const de = {
     confirmDeleteAccount:
       "Sind Sie sicher, dass Sie Ihr Konto löschen möchten?",
     addNewAddress: "Neue Adresse hinzufügen",
+    editAddress: "Adresse bearbeiten",
+    required: "Dieses Feld ist erforderlich",
   },
   orders: {
     orderId: "Best.-Nr.",

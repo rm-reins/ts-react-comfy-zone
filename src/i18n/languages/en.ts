@@ -43,6 +43,7 @@ export const en = {
     default: "Default",
     setAsDefault: "Set as Default",
     user: "User",
+    add: "Add",
   },
   auth: {
     signIn: "Sign In",
@@ -147,6 +148,7 @@ export const en = {
     phone: "Phone",
     address: "Address",
     city: "City",
+    street: "Street",
     state: "State",
     zipCode: "Zip Code",
     country: "Country",
@@ -155,6 +157,8 @@ export const en = {
     deleteAccount: "Delete Account",
     confirmDeleteAccount: "Are you sure you want to delete your account?",
     addNewAddress: "Add New Address",
+    editAddress: "Edit Address",
+    required: "This field is required",
   },
   orders: {
     orderId: "Order No.",

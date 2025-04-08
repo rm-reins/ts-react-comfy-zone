@@ -43,6 +43,7 @@ export const ru = {
     default: "Исходный",
     setAsDefault: "Сделать исходным",
     user: "Пользователь",
+    add: "Добавить",
   },
   auth: {
     signIn: "Вход",
@@ -148,6 +149,7 @@ export const ru = {
     address: "Адрес",
     city: "Город",
     state: "Область",
+    street: "Улица",
     zipCode: "Почтовый индекс",
     country: "Страна",
     saveChanges: "Сохранить изменения",
@@ -155,6 +157,8 @@ export const ru = {
     deleteAccount: "Удалить аккаунт",
     confirmDeleteAccount: "Вы уверены, что хотите удалить свой аккаунт?",
     addNewAddress: "Добавить новый адрес",
+    editAddress: "Редактировать адрес",
+    required: "Это поле обязательно для заполнения",
   },
   orders: {
     orderId: "Ном. заказа",
