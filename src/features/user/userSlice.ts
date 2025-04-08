@@ -1,26 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-export interface DeliveryAddress {
-  street: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
-}
-
-export interface User {
-  _id: string;
-  name: string;
-  surname: string;
-  email: string;
-  phone?: string;
-  clerkId?: string;
-  role: "user";
-  deliveryAddress?: DeliveryAddress;
-  phoneNumber?: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { User, DeliveryAddress } from "../../types/user";
 
 export interface UserState {
   user: User | null;
@@ -45,22 +24,52 @@ const userSlice = createSlice({
       state.isAuthenticated = !!action.payload;
       state.error = null;
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.isLoading = action.payload;
+
+    addDeliveryAddress: (state, action: PayloadAction<DeliveryAddress>) => {
+      if (state.user) {
+        state.user.deliveryAddresses?.push(action.payload);
+      }
     },
-    setError: (state, action: PayloadAction<string | null>) => {
-      state.error = action.payload;
+    updateDeliveryAddress: (state, action: PayloadAction<DeliveryAddress>) => {
+      if (state.user) {
+        state.user.deliveryAddresses = state.user.deliveryAddresses?.map(
+          (addr) => (addr._id === action.payload._id ? action.payload : addr)
+        );
+      }
     },
     updateUserProfile: (state, action: PayloadAction<Partial<User>>) => {
       if (state.user) {
         state.user = { ...state.user, ...action.payload };
       }
     },
-    updateDeliveryAddress: (state, action: PayloadAction<DeliveryAddress>) => {
+    deleteDeliveryAddress: (state, action: PayloadAction<DeliveryAddress>) => {
       if (state.user) {
-        state.user.deliveryAddress = action.payload;
+        state.user.deliveryAddresses = state.user.deliveryAddresses?.filter(
+          (addr) => addr._id !== action.payload._id
+        );
       }
     },
+    setDefaultDeliveryAddress: (
+      state,
+      action: PayloadAction<DeliveryAddress>
+    ) => {
+      if (state.user) {
+        state.user.deliveryAddresses = state.user.deliveryAddresses?.map(
+          (addr) => ({
+            ...addr,
+            isDefault: addr._id === action.payload._id,
+          })
+        );
+      }
+    },
+
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
+    },
+    setError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
+    },
+
     logout: (state) => {
       state.user = null;
       state.isAuthenticated = false;
@@ -75,6 +84,9 @@ export const {
   setError,
   updateUserProfile,
   updateDeliveryAddress,
+  addDeliveryAddress,
+  deleteDeliveryAddress,
+  setDefaultDeliveryAddress,
   logout,
 } = userSlice.actions;
 

@@ -1,12 +1,14 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Types } from "mongoose";
 import validator from "validator";
 
 interface IDeliveryAddress {
+  _id: Types.ObjectId;
   street: string;
   city: string;
   state: string;
   postalCode: string;
   country: string;
+  isDefault: boolean;
 }
 
 interface IUser extends Document {
@@ -16,7 +18,7 @@ interface IUser extends Document {
   phone: string;
   clerkId?: string;
   role: string;
-  deliveryAddress: IDeliveryAddress;
+  deliveryAddresses: IDeliveryAddress[];
   phoneNumber: string;
   createdAt: Date;
   updatedAt: Date;
@@ -43,6 +45,10 @@ const DeliveryAddressSchema = new Schema<IDeliveryAddress>({
     type: String,
     required: [true, "Please provide country"],
     default: "Germany",
+  },
+  isDefault: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -80,7 +86,7 @@ const UserSchema = new Schema<IUser>(
       enum: ["user"],
       default: "user",
     },
-    deliveryAddress: DeliveryAddressSchema,
+    deliveryAddresses: [DeliveryAddressSchema],
     phoneNumber: {
       type: String,
     },
@@ -90,4 +96,4 @@ const UserSchema = new Schema<IUser>(
 
 const User = mongoose.model<IUser>("User", UserSchema);
 
-export { User, IUser };
+export { User, IUser, IDeliveryAddress };
