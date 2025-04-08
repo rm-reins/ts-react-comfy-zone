@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface ISingleOrderItem {
+  _id: string;
   name: string;
   price: number;
   image: string;
@@ -10,6 +11,7 @@ interface ISingleOrderItem {
 }
 
 interface IOrder extends Document {
+  _id: string;
   tax: number;
   shippingFee: number;
   subtotal: number;

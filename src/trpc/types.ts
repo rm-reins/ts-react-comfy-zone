@@ -12,7 +12,6 @@ export interface Product {
   category: string;
   company: string;
   featured: boolean;
-  freeShipping: boolean;
   inventory: number;
   averageRating: number;
   numOfReviews: number;

@@ -9,7 +9,6 @@ interface IProduct extends Document {
   company: string;
   colors: string[];
   featured: boolean;
-  freeShipping: boolean;
   inventory: number;
   averageRating: number;
   numOfReviews: number;
