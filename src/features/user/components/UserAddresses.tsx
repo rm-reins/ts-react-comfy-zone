@@ -1,6 +1,6 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { useState } from "react";
-import { User, DeliveryAddress } from "../userSlice";
+import { User, DeliveryAddress } from "@/types/user";
 import AddressFormPopup from "./AddressFormPopup";
 
 function UserAddresses() {
@@ -41,32 +41,32 @@ function UserAddresses() {
     email: "john.doe@example.com",
     role: "user",
     phone: "+1 555-123-4567",
-    deliveryAddress: {
-      street: "123 Main St",
-      city: "New York",
-      state: "NY",
-      postalCode: "10001",
-      country: "United States",
-    },
+    deliveryAddresses: [
+      {
+        street: "123 Main St",
+        city: "New York",
+        state: "NY",
+        postalCode: "10001",
+        country: "United States",
+        _id: "1",
+        isDefault: true,
+      },
+      {
+        street: "456 Oak Ave",
+        city: "Los Angeles",
+        state: "CA",
+        postalCode: "90001",
+        country: "United States",
+        _id: "2",
+        isDefault: false,
+      },
+    ],
     createdAt: new Date(),
     updatedAt: new Date(),
   };
 
-  // Additional mock addresses for demonstration
-  const additionalAddresses: DeliveryAddress[] = [
-    {
-      street: "456 Oak Ave",
-      city: "Los Angeles",
-      state: "CA",
-      postalCode: "90001",
-      country: "United States",
-    },
-  ];
-
   // Combine the user's delivery address and additional addresses for display
-  const addresses = user.deliveryAddress
-    ? [user.deliveryAddress, ...additionalAddresses]
-    : additionalAddresses;
+  const addresses = user.deliveryAddresses;
 
   return (
     <>
@@ -77,13 +77,13 @@ function UserAddresses() {
             {t("account.myAddresses")}
           </h1>
           <span className="ml-2 bg-primary text-white dark:bg-white dark:text-primary rounded-full w-6 h-6 flex items-center justify-center text-sm">
-            {addresses.length}
+            {addresses?.length}
           </span>
         </div>
 
         {/* Desktop View - Grid */}
         <div className="hidden bg-primary-light md:grid md:grid-cols-2 gap-6">
-          {addresses.map((address, index) => (
+          {addresses?.map((address, index) => (
             <div
               key={index}
               className="bg-white rounded-lg border border-neutral-200 p-6 shadow-sm"
@@ -128,7 +128,7 @@ function UserAddresses() {
 
         {/* Mobile View - Cards */}
         <div className="md:hidden space-y-6">
-          {addresses.map((address, index) => (
+          {addresses?.map((address, index) => (
             <div
               key={index}
               className="bg-white rounded-lg border border-neutral-200 p-6 shadow-sm"
@@ -187,7 +187,7 @@ function UserAddresses() {
         mode={currentMode}
         isOpen={isAddressFormOpen}
         onClose={() => setIsAddressFormOpen(false)}
-        onSave={handleSave}
+        onSave={(address) => handleSave(address as DeliveryAddress)}
       />
     </>
   );
