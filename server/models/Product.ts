@@ -1,11 +1,19 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface IProduct extends Document {
+  _id: mongoose.Types.ObjectId;
   name: string;
   price: number;
   description: string;
-  images: [{ url: string; filename: string }];
-  category: string;
+  images: string[];
+  category:
+    | "office"
+    | "kitchen"
+    | "bedroom"
+    | "home decor"
+    | "storage"
+    | "textiles"
+    | "other";
   company: string;
   colors: string[];
   featured: boolean;
@@ -15,6 +23,7 @@ interface IProduct extends Document {
   user: mongoose.Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
+  __v: number;
 }
 
 const ProductSchema = new Schema<IProduct>(

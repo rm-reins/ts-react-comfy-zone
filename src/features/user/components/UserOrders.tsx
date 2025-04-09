@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
-import OrderDetailsPopup, { Order, OrderItem } from "./OrderDetailsPopup";
+import { OrderDetailsPopup } from "@/features/orders";
+import { Order, OrderItem } from "@/types/order";
 
 function UserOrders() {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ function UserOrders() {
       quantity: 1,
       color: "Charcoal Gray",
       size: "3-Seater",
+      _id: "1",
     },
     {
       name: "Dining Table Set",
@@ -26,123 +28,125 @@ function UserOrders() {
       quantity: 2,
       color: "Natural Oak",
       size: "6-Person",
+      _id: "2",
     },
   ];
 
+  // Updated orders array to match the Order interface from src/types/order.ts
   const orders: Order[] = [
     {
-      id: "#54415",
-      date: "March 12, 2023",
-      paymentStatus: "Paid",
-      fulfillmentStatus: "Cancelled",
-      total: "€ 71,14",
-      // Additional data for the popup
+      _id: "54415",
       tax: 9.88,
       shippingFee: 6.95,
       subtotal: 54.31,
+      total: 71.14,
       orderItems: sampleOrderItems,
-      status: "paid",
+      status: "cancelled",
       paymentId: "pi_3KyW1d2eZvKYlo2C1M3fFXDR",
+      user: "user123",
+      createdAt: new Date("2023-03-12"),
+      updatedAt: new Date("2023-03-12"),
     },
     {
-      id: "#46009",
-      date: "October 31, 2022",
-      paymentStatus: "Paid",
-      fulfillmentStatus: "Delivered",
-      total: "€ 56,92",
-      // Additional data for the popup
+      _id: "46009",
       tax: 7.82,
       shippingFee: 4.95,
       subtotal: 44.15,
+      total: 56.92,
       orderItems: sampleOrderItems.slice(0, 1),
-      status: "paid",
+      status: "delivered",
       paymentId: "pi_3JbF2s2eZvKYlo2C0N2gHx9P",
+      user: "user123",
+      createdAt: new Date("2022-10-31"),
+      updatedAt: new Date("2022-10-31"),
     },
     {
-      id: "#46005",
-      date: "October 31, 2022",
-      paymentStatus: "Refunded",
-      fulfillmentStatus: "Cancelled",
-      total: "€ 0,00",
-      // Additional data for the popup
+      _id: "46005",
       tax: 0,
       shippingFee: 0,
       subtotal: 0,
+      total: 0,
       orderItems: [],
       status: "cancelled",
       paymentId: "pi_3JbF1m2eZvKYlo2C1K3hGt8R",
+      user: "user123",
+      createdAt: new Date("2022-10-31"),
+      updatedAt: new Date("2022-10-31"),
     },
     {
-      id: "#35747",
-      date: "May 18, 2022",
-      paymentStatus: "Paid",
-      fulfillmentStatus: "Delivered",
-      total: "€ 36,58",
-      // Additional data for the popup
+      _id: "35747",
       tax: 5.32,
       shippingFee: 6.95,
       subtotal: 24.31,
+      total: 36.58,
       orderItems: [sampleOrderItems[1]],
       status: "delivered",
       paymentId: "pi_3GtH8j2eZvKYlo2C0L9fTr6S",
+      user: "user123",
+      createdAt: new Date("2022-05-18"),
+      updatedAt: new Date("2022-05-18"),
     },
     {
-      id: "#54416",
-      date: "March 12, 2023",
-      paymentStatus: "Paid",
-      fulfillmentStatus: "Delivered",
-      total: "€ 71,14",
-      // Additional data for the popup
+      _id: "54416",
       tax: 9.88,
       shippingFee: 6.95,
       subtotal: 54.31,
+      total: 71.14,
       orderItems: sampleOrderItems,
-      status: "paid",
+      status: "delivered",
       paymentId: "pi_3KyW2e3fZvKYlo2C1N4gGxDS",
+      user: "user123",
+      createdAt: new Date("2023-03-12"),
+      updatedAt: new Date("2023-03-12"),
     },
     {
-      id: "#46010",
-      date: "October 31, 2022",
-      paymentStatus: "Paid",
-      fulfillmentStatus: "Delivered",
-      total: "€ 56,92",
-      // Additional data for the popup
+      _id: "46010",
       tax: 7.82,
       shippingFee: 4.95,
       subtotal: 44.15,
+      total: 56.92,
       orderItems: sampleOrderItems.slice(0, 1),
-      status: "paid",
+      status: "delivered",
       paymentId: "pi_3JbF3t3eZvKYlo2C0O3hIy0Q",
+      user: "user123",
+      createdAt: new Date("2022-10-31"),
+      updatedAt: new Date("2022-10-31"),
     },
     {
-      id: "#46006",
-      date: "October 31, 2022",
-      paymentStatus: "Refunded",
-      fulfillmentStatus: "Cancelled",
-      total: "€ 0,00",
-      // Additional data for the popup
+      _id: "46006",
       tax: 0,
       shippingFee: 0,
       subtotal: 0,
+      total: 0,
       orderItems: [],
       status: "cancelled",
       paymentId: "pi_3JbF2n3eZvKYlo2C1L4iHu9S",
+      user: "user123",
+      createdAt: new Date("2022-10-31"),
+      updatedAt: new Date("2022-10-31"),
     },
     {
-      id: "#35748",
-      date: "May 18, 2022",
-      paymentStatus: "Paid",
-      fulfillmentStatus: "Delivered",
-      total: "€ 36,58",
-      // Additional data for the popup
+      _id: "35748",
       tax: 5.32,
       shippingFee: 6.95,
       subtotal: 24.31,
+      total: 36.58,
       orderItems: [sampleOrderItems[1]],
       status: "delivered",
       paymentId: "pi_3GtH9k3eZvKYlo2C0M0gUs7T",
+      user: "user123",
+      createdAt: new Date("2022-05-18"),
+      updatedAt: new Date("2022-05-18"),
     },
   ];
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString("de-DE", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   const handleOpenOrderDetails = (order: Order) => {
     setSelectedOrder(order);
@@ -200,7 +204,7 @@ function UserOrders() {
                 <tbody>
                   {orders.map((order) => (
                     <tr
-                      key={order.id}
+                      key={order._id}
                       className="bg-white border-t border-neutral-200 hover:bg-neutral-50 transition-colors"
                     >
                       <td className="py-4 px-4 font-semibold text-primary truncate">
@@ -208,17 +212,17 @@ function UserOrders() {
                           onClick={() => handleOpenOrderDetails(order)}
                           className="hover:no-underline underline focus:outline-none"
                         >
-                          {order.id}
+                          #{order._id}
                         </button>
                       </td>
                       <td className="py-4 px-4 text-neutral-600 truncate">
-                        {order.date}
+                        {formatDate(order.createdAt)}
                       </td>
-                      <td className="py-4 px-4 text-neutral-600 truncate">
-                        {order.paymentStatus}
+                      <td className="py-4 px-4 text-neutral-600 capitalize truncate">
+                        {order.status}
                       </td>
-                      <td className="py-4 px-4 text-neutral-600 truncate">
-                        {order.fulfillmentStatus}
+                      <td className="py-4 px-4 text-neutral-600 capitalize truncate">
+                        {order.status}
                       </td>
                       <td className="py-4 px-4 text-primary text-right truncate">
                         {order.total}
@@ -235,11 +239,11 @@ function UserOrders() {
         <div className="md:hidden space-y-6">
           {orders.map((order) => (
             <div
-              key={order.id}
+              key={order._id}
               className="bg-white rounded-lg border border-neutral-200 p-6 shadow-sm"
             >
               <h2 className="text-xl font-bold text-primary mb-6">
-                {t("orders.orderId")} {order.id}
+                {t("orders.orderId")} #{order._id}
               </h2>
 
               <div className="grid grid-cols-2 gap-y-6">
@@ -247,21 +251,23 @@ function UserOrders() {
                   <p className="font-semibold text-primary mb-1">
                     {t("orders.date")}
                   </p>
-                  <p className="text-neutral-600">{order.date}</p>
+                  <p className="text-neutral-600">
+                    {formatDate(order.createdAt)}
+                  </p>
                 </div>
 
                 <div>
                   <p className="font-semibold text-primary mb-1">
                     {t("orders.fulfillmentStatus")}
                   </p>
-                  <p className="text-neutral-600">{order.fulfillmentStatus}</p>
+                  <p className="text-neutral-600">{order.status}</p>
                 </div>
 
                 <div>
                   <p className="font-semibold text-primary mb-1">
                     {t("orders.paymentStatus")}
                   </p>
-                  <p className="text-neutral-600">{order.paymentStatus}</p>
+                  <p className="text-neutral-600">{order.status}</p>
                 </div>
 
                 <div>

@@ -1,29 +1,7 @@
 import { useRef, useEffect } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { X } from "lucide-react";
-
-export interface OrderItem {
-  name: string;
-  price: number;
-  image: string;
-  quantity: number;
-  color: string;
-  size: string;
-}
-
-export interface Order {
-  id: string;
-  date: string;
-  paymentStatus: string;
-  fulfillmentStatus: string;
-  total: string;
-  tax: number;
-  shippingFee: number;
-  subtotal: number;
-  orderItems: OrderItem[];
-  status: "pending" | "failed" | "paid" | "delivered" | "cancelled";
-  paymentId?: string;
-}
+import { Order } from "@/types/order";
 
 interface OrderDetailsPopupProps {
   order: Order | null;
@@ -84,6 +62,14 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
     return `€ ${amount.toFixed(2)}`.replace(".", ",");
   };
 
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString("de-DE", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   // Get status color
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -111,7 +97,7 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
         <div className="bg-secondary dark:bg-neutral-50 border-b border-neutral-200 dark:border-green-800 p-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold text-primary">
-              {t("orders.orderDetails")} {order.id}
+              {t("orders.orderDetails")} #{order._id}
             </h2>
             <button
               onClick={onClose}
@@ -120,7 +106,7 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
               <X className="h-6 w-6" />
             </button>
           </div>
-          <p className="text-neutral-600 mt-2">{order.date}</p>
+          <p className="text-neutral-600 mt-2">{formatDate(order.createdAt)}</p>
         </div>
 
         {/* Order Summary */}
@@ -137,10 +123,10 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
                 </p>
                 <span
                   className={`inline-block px-3 py-1 rounded-full text-sm ${getStatusColor(
-                    order.paymentStatus
+                    order.status
                   )}`}
                 >
-                  {order.paymentStatus}
+                  {order.status}
                 </span>
               </div>
 
@@ -150,10 +136,10 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
                 </p>
                 <span
                   className={`inline-block px-3 py-1 rounded-full text-sm ${getStatusColor(
-                    order.fulfillmentStatus
+                    order.status
                   )}`}
                 >
-                  {order.fulfillmentStatus}
+                  {order.status}
                 </span>
               </div>
             </div>
