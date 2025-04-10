@@ -23,9 +23,9 @@ function Hero() {
 
   return (
     <>
-      <div className="flex justify-center items-center pb-10 gap-y-4">
-        <h1 className="sm:text-6xl md:text-8xl text-4xl font-bold uppercase">
-          comfy-zone
+      <div className="flex justify-center items-center pb-1 gap-y-4">
+        <h1 className="sm:text-6xl md:text-9xl text-4xl font-bold tracking-wider">
+          COMFY-ZONE
         </h1>
       </div>
       <HeroCarousel
