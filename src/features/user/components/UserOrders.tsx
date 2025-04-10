@@ -4,7 +4,7 @@ import { OrderDetailsPopup } from "@/features/orders";
 import { Order, OrderItem } from "@/types/order";
 
 function UserOrders() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -141,11 +141,34 @@ function UserOrders() {
   ];
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString("de-DE", {
+    // Map language codes to locale formats
+    const localeMap: Record<string, string> = {
+      en: "en-US",
+      de: "de-DE",
+      ru: "ru-RU",
+    };
+
+    const locale = localeMap[language] || "en-US";
+
+    return date.toLocaleDateString(locale, {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
+  };
+
+  // Function to translate order status
+  const formatStatus = (status: string) => {
+    // Handle case where status might not be one of the defined statuses
+    if (!status) return status;
+
+    const statusKey = status.toLowerCase() as
+      | "pending"
+      | "failed"
+      | "paid"
+      | "delivered"
+      | "cancelled";
+    return t(`orders.status.${statusKey}`);
   };
 
   const handleOpenOrderDetails = (order: Order) => {
@@ -176,11 +199,10 @@ function UserOrders() {
             <div className="overflow-auto max-h-[500px]">
               <table className="w-full table-fixed">
                 <colgroup>
-                  <col className="w-[15%]" />
+                  <col className="w-[20%]" />
+                  <col className="w-[30%]" />
                   <col className="w-[25%]" />
-                  <col className="w-[20%]" />
-                  <col className="w-[20%]" />
-                  <col className="w-[20%]" />
+                  <col className="w-[25%]" />
                 </colgroup>
                 <thead className="bg-neutral-50 sticky top-0 z-10">
                   <tr>
@@ -189,9 +211,6 @@ function UserOrders() {
                     </th>
                     <th className="py-4 px-4 font-semibold text-primary text-left">
                       {t("orders.date")}
-                    </th>
-                    <th className="py-4 px-4 font-semibold text-primary text-left">
-                      {t("orders.paymentStatus")}
                     </th>
                     <th className="py-4 px-4 font-semibold text-primary text-left">
                       {t("orders.fulfillmentStatus")}
@@ -218,14 +237,11 @@ function UserOrders() {
                       <td className="py-4 px-4 text-neutral-600 truncate">
                         {formatDate(order.createdAt)}
                       </td>
-                      <td className="py-4 px-4 text-neutral-600 capitalize truncate">
-                        {order.status}
-                      </td>
-                      <td className="py-4 px-4 text-neutral-600 capitalize truncate">
-                        {order.status}
+                      <td className="py-4 px-4 text-neutral-600 truncate">
+                        {formatStatus(order.status)}
                       </td>
                       <td className="py-4 px-4 text-primary text-right truncate">
-                        {order.total}
+                        {order.total} EUR
                       </td>
                     </tr>
                   ))}
@@ -260,21 +276,16 @@ function UserOrders() {
                   <p className="font-semibold text-primary mb-1">
                     {t("orders.fulfillmentStatus")}
                   </p>
-                  <p className="text-neutral-600">{order.status}</p>
-                </div>
-
-                <div>
-                  <p className="font-semibold text-primary mb-1">
-                    {t("orders.paymentStatus")}
+                  <p className="text-neutral-600">
+                    {formatStatus(order.status)}
                   </p>
-                  <p className="text-neutral-600">{order.status}</p>
                 </div>
 
                 <div>
                   <p className="font-semibold text-primary mb-1">
                     {t("orders.total")}
                   </p>
-                  <p className="text-primary">{order.total}</p>
+                  <p className="text-primary">{order.total} EUR</p>
                 </div>
               </div>
 

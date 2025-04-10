@@ -10,47 +10,39 @@ interface OrderDetailsPopupProps {
 }
 
 function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const popupRef = useRef<HTMLDivElement>(null);
 
-  // Close popup when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target as Node)
-      ) {
-        onClose();
-      }
+  const formatDate = (date: Date) => {
+    // Map language codes to locale formats
+    const localeMap: Record<string, string> = {
+      en: "en-US",
+      de: "de-DE",
+      ru: "ru-RU",
     };
 
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
+    const locale = localeMap[language] || "en-US";
 
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen, onClose]);
+    return date.toLocaleDateString(locale, {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
-  // Close on Escape key press
-  useEffect(() => {
-    const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
+  // Function to translate order status
+  const formatStatus = (status: string) => {
+    // Handle case where status might not be one of the defined statuses
+    if (!status) return status;
 
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKey);
-    }
-
-    return () => {
-      document.removeEventListener("keydown", handleEscapeKey);
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen || !order) return null;
+    const statusKey = status.toLowerCase() as
+      | "pending"
+      | "failed"
+      | "paid"
+      | "delivered"
+      | "cancelled";
+    return t(`orders.status.${statusKey}`);
+  };
 
   // Format currency
   const formatCurrency = (amount: number | string) => {
@@ -60,14 +52,6 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
     }
     // Otherwise format the number
     return `€ ${amount.toFixed(2)}`.replace(".", ",");
-  };
-
-  const formatDate = (date: Date) => {
-    return date.toLocaleDateString("de-DE", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
   };
 
   // Get status color
@@ -86,6 +70,41 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
         return "bg-neutral-200 text-neutral-800";
     }
   };
+
+  // Close popup when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        popupRef.current &&
+        !popupRef.current.contains(event.target as Node)
+      ) {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
+  // Close on Escape key press
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscapeKey);
+    }
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [isOpen, onClose]);
+
+  if (!isOpen || !order) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
@@ -117,29 +136,16 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <div className="mb-4">
-                <p className="font-semibold text-green-800 dark:text-neutral-300 mb-1">
-                  {t("orders.paymentStatus")}
-                </p>
-                <span
-                  className={`inline-block px-3 py-1 rounded-full text-sm ${getStatusColor(
-                    order.status
-                  )}`}
-                >
-                  {order.status}
-                </span>
-              </div>
-
               <div>
                 <p className="font-semibold text-green-800 dark:text-neutral-300 mb-1">
                   {t("orders.fulfillmentStatus")}
                 </p>
                 <span
-                  className={`inline-block px-3 py-1 rounded-full text-sm ${getStatusColor(
+                  className={`inline-block px-3 py-1 rounded-full capitalize text-sm ${getStatusColor(
                     order.status
                   )}`}
                 >
-                  {order.status}
+                  {formatStatus(order.status)}
                 </span>
               </div>
             </div>

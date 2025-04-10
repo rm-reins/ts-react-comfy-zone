@@ -178,6 +178,13 @@ export const en = {
     subtotal: "Subtotal",
     tax: "Tax",
     shipping: "Shipping",
+    status: {
+      pending: "Pending",
+      failed: "Failed",
+      paid: "Paid",
+      delivered: "Delivered",
+      cancelled: "Cancelled",
+    },
   },
   footer: {
     aboutUs: "About Us",

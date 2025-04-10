@@ -181,6 +181,13 @@ export const de = {
     subtotal: "Zwischensumme",
     tax: "Steuer",
     shipping: "Versand",
+    status: {
+      pending: "Ausstehend",
+      failed: "Fehlgeschlagen",
+      paid: "Bezahlt",
+      delivered: "Geliefert",
+      cancelled: "Storniert",
+    },
   },
   footer: {
     aboutUs: "Über uns",
