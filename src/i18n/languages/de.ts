@@ -214,5 +214,38 @@ export const de = {
     title: "Mit",
     description:
       "Bei Comfy-Zone bringen wir Komfort und Stil in Ihr Zuhause mit hochwertiger, erschwinglicher Möbel. Von gemütlichen Sofas bis hin zu eleganten Esstischgarnituren ist unsere Kollektion darauf ausgelegt, jeden Raum perfekt zu gestalten. Kaufen Sie bei uns und genießen Sie zeitlose Designs und maximalen Komfort!",
+    features: {
+      section: "Unsere Vorzüge",
+      premiumCraftsmanship: {
+        title: "Hochwertige Handwerkskunst",
+        description:
+          "Unsere Möbel werden aus sorgfältig ausgewählten Materialien gefertigt, die außergewöhnliche Haltbarkeit und dauerhafte Qualität in jedem Stück gewährleisten",
+      },
+      timelessDesign: {
+        title: "Zeitloses Design",
+        description:
+          "Unsere Kollektionen verbinden zeitgemäße Ästhetik mit klassischer Eleganz und schaffen Stücke, die über Generationen hinweg stilvoll bleiben",
+      },
+      sustainableLiving: {
+        title: "Nachhaltiges Leben",
+        description:
+          "Wir verwenden umweltfreundliche Materialien und praktizieren verantwortungsvolle Fertigung, weil wir an nachhaltige Wohnraumgestaltung glauben",
+      },
+      customizableOptions: {
+        title: "Anpassbare Optionen",
+        description:
+          "Mit einer breiten Palette an Stilen, Oberflächen und Konfigurationen finden Sie die perfekten Möbel für Ihren Raum",
+      },
+      ergonomicComfort: {
+        title: "Ergonomischer Komfort",
+        description:
+          "Jedes Stück wurde mit Blick auf Ergonomie entworfen, um maximalen Komfort und Funktionalität für Ihren Alltag zu gewährleisten",
+      },
+      expertService: {
+        title: "Fachkundiger Service",
+        description:
+          "Unser engagiertes Team bietet persönliche Unterstützung, um Ihnen bei der Suche nach der perfekten Möbellösung für Ihr Zuhause zu helfen",
+      },
+    },
   },
 };

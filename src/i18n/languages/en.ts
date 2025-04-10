@@ -193,6 +193,39 @@ export const en = {
     title: "With",
     description:
       "At Comfy-Zone, we bring comfort and style to your home with high-quality, affordable furniture. From cozy sofas to elegant dining sets, our collection is designed to make every space feel just right. Shop with us for a seamless experience and timeless designs!",
+    features: {
+      section: "Our Features",
+      premiumCraftsmanship: {
+        title: "Premium Craftsmanship",
+        description:
+          "Our furniture is crafted from carefully selected materials, ensuring exceptional durability and lasting quality in every piece",
+      },
+      timelessDesign: {
+        title: "Timeless Design",
+        description:
+          "Our collections blend contemporary aesthetics with classic elegance, creating pieces that remain stylish for generations",
+      },
+      sustainableLiving: {
+        title: "Sustainable Living",
+        description:
+          "We source eco-friendly materials and practice responsible manufacturing because we believe in sustainable home furnishings",
+      },
+      customizableOptions: {
+        title: "Customizable Options",
+        description:
+          "With a wide range of styles, finishes, and configurations, you can find the perfect furniture to match your space",
+      },
+      ergonomicComfort: {
+        title: "Ergonomic Comfort",
+        description:
+          "Every piece is designed with ergonomics in mind, ensuring maximum comfort and functionality for your daily life",
+      },
+      expertService: {
+        title: "Expert Service",
+        description:
+          "Our dedicated team provides personalized assistance to help you find the perfect furniture solutions for your home",
+      },
+    },
   },
   errors: {
     general: "Something went wrong. Please try again.",

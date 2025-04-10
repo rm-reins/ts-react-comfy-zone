@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface FeatureCardProps {
   title: string;
@@ -15,6 +16,7 @@ const FeatureCard = ({ title, description }: FeatureCardProps) => {
 };
 
 export default function FeaturesSection() {
+  const { t } = useTranslation();
   const [scrollProgress, setScrollProgress] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -23,34 +25,28 @@ export default function FeaturesSection() {
 
   const features = [
     {
-      title: "Premium Craftsmanship",
-      description:
-        "Our furniture is crafted from carefully selected materials, ensuring exceptional durability and lasting quality in every piece",
+      title: t("about.features.premiumCraftsmanship.title"),
+      description: t("about.features.premiumCraftsmanship.description"),
     },
     {
-      title: "Timeless Design",
-      description:
-        "Our collections blend contemporary aesthetics with classic elegance, creating pieces that remain stylish for generations",
+      title: t("about.features.timelessDesign.title"),
+      description: t("about.features.timelessDesign.description"),
     },
     {
-      title: "Sustainable Living",
-      description:
-        "We source eco-friendly materials and practice responsible manufacturing because we believe in sustainable home furnishings",
+      title: t("about.features.sustainableLiving.title"),
+      description: t("about.features.sustainableLiving.description"),
     },
     {
-      title: "Customizable Options",
-      description:
-        "With a wide range of styles, finishes, and configurations, you can find the perfect furniture to match your space",
+      title: t("about.features.customizableOptions.title"),
+      description: t("about.features.customizableOptions.description"),
     },
     {
-      title: "Ergonomic Comfort",
-      description:
-        "Every piece is designed with ergonomics in mind, ensuring maximum comfort and functionality for your daily life",
+      title: t("about.features.ergonomicComfort.title"),
+      description: t("about.features.ergonomicComfort.description"),
     },
     {
-      title: "Expert Service",
-      description:
-        "Our dedicated team provides personalized assistance to help you find the perfect furniture solutions for your home",
+      title: t("about.features.expertService.title"),
+      description: t("about.features.expertService.description"),
     },
   ];
 
