@@ -1,7 +1,7 @@
 import { Product } from "@/types/product";
 import { useTranslation } from "@/i18n/useTranslation";
 import { Link } from "react-router-dom";
-import { Button } from "@/shared/ui";
+import { Button, Image } from "@/shared/ui";
 
 interface ProductCardProps {
   product: Product;
@@ -40,23 +40,35 @@ function ProductCard({ product }: ProductCardProps) {
   const imageUrl = getImageUrl();
 
   return (
-    <div className="p-4 border rounded-lg shadow-sm hover:shadow-md transition-shadow flex flex-col h-full">
+    <div className="p-4 border rounded-lg shadow-sm hover:shadow-xl transition-shadow flex flex-col h-full">
       <Link
         to={`/products/${product._id}`}
         className="flex flex-col flex-grow"
       >
         <div className="h-48 bg-muted rounded-md mb-4 overflow-hidden">
-          <img
+          <Image
             src={imageUrl}
             alt={product.name}
             className="w-full h-full object-cover"
           />
         </div>
-        <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-        <p className="text-muted-foreground mb-2 line-clamp-2 flex-grow">
-          {product.description}
+
+        <h5 className=" font-semibold">{product.name}</h5>
+        <p className="text-muted-foreground text-sm uppercase tracking-wide mb-2">
+          {product.company}
         </p>
-        <div className="flex justify-between items-center mt-auto">
+
+        <div className="flex gap-2  mb-8">
+          {product.colors.map((color, index) => (
+            <button
+              key={index}
+              className="w-6 h-6 rounded-full border border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 focus:outline-none"
+              style={{ backgroundColor: color }}
+              aria-label={`Select color ${index + 1}`}
+            />
+          ))}
+        </div>
+        <div className="flex text-sm justify-between items-center mt-auto">
           <span className="font-bold">${product.price.toFixed(2)}</span>
           <div className="flex items-center">
             <span className="text-yellow-500 mr-1">★</span>

@@ -1,0 +1,15 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+	<title>New Project</title>
+	<defs>
+		<image  width="400" height="400" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQMAAAC6caSPAAAAAXNSR0IB2cksfwAAAANQTFRFkpKSBJtLtAAAAFZJREFUeJztyzENAAAMA6DVv+lp6NvAT64WRVEURVEURVEURVEURVEURVEURVEURVEURVEURVEURVEURVEURVEURVEURVEURVEURVEURVEURVEURVkvD7yqAZFFhyovAAAAAElFTkSuQmCC"/>
+	</defs>
+	<style>
+		tspan { white-space:pre } 
+		.t0 { font-size: 130px;fill: #2e2e2e;font-weight: 400;font-family: "DejaVuSans", "DejaVu Sans" } 
+	</style>
+	<use id="Background" href="#img1" x="0" y="0"/>
+	<text id="PIC" style="transform: matrix(1,0,0,1,93,247)" >
+		<tspan x="0" y="0" class="t0">P</tspan><tspan  y="0" class="t0">I</tspan><tspan  y="0" class="t0">C</tspan><tspan  y="0" class="t0">
+</tspan>
+	</text>
+</svg>

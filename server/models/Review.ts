@@ -13,6 +13,8 @@ interface IReviewImage {
 const arrayLimit = (val: IReviewImage[]) => val.length <= 5;
 
 export interface IReview extends Document {
+  _id: mongoose.Types.ObjectId;
+  clerkId: string;
   rating: number;
   title: string;
   comment: string;
