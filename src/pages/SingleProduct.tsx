@@ -7,7 +7,6 @@ import {
   Plus,
   ArrowRight,
   ArrowLeft,
-  ArrowUpRight,
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { trpc } from "@/trpc/trpc";
@@ -89,49 +88,42 @@ export default function SingleProduct() {
               {product.name}
             </h1>
 
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-3">
               {product.images
                 .slice(0, 3)
                 .map((image: string, index: number) => (
-                  <div
-                    key={index}
-                    className={cn(
-                      "bg-white rounded-lg overflow-hidden cursor-pointer aspect-[3/4] relative",
-                      selectedImage === index && "ring-2 ring-primary"
-                    )}
-                    onClick={() => setSelectedImage(index)}
-                  >
+                  <div>
                     <Image
                       src={image || "/placeholder.svg"}
                       alt={`${product.name} thumbnail ${index + 1}`}
-                      objectFit="fill"
-                      className="object-cover"
+                      layout="responsive"
+                      objectFit="cover"
+                      key={index}
+                      className={cn(
+                        "bg-white rounded-xl overflow-hidden cursor-pointer",
+                        selectedImage === index && "ring-2 ring-primary"
+                      )}
+                      onClick={() => setSelectedImage(index)}
                     />
                   </div>
                 ))}
             </div>
-
-            {product.images.length > 3 && (
-              <button className="text-primary font-medium flex items-center gap-1 mx-auto">
-                MORE +{product.images.length - 3}{" "}
-                <ArrowUpRight className="w-4 h-4" />
-              </button>
-            )}
           </div>
 
           {/* Middle Column - Main Image */}
-          <div className="bg-white rounded-2xl overflow-hidden aspect-[4/5] relative">
+          <div>
             <div className="absolute top-4 left-4 z-10 bg-white p-2 rounded-md">
               <div className="text-primary font-bold text-xl">
                 {product.company.substring(0, 2).toUpperCase()}
               </div>
             </div>
+
             <Image
               src={product.images[selectedImage] || "/placeholder.svg"}
               alt={product.name}
               objectFit="fill"
-              className="object-cover"
               priority
+              className="rounded-xl max-h-[calc(100vw*(4/3))]"
             />
           </div>
 

@@ -11,6 +11,7 @@ interface ImageProps {
   sizes?: string;
   onLoad?: (event: React.SyntheticEvent<HTMLImageElement>) => void;
   onError?: (event: React.SyntheticEvent<HTMLImageElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLImageElement>) => void;
   className?: string;
   placeholder?: "blur" | "empty";
   blurDataURL?: string;
@@ -29,6 +30,7 @@ const Image: React.FC<ImageProps> = ({
   sizes,
   onLoad,
   onError,
+  onClick,
   className = "",
   placeholder = "empty",
   blurDataURL,
@@ -140,6 +142,7 @@ const Image: React.FC<ImageProps> = ({
           loading={priority ? "eager" : loading || "lazy"}
           onLoad={handleLoad}
           onError={onError}
+          onClick={onClick}
           className={`${className} ${loaded ? "loaded" : "loading"}`}
           style={getImageStyle()}
           sizes={sizes}
