@@ -178,6 +178,13 @@ export const ru = {
     subtotal: "Промежуточный итог",
     tax: "Налог",
     shipping: "Доставка",
+    status: {
+      pending: "В ожидании",
+      failed: "Ошибка",
+      paid: "Оплачено",
+      delivered: "Доставлено",
+      cancelled: "Отменено",
+    },
   },
   footer: {
     aboutUs: "О нас",
