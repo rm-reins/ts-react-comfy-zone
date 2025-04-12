@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Image from "../ui/Image";
 
 function Logo() {
   return (
@@ -6,8 +7,8 @@ function Logo() {
       to="/"
       className="hidden md:flex justify-center items-center rounded-xl w-15 bg-white"
     >
-      <img
-        src="./favicon-512x512.png"
+      <Image
+        src="/favicon-512x512.png"
         alt="logo"
         className="w-14 h-14"
       />
