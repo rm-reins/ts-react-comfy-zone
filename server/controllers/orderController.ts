@@ -73,7 +73,7 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
   }
 
   const tax = Math.ceil(subtotal * 0.21);
-  shippingFee = subtotal > 10000 ? 0 : 700;
+  shippingFee = subtotal > 200 ? 0 : 25;
 
   const total = subtotal + tax + shippingFee;
 
