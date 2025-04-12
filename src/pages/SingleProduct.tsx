@@ -33,7 +33,6 @@ export default function SingleProduct() {
 
   // Type assertion for the product
   const product = productData as Product;
-  console.log(product);
 
   // Fetch reviews for the product
   const { data: reviewsData, isLoading: reviewsLoading } =
