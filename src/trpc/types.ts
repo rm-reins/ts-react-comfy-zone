@@ -20,6 +20,7 @@ export interface Product {
   inventory: number;
   averageRating: number;
   numOfReviews: number;
+  user: string;
   createdAt: Date;
   updatedAt: Date;
   __v: number;

@@ -10,35 +10,6 @@ interface ProductCardProps {
 function ProductCard({ product }: ProductCardProps) {
   const { t } = useTranslation();
 
-  const getImageUrl = () => {
-    if (!product.images || product.images.length === 0) {
-      return "https://placehold.co/400x300";
-    }
-
-    const firstImage = product.images[0];
-
-    // Mongo has urls stored as strings, but when the image is uploaded, it's stored as an object with numeric keys
-    // idk, this code fixes the issue for now
-    if (typeof firstImage === "string") {
-      return firstImage;
-    }
-    if (typeof firstImage === "object") {
-      const urlChars: string[] = [];
-      let i = 0;
-
-      while (i in firstImage) {
-        urlChars.push(firstImage[i]);
-        i++;
-      }
-
-      return urlChars.join("");
-    }
-
-    return "https://placehold.co/400x300";
-  };
-
-  const imageUrl = getImageUrl();
-
   return (
     <div className="p-4 border rounded-lg shadow-sm hover:shadow-xl transition-shadow flex flex-col h-full">
       <Link
@@ -47,7 +18,7 @@ function ProductCard({ product }: ProductCardProps) {
       >
         <div className="h-48 bg-muted rounded-md mb-4 overflow-hidden">
           <Image
-            src={imageUrl}
+            src={product.images[0]}
             alt={product.name}
             className="w-full h-full object-cover"
           />

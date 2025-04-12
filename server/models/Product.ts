@@ -46,8 +46,7 @@ const ProductSchema = new Schema<IProduct>(
     },
     images: [
       {
-        url: String,
-        filename: String,
+        type: String,
       },
     ],
     category: {

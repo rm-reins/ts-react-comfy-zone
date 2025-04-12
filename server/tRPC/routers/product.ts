@@ -9,7 +9,7 @@ const productInputSchema = z.object({
   description: z
     .string()
     .min(10, "Description must be at least 10 characters long"),
-  image: z.string().optional(),
+  images: z.array(z.string()).optional(),
   category: z.string(),
   company: z.string(),
   featured: z.boolean().optional().default(false),
