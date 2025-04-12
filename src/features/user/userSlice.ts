@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { User, DeliveryAddress } from "../../types/user";
+import { User, DeliveryAddress } from "@/trpc/types";
 
 export interface UserState {
   user: User | null;

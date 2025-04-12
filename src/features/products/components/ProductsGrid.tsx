@@ -2,7 +2,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { trpc } from "@/trpc/trpc";
 import ProductCard from "./ProductCard";
 import { Skeleton } from "@/shared/ui";
-import { Product } from "@/types/product";
+import { Product } from "@/trpc/types";
 
 function ProductsGrid() {
   const { t } = useTranslation();

@@ -11,8 +11,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/utils/utils";
 import { trpc } from "@/trpc/trpc";
-import { Product } from "@/types/product";
-import { Review } from "@/types/review";
+import { Review, Product } from "@/trpc/types";
 import { useParams } from "react-router-dom";
 
 export default function SingleProduct() {

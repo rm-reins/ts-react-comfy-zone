@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { X } from "lucide-react";
-import { Order } from "@/types/order";
+import { Order } from "@/trpc/types";
 
 interface OrderDetailsPopupProps {
   order: Order | null;

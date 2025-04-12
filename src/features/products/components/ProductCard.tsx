@@ -1,4 +1,4 @@
-import { Product } from "@/types/product";
+import { Product } from "@/trpc/types";
 import { useTranslation } from "@/i18n/useTranslation";
 import { Link } from "react-router-dom";
 import { Button, Image } from "@/shared/ui";

@@ -1,73 +1,86 @@
 export type AppRouter = import("../../server/tRPC/routers/appRouter").AppRouter;
 
-/**
- * Client-side product interface
- */
 export interface Product {
   _id: string;
   name: string;
   price: number;
   description: string;
-  image: string;
-  category: string;
+  images: string[];
+  category:
+    | "office"
+    | "kitchen"
+    | "bedroom"
+    | "home decor"
+    | "storage"
+    | "textiles"
+    | "other";
   company: string;
+  colors: string[];
   featured: boolean;
   inventory: number;
   averageRating: number;
   numOfReviews: number;
-  user: string;
-  createdAt: string | Date;
-  updatedAt: string | Date;
+  createdAt: Date;
+  updatedAt: Date;
+  __v: number;
 }
 
-/**
- * Client-side delivery address interface
- */
 export interface DeliveryAddress {
-  address: string;
+  _id: string;
+  street: string;
   city: string;
   state: string;
   postalCode: string;
   country: string;
+  isDefault: boolean;
 }
 
-/**
- * Client-side user interface
- */
 export interface User {
   _id: string;
   name: string;
   surname: string;
   email: string;
-  role: string;
-  clerkId?: string;
   phone?: string;
-  deliveryAddress?: DeliveryAddress;
-  createdAt: string | Date;
-  updatedAt: string | Date;
+  clerkId?: string;
+  role: string;
+  deliveryAddresses?: DeliveryAddress[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-/**
- * Client-side order interface
- */
+export interface OrderItem {
+  _id: string;
+  name: string;
+  price: number;
+  image: string;
+  quantity: number;
+  color: string;
+  size: string;
+}
+
 export interface Order {
   _id: string;
   tax: number;
   shippingFee: number;
   subtotal: number;
   total: number;
-  orderItems: Array<{
-    _id: string;
-    name: string;
-    price: number;
-    image: string;
-    quantity: number;
-    color: string;
-    size: string;
-  }>;
+  orderItems: OrderItem[];
+  paymentId: string;
   status: "pending" | "failed" | "paid" | "delivered" | "cancelled";
   user: string;
-  paymentId?: string;
-  createdAt: string | Date;
-  updatedAt: string | Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface Review {
+  _id: string;
+  clerkId: string;
+  rating: number;
+  title: string;
+  comment: string;
+  user: string;
+  product: string;
+  images: string[];
+  createdAt: Date;
+  updatedAt: Date;
 }

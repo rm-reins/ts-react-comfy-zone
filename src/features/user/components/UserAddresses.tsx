@@ -1,6 +1,6 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { useState } from "react";
-import { User, DeliveryAddress } from "@/types/user";
+import { User, DeliveryAddress } from "@/trpc/types";
 import AddressFormPopup from "./AddressFormPopup";
 
 function UserAddresses() {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { OrderDetailsPopup } from "@/features/orders";
-import { Order, OrderItem } from "@/types/order";
+import { Order, OrderItem } from "@/trpc/types";
 
 function UserOrders() {
   const { t, language } = useTranslation();
@@ -32,7 +32,6 @@ function UserOrders() {
     },
   ];
 
-  // Updated orders array to match the Order interface from src/types/order.ts
   const orders: Order[] = [
     {
       _id: "54415",
