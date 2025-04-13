@@ -102,7 +102,7 @@ export default function FeaturesSection() {
   };
 
   return (
-    <div className="bg-secondary rounded-b-xl py-16 px-4 md:px-8">
+    <div className="bg-secondary dark:bg-green-700 rounded-b-xl py-16 px-4 md:px-8 select-none">
       <div className="max-w-7xl mx-auto">
         {/* Mobile view with horizontal scroll */}
         <div className="md:hidden">
@@ -131,7 +131,7 @@ export default function FeaturesSection() {
           {/* Progress scrollbar */}
           <div className="h-1 bg-white rounded-full mt-4 mx-4">
             <div
-              className="h-1 bg-green-800 rounded-full transition-all duration-300 ease-out"
+              className="h-1 bg-green-800 dark:bg-green-400 rounded-full transition-all duration-300 ease-out"
               style={{ width: `${scrollProgress * 100}%` }}
             ></div>
           </div>

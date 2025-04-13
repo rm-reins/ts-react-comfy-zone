@@ -11,7 +11,7 @@ function ProductCard({ product }: ProductCardProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="p-4 border rounded-lg shadow-sm hover:shadow-xl transition-shadow flex flex-col h-full">
+    <div className="p-4 border rounded-lg shadow-sm hover:shadow-xl transition-shadow flex flex-col h-full dark:bg-green-700">
       <Link
         to={`/products/${product._id}`}
         className="flex flex-col flex-grow"
@@ -40,10 +40,14 @@ function ProductCard({ product }: ProductCardProps) {
           ))}
         </div>
         <div className="flex text-sm justify-between items-center mt-auto">
-          <span className="font-bold">${product.price.toFixed(2)}</span>
+          <span className="font-bold dark:text-green-50">
+            ${product.price.toFixed(2)}
+          </span>
           <div className="flex items-center">
             <span className="text-yellow-500 mr-1">★</span>
-            <span>{product.averageRating.toFixed(1)}</span>
+            <span className="dark:text-green-50">
+              {product.averageRating.toFixed(1)}
+            </span>
             <span className="text-muted-foreground ml-1">
               ({product.numOfReviews})
             </span>
@@ -52,7 +56,7 @@ function ProductCard({ product }: ProductCardProps) {
       </Link>
       <div className="mt-4">
         <Button
-          className="w-full"
+          className="w-full dark:bg-green-500"
           disabled={product.inventory === 0}
         >
           {product.inventory === 0
