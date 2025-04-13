@@ -101,7 +101,8 @@ export default function SingleProduct() {
                       key={index}
                       className={cn(
                         "bg-white rounded-xl overflow-hidden cursor-pointer",
-                        selectedImage === index && "ring-2 ring-primary"
+                        selectedImage === index &&
+                          "ring-2 ring-primary dark:ring-white"
                       )}
                       onClick={() => setSelectedImage(index)}
                     />
@@ -111,32 +112,27 @@ export default function SingleProduct() {
           </div>
 
           {/* Middle Column - Main Image */}
-          <div>
-            <div className="absolute top-4 left-4 z-10 bg-white p-2 rounded-md">
-              <div className="text-primary font-bold text-xl">
-                {product.company.substring(0, 2).toUpperCase()}
-              </div>
-            </div>
 
-            <Image
-              src={product.images[selectedImage] || "/placeholder.svg"}
-              alt={product.name}
-              objectFit="fill"
-              priority
-              className="rounded-xl max-h-[calc(100vw*(4/3))]"
-            />
-          </div>
+          <Image
+            src={product.images[selectedImage] || "/placeholder.svg"}
+            alt={product.name}
+            objectFit="fill"
+            priority
+            className="rounded-xl max-h-[calc(100vw*(4/3))]"
+          />
 
           {/* Right Column - Product Details */}
           <div className="space-y-6">
             <div className="flex justify-between items-start">
               <div className="space-y-4">
-                <div className="text-gray-500">
+                <div className="text-gray-500 dark:text-gray-200">
                   SKU: {product._id.substring(0, 8)}
                 </div>
 
                 <div>
-                  <div className="text-gray-500 mb-2">Color</div>
+                  <div className="text-gray-500 mb-2 dark:text-gray-200">
+                    Color
+                  </div>
                   <div className="flex gap-2">
                     {product.colors.map((color: string, index: number) => (
                       <button
@@ -170,7 +166,7 @@ export default function SingleProduct() {
             </div>
 
             {/* Accordion Sections */}
-            <div className="space-y-3">
+            <div className="space-y-3 text-primary">
               <div className="border rounded-lg overflow-hidden">
                 <button
                   className="w-full flex justify-between items-center p-4 bg-white"
@@ -226,8 +222,8 @@ export default function SingleProduct() {
                 {openSection === "shipping" && (
                   <div className="p-4 bg-white text-gray-600">
                     <p>
-                      Free shipping on orders over $50. Standard delivery in 3-5
-                      business days.
+                      Free shipping on orders over 200€. Standard delivery in
+                      3-5 business days.
                     </p>
                     <p>Returns accepted within 30 days of purchase.</p>
                   </div>
