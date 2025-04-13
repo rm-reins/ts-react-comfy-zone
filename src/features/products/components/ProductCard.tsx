@@ -41,7 +41,7 @@ function ProductCard({ product }: ProductCardProps) {
         </div>
         <div className="flex text-sm justify-between items-center mt-auto">
           <span className="font-bold dark:text-green-50">
-            ${product.price.toFixed(2)}
+            {product.price.toFixed(2)}€
           </span>
           <div className="flex items-center">
             <span className="text-yellow-500 mr-1">★</span>

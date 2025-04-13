@@ -12,8 +12,10 @@ import { cn } from "@/utils/utils";
 import { trpc } from "@/trpc/trpc";
 import { Review, Product } from "@/trpc/types";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export default function SingleProduct() {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState(0);
@@ -131,7 +133,7 @@ export default function SingleProduct() {
 
                 <div>
                   <div className="text-gray-500 mb-2 dark:text-gray-200">
-                    Color
+                    {t("products.color")}
                   </div>
                   <div className="flex gap-2">
                     {product.colors.map((color: string, index: number) => (
@@ -158,7 +160,7 @@ export default function SingleProduct() {
             <div className="flex gap-2">
               <button className="bg-primary hover:bg-primary/90 text-white rounded-full px-4 py-2 flex items-center gap-1 flex-1 justify-center font-medium transition-colors">
                 <Plus className="w-4 h-4" />
-                Add to Cart
+                {t("products.addToCart")}
               </button>
               <button className="bg-primary/10 hover:bg-primary/20 text-primary rounded-full p-2 aspect-square flex items-center justify-center transition-colors">
                 <Heart className="w-5 h-5" />
@@ -167,31 +169,17 @@ export default function SingleProduct() {
 
             {/* Accordion Sections */}
             <div className="space-y-3 text-primary">
-              <div className="border rounded-lg overflow-hidden">
-                <button
-                  className="w-full flex justify-between items-center p-4 bg-white"
-                  onClick={() => toggleSection("description")}
-                >
-                  <span className="font-medium">DESCRIPTION</span>
-                  {openSection === "description" ? (
-                    <ChevronUp className="w-5 h-5" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5" />
-                  )}
-                </button>
-                {openSection === "description" && (
-                  <div className="p-4 bg-white text-gray-600">
-                    <p>{product.description}</p>
-                  </div>
-                )}
+              <div className="p-4 bg-white text-gray-600 rounded-xl">
+                <p>{product.description}</p>
               </div>
-
-              <div className="border rounded-lg overflow-hidden">
+              <div className="border rounded-xl overflow-hidden">
                 <button
                   className="w-full flex justify-between items-center p-4 bg-white"
                   onClick={() => toggleSection("details")}
                 >
-                  <span className="font-medium">PRODUCT DETAILS</span>
+                  <span className="font-medium uppercase">
+                    {t("products.productDetails")}
+                  </span>
                   {openSection === "details" ? (
                     <ChevronUp className="w-5 h-5" />
                   ) : (
@@ -200,19 +188,24 @@ export default function SingleProduct() {
                 </button>
                 {openSection === "details" && (
                   <div className="p-4 bg-white text-gray-600">
-                    <p className="capitalize">Category: {product.category}</p>
-                    <p>Company: {product.company}</p>
-                    <p>Inventory: {product.inventory} units available</p>
+                    <p className="capitalize">
+                      {t("products.category")}: {product.category}
+                    </p>
+                    <p>
+                      {t("products.company")}: {product.company}
+                    </p>
                   </div>
                 )}
               </div>
 
-              <div className="border rounded-lg overflow-hidden">
+              <div className="border rounded-xl overflow-hidden">
                 <button
                   className="w-full flex justify-between items-center p-4 bg-white"
                   onClick={() => toggleSection("shipping")}
                 >
-                  <span className="font-medium">SHIPPING & RETURNS</span>
+                  <span className="font-medium uppercase">
+                    {t("products.shippingAndReturns")}
+                  </span>
                   {openSection === "shipping" ? (
                     <ChevronUp className="w-5 h-5" />
                   ) : (
@@ -221,11 +214,8 @@ export default function SingleProduct() {
                 </button>
                 {openSection === "shipping" && (
                   <div className="p-4 bg-white text-gray-600">
-                    <p>
-                      Free shipping on orders over 200€. Standard delivery in
-                      3-5 business days.
-                    </p>
-                    <p>Returns accepted within 30 days of purchase.</p>
+                    <p>{t("products.shippingTerms")}</p>
+                    <p>{t("products.shippingReturns")}</p>
                   </div>
                 )}
               </div>
@@ -236,7 +226,14 @@ export default function SingleProduct() {
         {/* Reviews Section */}
         <div className="mt-20 mb-10">
           <h2 className="text-3xl font-bold text-center mb-10">
-            Reviews ({product.averageRating.toFixed(1)})
+            {t("products.productReviews")}{" "}
+            <span className="text-yellow-500 mr-1">★</span>
+            <span className="dark:text-green-50">
+              {product.averageRating.toFixed(1)}
+            </span>
+            <span className="text-muted-foreground ml-1">
+              ({product.numOfReviews})
+            </span>
           </h2>
 
           {reviewsLoading ? (
@@ -256,7 +253,7 @@ export default function SingleProduct() {
                 {reviews.map((review) => (
                   <div
                     key={review._id}
-                    className="bg-white rounded-lg p-6 border"
+                    className="bg-white rounded-xl p-6 border"
                   >
                     <div className="flex justify-between mb-4">
                       <div className="flex items-center gap-3">
@@ -296,11 +293,11 @@ export default function SingleProduct() {
               {totalPages > 1 && (
                 <div className="flex justify-between items-center mt-8">
                   <button
-                    className="flex items-center gap-2 font-medium"
+                    className="flex items-center gap-2 font-medium uppercase"
                     onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
                   >
-                    <ArrowLeft className="w-5 h-5" /> PREVIOUS
+                    <ArrowLeft className="w-5 h-5" /> {t("common.previous")}
                   </button>
                   <div className="flex gap-2">
                     {Array(totalPages)
@@ -321,22 +318,22 @@ export default function SingleProduct() {
                       ))}
                   </div>
                   <button
-                    className="flex items-center gap-2 font-medium"
+                    className="flex items-center gap-2 font-medium uppercase"
                     onClick={() =>
                       setCurrentPage(Math.min(totalPages, currentPage + 1))
                     }
                     disabled={currentPage === totalPages}
                   >
-                    NEXT <ArrowRight className="w-5 h-5" />
+                    {t("common.next")} <ArrowRight className="w-5 h-5" />
                   </button>
                 </div>
               )}
             </>
           ) : (
-            <div className="text-center py-10 bg-white rounded-lg border">
-              <p className="text-gray-500">No reviews yet for this product.</p>
+            <div className="text-center py-10 bg-white rounded-xl border">
+              <p className="text-gray-500">{t("products.noReviewsYet")}</p>
               <button className="mt-4 px-6 py-2 bg-primary text-white rounded-full hover:bg-primary/90">
-                Be the first to review
+                {t("products.beTheFirstToReview")}
               </button>
             </div>
           )}
