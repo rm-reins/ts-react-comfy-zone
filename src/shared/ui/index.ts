@@ -9,3 +9,4 @@ export { buttonVariants } from "./button-variants";
 export { default as LanguageMenuSub } from "./LanguageMenuSub";
 export { default as UserDropdown } from "./UserDropdown";
 export { default as FeaturesSection } from "./FeaturesSection";
+export { default as Filters } from "./Filters";

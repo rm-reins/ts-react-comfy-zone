@@ -1,69 +1,50 @@
 import { Product } from "@/trpc/types";
-import { useTranslation } from "@/i18n/useTranslation";
 import { Link } from "react-router-dom";
-import { Button, Image } from "@/shared/ui";
+import { Image } from "@/shared/ui";
 
 interface ProductCardProps {
   product: Product;
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  const { t } = useTranslation();
+  const getCategoryDisplay = () => {
+    switch (product.category) {
+      case "bedroom":
+        return "Bedroom";
+      case "office":
+        return "Office";
+      case "kitchen":
+        return "Kitchen & Dining";
+      case "home decor":
+        return "Living Room";
+      case "storage":
+        return "Storage";
+      case "textiles":
+        return "Textiles";
+      default:
+        return product.category;
+    }
+  };
+
+  const formattedPrice = `${product.price.toFixed(2)}€`;
 
   return (
-    <div className="p-4 border rounded-lg shadow-sm hover:shadow-xl transition-shadow flex flex-col h-full dark:bg-green-700">
+    <div className="group flex flex-col h-full">
       <Link
         to={`/products/${product._id}`}
-        className="flex flex-col flex-grow"
+        className="flex flex-col h-full"
       >
-        <div className="h-48 bg-muted rounded-md mb-4 overflow-hidden">
+        <div className="aspect-square relative overflow-hidden rounded-lg bg-muted mb-3">
           <Image
             src={product.images[0]}
             alt={product.name}
-            className="w-full h-full object-cover"
+            className="object-cover object-center w-full h-full group-hover:scale-105 transition-transform duration-300"
           />
         </div>
-
-        <h5 className=" font-semibold">{product.name}</h5>
-        <p className="text-muted-foreground text-sm uppercase tracking-wide mb-2">
-          {product.company}
-        </p>
-
-        <div className="flex gap-2  mb-8">
-          {product.colors.map((color, index) => (
-            <button
-              key={index}
-              className="w-6 h-6 rounded-full border border-gray-200 focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 focus:outline-none"
-              style={{ backgroundColor: color }}
-              aria-label={`Select color ${index + 1}`}
-            />
-          ))}
-        </div>
-        <div className="flex text-sm justify-between items-center mt-auto">
-          <span className="font-bold dark:text-green-50">
-            {product.price.toFixed(2)}€
-          </span>
-          <div className="flex items-center">
-            <span className="text-yellow-500 mr-1">★</span>
-            <span className="dark:text-green-50">
-              {product.averageRating.toFixed(1)}
-            </span>
-            <span className="text-muted-foreground ml-1">
-              ({product.numOfReviews})
-            </span>
-          </div>
-        </div>
+        <h3 className="text-lg font-medium">{product.name}</h3>
+        <p className="text-muted-foreground mb-2">{getCategoryDisplay()}</p>
+        <p className="font-medium mt-auto dark:text-white">{formattedPrice}</p>
       </Link>
-      <div className="mt-4">
-        <Button
-          className="w-full dark:bg-green-500"
-          disabled={product.inventory === 0}
-        >
-          {product.inventory === 0
-            ? t("products.outOfStock")
-            : t("products.addToCart")}
-        </Button>
-      </div>
     </div>
   );
 }
