@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Slider, Checkbox, Accordion } from "radix-ui";
+import { Checkbox, Accordion } from "radix-ui";
 import { Button } from "@/shared/ui";
 import { X, SlidersHorizontal, ChevronDown } from "lucide-react";
+import { PriceRangeSlider } from "./FilterSlider";
 
 interface FilterOption {
   id: string;
@@ -173,49 +174,14 @@ export default function Filters() {
             </Accordion.Trigger>
           </Accordion.Header>
           <Accordion.Content className="pt-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-            <div className="space-y-6">
-              <Slider.Root
+            <div className="pt-1">
+              <PriceRangeSlider
+                min={0}
                 max={5000}
                 step={50}
-                value={[priceRange[0], priceRange[1]]}
-                onValueChange={handlePriceChange}
-                className="relative flex items-center w-full select-none h-5"
-              >
-                <Slider.Track className="relative w-full h-1 grow rounded-full bg-secondary dark:bg-green-200">
-                  <Slider.Range className="absolute h-full bg-primary dark:bg-green-500 rounded-full" />
-                </Slider.Track>
-                <Slider.Thumb className="pointer-events-auto block size-4 rounded-full border-2 dark:border-green-100 border-primary bg-background shadow focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" />
-                <Slider.Thumb className="pointer-events-auto block size-4 rounded-full border-2 dark:border-green-100 border-primary bg-background shadow focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2" />
-              </Slider.Root>
-              <div className="flex items-center justify-between">
-                <div className="w-20">
-                  <input
-                    type="number"
-                    value={priceRange[0]}
-                    onChange={(e) =>
-                      setPriceRange([
-                        Number.parseInt(e.target.value) || 100,
-                        priceRange[1],
-                      ])
-                    }
-                    className="w-full rounded-md border border-input px-3 py-1 text-sm"
-                  />
-                </div>
-                <span className="text-sm text-muted-foreground">to</span>
-                <div className="w-20">
-                  <input
-                    type="number"
-                    value={priceRange[1]}
-                    onChange={(e) =>
-                      setPriceRange([
-                        priceRange[0],
-                        Number.parseInt(e.target.value) || 4900,
-                      ])
-                    }
-                    className="w-full rounded-md border border-input px-3 py-1 text-sm"
-                  />
-                </div>
-              </div>
+                value={priceRange}
+                onChange={handlePriceChange}
+              />
             </div>
           </Accordion.Content>
         </Accordion.Item>
