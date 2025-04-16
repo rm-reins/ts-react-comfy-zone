@@ -3,6 +3,7 @@ import { Checkbox, Accordion } from "radix-ui";
 import { Button } from "@/shared/ui";
 import { X, SlidersHorizontal, ChevronDown } from "lucide-react";
 import { PriceRangeSlider } from "./FilterSlider";
+import { Product } from "@/trpc/types";
 
 interface FilterOption {
   id: string;
@@ -10,44 +11,74 @@ interface FilterOption {
   count?: number;
 }
 
-// TODO: Fix slider dragging
+interface FiltersProps {
+  products: Product[];
+}
 
-export default function Filters() {
-  const [priceRange, setPriceRange] = useState<[number, number]>([100, 4900]);
+export default function Filters({ products }: FiltersProps) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
 
-  const categories: FilterOption[] = [
-    { id: "living-room", label: "Living Room", count: 124 },
-    { id: "bedroom", label: "Bedroom", count: 86 },
-    { id: "kitchen", label: "Kitchen & Dining", count: 57 },
-    { id: "office", label: "Office", count: 43 },
-    { id: "outdoor", label: "Outdoor", count: 29 },
-  ];
+  const minPrice = products.length
+    ? products.reduce((min, p) => Math.min(min, p.price), Infinity)
+    : 0;
 
-  const colors: FilterOption[] = [
-    { id: "black", label: "Black" },
-    { id: "white", label: "White" },
-    { id: "gray", label: "Gray" },
-    { id: "brown", label: "Brown" },
-    { id: "beige", label: "Beige" },
-    { id: "blue", label: "Blue" },
-    { id: "green", label: "Green" },
-  ];
+  const maxPrice = products.length
+    ? products.reduce((max, p) => Math.max(max, p.price), 0)
+    : 5000;
 
-  const materials: FilterOption[] = [
-    { id: "wood", label: "Wood" },
-    { id: "metal", label: "Metal" },
-    { id: "glass", label: "Glass" },
-    { id: "fabric", label: "Fabric" },
-    { id: "leather", label: "Leather" },
-    { id: "marble", label: "Marble" },
-    { id: "rattan", label: "Rattan" },
-  ];
+  const safeMinPrice = !isFinite(minPrice) ? 0 : Math.floor(minPrice / 50) * 50;
+  const safeMaxPrice = !isFinite(maxPrice)
+    ? 5000
+    : Math.ceil(maxPrice / 50) * 50;
 
-  const toggleCategory = (categoryId: string) => {
+  const [priceRange, setPriceRange] = useState<[number, number]>([
+    safeMinPrice,
+    safeMaxPrice,
+  ]);
+
+  // Transform string arrays into FilterOption arrays
+  const categoryOptions: FilterOption[] = [
+    ...new Set(products.map((product) => product.category)),
+  ].map((category) => {
+    const count = products.filter(
+      (product) => product.category === category
+    ).length;
+    return {
+      id: category.toLowerCase().replace(/\s+/g, "-"),
+      label: category,
+      count,
+    };
+  });
+
+  const colorOptions: FilterOption[] = [
+    ...new Set(products.flatMap((product) => product.colors)),
+  ].map((color) => ({
+    id: color.toLowerCase().replace(/\s+/g, "-"),
+    label: color,
+  }));
+
+  const companyOptions: FilterOption[] = [
+    ...new Set(products.map((product) => product.company)),
+  ].map((company) => {
+    const count = products.filter(
+      (product) => product.company === company
+    ).length;
+    return {
+      id: company.toLowerCase().replace(/\s+/g, "-"),
+      label: company,
+      count,
+    };
+  });
+
+  const toggleCategory = (categoryId: string, e?: React.MouseEvent) => {
+    // Prevent event from bubbling up to accordion
+    if (e) {
+      e.stopPropagation();
+    }
+
     setSelectedCategories((prev) =>
       prev.includes(categoryId)
         ? prev.filter((id) => id !== categoryId)
@@ -55,7 +86,12 @@ export default function Filters() {
     );
   };
 
-  const toggleColor = (colorId: string) => {
+  const toggleColor = (colorId: string, e?: React.MouseEvent) => {
+    // Prevent event from bubbling up to accordion
+    if (e) {
+      e.stopPropagation();
+    }
+
     setSelectedColors((prev) =>
       prev.includes(colorId)
         ? prev.filter((id) => id !== colorId)
@@ -63,11 +99,16 @@ export default function Filters() {
     );
   };
 
-  const toggleMaterial = (materialId: string) => {
-    setSelectedMaterials((prev) =>
-      prev.includes(materialId)
-        ? prev.filter((id) => id !== materialId)
-        : [...prev, materialId]
+  const toggleCompany = (companyId: string, e?: React.MouseEvent) => {
+    // Prevent event from bubbling up to accordion
+    if (e) {
+      e.stopPropagation();
+    }
+
+    setSelectedCompanies((prev) =>
+      prev.includes(companyId)
+        ? prev.filter((id) => id !== companyId)
+        : [...prev, companyId]
     );
   };
 
@@ -78,16 +119,16 @@ export default function Filters() {
   const clearAllFilters = () => {
     setSelectedCategories([]);
     setSelectedColors([]);
-    setSelectedMaterials([]);
-    setPriceRange([100, 4900]);
+    setSelectedCompanies([]);
+    setPriceRange([safeMinPrice, safeMaxPrice]);
   };
 
   const hasActiveFilters =
     selectedCategories.length > 0 ||
     selectedColors.length > 0 ||
-    selectedMaterials.length > 0 ||
-    priceRange[0] > 100 ||
-    priceRange[1] < 4900;
+    selectedCompanies.length > 0 ||
+    priceRange[0] > safeMinPrice ||
+    priceRange[1] < safeMaxPrice;
 
   const FiltersContent = () => (
     <div className="space-y-6">
@@ -105,7 +146,7 @@ export default function Filters() {
 
       <Accordion.Root
         type="multiple"
-        defaultValue={["categories", "price", "colors"]}
+        defaultValue={["categories", "price", "colors", "companies"]}
         className="w-full space-y-4"
       >
         <Accordion.Item
@@ -120,7 +161,7 @@ export default function Filters() {
           </Accordion.Header>
           <Accordion.Content className="pt-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
             <div className="space-y-3">
-              {categories.map((category) => (
+              {categoryOptions.map((category) => (
                 <div
                   key={category.id}
                   className="flex items-center justify-between"
@@ -129,7 +170,12 @@ export default function Filters() {
                     <Checkbox.Root
                       id={`category-${category.id}`}
                       checked={selectedCategories.includes(category.id)}
-                      onCheckedChange={() => toggleCategory(category.id)}
+                      onCheckedChange={() => {
+                        // Stop propagation to prevent accordion from toggling
+                        const event = window.event as MouseEvent;
+                        event.stopPropagation();
+                        toggleCategory(category.id);
+                      }}
                       className="size-4 border border-input rounded flex items-center justify-center data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                     >
                       <Checkbox.Indicator>
@@ -149,7 +195,7 @@ export default function Filters() {
                     </Checkbox.Root>
                     <label
                       htmlFor={`category-${category.id}`}
-                      className="text-sm font-medium leading-none cursor-pointer"
+                      className="text-sm font-medium leading-none cursor-pointer capitalize"
                     >
                       {category.label}
                     </label>
@@ -176,8 +222,8 @@ export default function Filters() {
           <Accordion.Content className="pt-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
             <div className="pt-1">
               <PriceRangeSlider
-                min={0}
-                max={5000}
+                min={safeMinPrice}
+                max={safeMaxPrice}
                 step={50}
                 value={priceRange}
                 onChange={handlePriceChange}
@@ -198,7 +244,7 @@ export default function Filters() {
           </Accordion.Header>
           <Accordion.Content className="pt-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
             <div className="space-y-3">
-              {colors.map((color) => (
+              {colorOptions.map((color) => (
                 <div
                   key={color.id}
                   className="flex items-center"
@@ -206,7 +252,12 @@ export default function Filters() {
                   <Checkbox.Root
                     id={`color-${color.id}`}
                     checked={selectedColors.includes(color.id)}
-                    onCheckedChange={() => toggleColor(color.id)}
+                    onCheckedChange={() => {
+                      // Stop propagation to prevent accordion from toggling
+                      const event = window.event as MouseEvent;
+                      event.stopPropagation();
+                      toggleColor(color.id);
+                    }}
                     className="size-4 border border-input rounded flex items-center justify-center data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                   >
                     <Checkbox.Indicator>
@@ -237,49 +288,59 @@ export default function Filters() {
         </Accordion.Item>
 
         <Accordion.Item
-          value="materials"
+          value="companies"
           className="border-b pb-4"
         >
           <Accordion.Header className="w-full">
             <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium">
-              Materials
+              Companies
               <ChevronDown className="h-4 w-4 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
             </Accordion.Trigger>
           </Accordion.Header>
           <Accordion.Content className="pt-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
             <div className="space-y-3">
-              {materials.map((material) => (
+              {companyOptions.map((company) => (
                 <div
-                  key={material.id}
-                  className="flex items-center"
+                  key={company.id}
+                  className="flex items-center justify-between"
                 >
-                  <Checkbox.Root
-                    id={`material-${material.id}`}
-                    checked={selectedMaterials.includes(material.id)}
-                    onCheckedChange={() => toggleMaterial(material.id)}
-                    className="size-4 border border-input rounded flex items-center justify-center data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
-                  >
-                    <Checkbox.Indicator>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="size-3"
-                      >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    </Checkbox.Indicator>
-                  </Checkbox.Root>
-                  <label
-                    htmlFor={`material-${material.id}`}
-                    className="ml-2 text-sm font-medium cursor-pointer"
-                  >
-                    {material.label}
-                  </label>
+                  <div className="flex items-center gap-2">
+                    <Checkbox.Root
+                      id={`company-${company.id}`}
+                      checked={selectedCompanies.includes(company.id)}
+                      onCheckedChange={() => {
+                        // Stop propagation to prevent accordion from toggling
+                        const event = window.event as MouseEvent;
+                        event.stopPropagation();
+                        toggleCompany(company.id);
+                      }}
+                      className="size-4 border border-input rounded flex items-center justify-center data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                    >
+                      <Checkbox.Indicator>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="size-3"
+                        >
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      </Checkbox.Indicator>
+                    </Checkbox.Root>
+                    <label
+                      htmlFor={`company-${company.id}`}
+                      className="text-sm font-medium cursor-pointer"
+                    >
+                      {company.label}
+                    </label>
+                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    ({company.count})
+                  </span>
                 </div>
               ))}
             </div>

@@ -12,12 +12,11 @@ function ProductsGrid() {
   const { data, isLoading, error } = trpc.product.getAll.useQuery();
 
   const products = data ? (data as unknown as Product[]) : [];
-  const totalProducts = 156; // TODO: get from API
-  const displayedProducts = products.length || 24;
+  const totalProducts = products.length;
+  const displayedProducts = products.length || 24; // TODO implement pagination
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOption(e.target.value);
-    // TODO: Implement filters reducer & context
   };
 
   return (
@@ -25,7 +24,7 @@ function ProductsGrid() {
       <div className="flex flex-col md:flex-row gap-8">
         {/* Filters */}
         <div className="md:w-64">
-          <Filters />
+          <Filters products={products} />
         </div>
 
         {/* Product grid */}
