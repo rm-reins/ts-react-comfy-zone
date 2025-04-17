@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Checkbox, Accordion } from "radix-ui";
 import { Button } from "@/shared/ui";
 import { X, SlidersHorizontal, ChevronDown, Check } from "lucide-react";
@@ -13,31 +13,79 @@ interface FilterOption {
 
 interface FiltersProps {
   products: Product[];
+  initialCategories?: string[];
+  initialColors?: string[];
+  initialPriceRange?: [number, number];
+  initialCompanies?: string[];
+  onCategoriesChange?: (categories: string[]) => void;
+  onColorsChange?: (colors: string[]) => void;
+  onPriceChange?: (priceRange: [number, number]) => void;
+  onCompaniesChange?: (companies: string[]) => void;
+  onClearAll?: () => void;
 }
 
-export default function Filters({ products }: FiltersProps) {
+export default function Filters({
+  products,
+  initialCategories = [],
+  initialColors = [],
+  initialPriceRange,
+  initialCompanies = [],
+  onCategoriesChange,
+  onColorsChange,
+  onPriceChange,
+  onCompaniesChange,
+  onClearAll,
+}: FiltersProps) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
-  const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
 
+  // Use local state that syncs with external values
+  const [selectedCategories, setSelectedCategories] =
+    useState<string[]>(initialCategories);
+  const [selectedColors, setSelectedColors] = useState<string[]>(initialColors);
+  const [selectedCompanies, setSelectedCompanies] =
+    useState<string[]>(initialCompanies);
+
+  // Calculate price range from products
   const minPrice = products.length
-    ? products.reduce((min, p) => Math.min(min, p.price), Infinity)
+    ? Math.floor(
+        products.reduce((min, p) => Math.min(min, p.price), Infinity) / 50
+      ) * 50
     : 0;
 
   const maxPrice = products.length
-    ? products.reduce((max, p) => Math.max(max, p.price), 0)
+    ? Math.ceil(products.reduce((max, p) => Math.max(max, p.price), 0) / 50) *
+      50
     : 5000;
 
-  const safeMinPrice = !isFinite(minPrice) ? 0 : Math.floor(minPrice / 50) * 50;
-  const safeMaxPrice = !isFinite(maxPrice)
-    ? 5000
-    : Math.ceil(maxPrice / 50) * 50;
+  const safeMinPrice = !isFinite(minPrice) ? 0 : minPrice;
+  const safeMaxPrice = !isFinite(maxPrice) ? 5000 : maxPrice;
 
-  const [priceRange, setPriceRange] = useState<[number, number]>([
-    safeMinPrice,
-    safeMaxPrice,
-  ]);
+  const [priceRange, setPriceRange] = useState<[number, number]>(
+    initialPriceRange || [safeMinPrice, safeMaxPrice]
+  );
+
+  // Sync local state with external props when they change
+  useEffect(() => {
+    setSelectedCategories(initialCategories);
+  }, [initialCategories]);
+
+  useEffect(() => {
+    setSelectedColors(initialColors);
+  }, [initialColors]);
+
+  useEffect(() => {
+    if (initialPriceRange) {
+      const [min, max] = initialPriceRange;
+      setPriceRange([
+        Math.max(safeMinPrice, Math.min(min, safeMaxPrice)),
+        Math.min(safeMaxPrice, Math.max(max, safeMinPrice)),
+      ]);
+    }
+  }, [initialPriceRange, safeMinPrice, safeMaxPrice]);
+
+  useEffect(() => {
+    setSelectedCompanies(initialCompanies);
+  }, [initialCompanies]);
 
   // Transform string arrays into FilterOption arrays
   const categoryOptions: FilterOption[] = [
@@ -74,46 +122,44 @@ export default function Filters({ products }: FiltersProps) {
   });
 
   const toggleCategory = (categoryId: string, e?: React.MouseEvent) => {
-    // Prevent event from bubbling up to accordion
-    if (e) {
-      e.stopPropagation();
-    }
+    e?.stopPropagation();
 
-    setSelectedCategories((prev) =>
-      prev.includes(categoryId)
-        ? prev.filter((id) => id !== categoryId)
-        : [...prev, categoryId]
-    );
+    const newCategories = selectedCategories.includes(categoryId)
+      ? selectedCategories.filter((id) => id !== categoryId)
+      : [...selectedCategories, categoryId];
+
+    setSelectedCategories(newCategories);
+    onCategoriesChange?.(newCategories);
   };
 
   const toggleColor = (colorId: string, e?: React.MouseEvent) => {
-    // Prevent event from bubbling up to accordion
-    if (e) {
-      e.stopPropagation();
-    }
+    e?.stopPropagation();
 
-    setSelectedColors((prev) =>
-      prev.includes(colorId)
-        ? prev.filter((id) => id !== colorId)
-        : [...prev, colorId]
-    );
+    const newColors = selectedColors.includes(colorId)
+      ? selectedColors.filter((id) => id !== colorId)
+      : [...selectedColors, colorId];
+
+    setSelectedColors(newColors);
+    onColorsChange?.(newColors);
   };
 
   const toggleCompany = (companyId: string, e?: React.MouseEvent) => {
-    // Prevent event from bubbling up to accordion
-    if (e) {
-      e.stopPropagation();
-    }
+    e?.stopPropagation();
 
-    setSelectedCompanies((prev) =>
-      prev.includes(companyId)
-        ? prev.filter((id) => id !== companyId)
-        : [...prev, companyId]
-    );
+    const newCompanies = selectedCompanies.includes(companyId)
+      ? selectedCompanies.filter((id) => id !== companyId)
+      : [...selectedCompanies, companyId];
+
+    setSelectedCompanies(newCompanies);
+    onCompaniesChange?.(newCompanies);
   };
 
-  const handlePriceChange = (value: number[]) => {
-    setPriceRange([value[0], value[1]]);
+  const handlePriceChange = (value: [number, number]) => {
+    const [min, max] = value;
+    const newMin = Math.max(safeMinPrice, Math.min(min, safeMaxPrice));
+    const newMax = Math.min(safeMaxPrice, Math.max(max, safeMinPrice));
+    setPriceRange([newMin, newMax]);
+    onPriceChange?.([newMin, newMax]);
   };
 
   const clearAllFilters = () => {
@@ -121,6 +167,11 @@ export default function Filters({ products }: FiltersProps) {
     setSelectedColors([]);
     setSelectedCompanies([]);
     setPriceRange([safeMinPrice, safeMaxPrice]);
+
+    if (onClearAll) {
+      onClearAll();
+      return;
+    }
   };
 
   const hasActiveFilters =
@@ -152,8 +203,10 @@ export default function Filters({ products }: FiltersProps) {
         <h3 className="text-xl font-medium">Filters</h3>
         {hasActiveFilters && (
           <button
+            id="clear-all-filters"
+            type="button"
             onClick={clearAllFilters}
-            className="text-sm text-muted-foreground hover:text-primary transition-colors"
+            className="text-sm text-muted-foreground hover:text-primary transition-colors font-medium"
           >
             Clear all
           </button>

@@ -1,33 +1,113 @@
 import { useTranslation } from "@/i18n/useTranslation";
-import { trpc } from "@/trpc/trpc";
 import ProductCard from "./ProductCard";
-import { Skeleton, Button, Filters } from "@/shared/ui";
+import { Skeleton, Button } from "@/shared/ui";
 import { Product } from "@/trpc/types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 
-function ProductsGrid() {
+interface ProductsGridProps {
+  products: Product[];
+  isLoading?: boolean;
+  error?: Error;
+  filters?: {
+    categories?: string[];
+    colors?: string[];
+    minPrice?: number;
+    maxPrice?: number;
+    companies?: string[];
+  };
+}
+
+function ProductsGrid({
+  products,
+  isLoading = false,
+  error,
+  filters,
+}: ProductsGridProps) {
   const { t } = useTranslation();
   const [sortOption, setSortOption] = useState("featured");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 9;
 
-  const { data, isLoading, error } = trpc.product.getAll.useQuery();
-  const products = data ? (data as unknown as Product[]) : [];
+  // Apply filters to products
+  const filteredProducts = useMemo(() => {
+    if (!filters) return products;
+
+    return products.filter((product) => {
+      // Filter by category
+      if (
+        filters.categories?.length &&
+        !filters.categories.includes(
+          product.category.toLowerCase().replace(/\s+/g, "-")
+        )
+      ) {
+        return false;
+      }
+
+      // Filter by color
+      if (
+        filters.colors?.length &&
+        !product.colors.some((color) =>
+          filters.colors?.includes(color.toLowerCase().replace(/\s+/g, "-"))
+        )
+      ) {
+        return false;
+      }
+
+      // Filter by price
+      if (
+        (filters.minPrice !== undefined && product.price < filters.minPrice) ||
+        (filters.maxPrice !== undefined && product.price > filters.maxPrice)
+      ) {
+        return false;
+      }
+
+      // Filter by company
+      if (
+        filters.companies?.length &&
+        !filters.companies.includes(
+          product.company.toLowerCase().replace(/\s+/g, "-")
+        )
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+  }, [products, filters]);
+
+  // Apply sorting
+  const sortedProducts = useMemo(() => {
+    const productsToSort = [...filteredProducts];
+
+    switch (sortOption) {
+      case "price-asc":
+        return productsToSort.sort((a, b) => a.price - b.price);
+      case "price-desc":
+        return productsToSort.sort((a, b) => b.price - a.price);
+      case "newest":
+        return productsToSort.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      default:
+        return productsToSort;
+    }
+  }, [filteredProducts, sortOption]);
 
   // Reset to first page when sort or filter changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [sortOption]);
+  }, [sortOption, filters]);
 
   // Calculate pagination
-  const totalProducts = products.length;
+  const totalProducts = sortedProducts.length;
   const totalPages = Math.ceil(totalProducts / pageSize);
 
   // Get current page of products
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = Math.min(startIndex + pageSize, totalProducts);
-  const currentProducts = products.slice(startIndex, endIndex);
+  const currentProducts = sortedProducts.slice(startIndex, endIndex);
 
   const handlePageChange = (pageNumber: number) => {
     const page = Math.max(1, Math.min(pageNumber, totalPages));
@@ -46,11 +126,6 @@ function ProductsGrid() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col md:flex-row gap-8">
-        {/* Filters */}
-        <div className="md:w-64">
-          <Filters products={products} />
-        </div>
-
         {/* Product grid */}
         <div className="flex-1">
           {isLoading ? (
