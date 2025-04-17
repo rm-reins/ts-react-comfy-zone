@@ -143,8 +143,8 @@ export const orderRouter = router({
           subtotal += price * item.quantity;
         }
 
-        const tax = Math.ceil(subtotal * 0.15);
-        shippingFee = subtotal > 10000 ? 0 : 700;
+        const tax = Math.ceil(subtotal * 0.21);
+        shippingFee = subtotal > 200 ? 0 : 25;
         const total = subtotal + tax + shippingFee;
 
         const order = await Order.create({
