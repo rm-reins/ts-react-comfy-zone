@@ -7,25 +7,6 @@ interface ProductCardProps {
 }
 
 function ProductCard({ product }: ProductCardProps) {
-  const getCategoryDisplay = () => {
-    switch (product.category) {
-      case "bedroom":
-        return "Bedroom";
-      case "office":
-        return "Office";
-      case "kitchen":
-        return "Kitchen & Dining";
-      case "home decor":
-        return "Living Room";
-      case "storage":
-        return "Storage";
-      case "textiles":
-        return "Textiles";
-      default:
-        return product.category;
-    }
-  };
-
   const formattedPrice = `${product.price.toFixed(2)}€`;
 
   return (
@@ -42,7 +23,9 @@ function ProductCard({ product }: ProductCardProps) {
           />
         </div>
         <h3 className="text-lg font-medium">{product.name}</h3>
-        <p className="text-muted-foreground mb-2">{getCategoryDisplay()}</p>
+        <p className="text-muted-foreground mb-2 capitalize">
+          {product.category}
+        </p>
         <p className="font-medium mt-auto dark:text-white">{formattedPrice}</p>
       </Link>
     </div>
