@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Checkbox, Accordion } from "radix-ui";
 import { Button } from "@/shared/ui";
-import { X, SlidersHorizontal, ChevronDown } from "lucide-react";
+import { X, SlidersHorizontal, ChevronDown, Check } from "lucide-react";
 import { PriceRangeSlider } from "./FilterSlider";
 import { Product } from "@/trpc/types";
 
@@ -130,6 +130,22 @@ export default function Filters({ products }: FiltersProps) {
     priceRange[0] > safeMinPrice ||
     priceRange[1] < safeMaxPrice;
 
+  // Add a helper function to determine if a color is bright
+  const isBrightColor = (hexColor: string): boolean => {
+    // For named colors or non-hex values, default to false
+    if (!hexColor.startsWith("#")) return false;
+
+    // Convert hex to RGB
+    const r = parseInt(hexColor.slice(1, 3), 16);
+    const g = parseInt(hexColor.slice(3, 5), 16);
+    const b = parseInt(hexColor.slice(5, 7), 16);
+
+    // Calculate brightness using YIQ formula
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+    return brightness > 175;
+  };
+
   const FiltersContent = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -243,46 +259,35 @@ export default function Filters({ products }: FiltersProps) {
             </Accordion.Trigger>
           </Accordion.Header>
           <Accordion.Content className="pt-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
-            <div className="space-y-3">
-              {colorOptions.map((color) => (
-                <div
-                  key={color.id}
-                  className="flex items-center"
-                >
-                  <Checkbox.Root
-                    id={`color-${color.id}`}
-                    checked={selectedColors.includes(color.id)}
-                    onCheckedChange={() => {
-                      // Stop propagation to prevent accordion from toggling
-                      const event = window.event as MouseEvent;
-                      event.stopPropagation();
+            <div className="flex flex-wrap gap-2 pt-2">
+              {colorOptions.map((color) => {
+                const isSelected = selectedColors.includes(color.id);
+                const isBright = isBrightColor(color.label);
+
+                return (
+                  <button
+                    key={color.id}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
                       toggleColor(color.id);
                     }}
-                    className="size-4 border border-input rounded flex items-center justify-center data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                    className={`w-8 h-8 rounded-full flex items-center justify-center border transition-opacity ${
+                      isSelected ? "opacity-100" : "opacity-60"
+                    }`}
+                    style={{ backgroundColor: color.label }}
+                    title={color.label}
                   >
-                    <Checkbox.Indicator>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="size-3"
-                      >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                    </Checkbox.Indicator>
-                  </Checkbox.Root>
-                  <label
-                    htmlFor={`color-${color.id}`}
-                    className="ml-2 text-sm font-medium cursor-pointer"
-                  >
-                    {color.label}
-                  </label>
-                </div>
-              ))}
+                    {isSelected && (
+                      <Check
+                        className={`h-4 w-4 ${
+                          isBright ? "text-gray-800" : "text-white"
+                        }`}
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </Accordion.Content>
         </Accordion.Item>
