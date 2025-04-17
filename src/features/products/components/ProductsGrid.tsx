@@ -3,17 +3,41 @@ import { trpc } from "@/trpc/trpc";
 import ProductCard from "./ProductCard";
 import { Skeleton, Button, Filters } from "@/shared/ui";
 import { Product } from "@/trpc/types";
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 
 function ProductsGrid() {
   const { t } = useTranslation();
   const [sortOption, setSortOption] = useState("featured");
-  const { data, isLoading, error } = trpc.product.getAll.useQuery();
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 9;
 
+  const { data, isLoading, error } = trpc.product.getAll.useQuery();
   const products = data ? (data as unknown as Product[]) : [];
+
+  // Reset to first page when sort or filter changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [sortOption]);
+
+  // Calculate pagination
   const totalProducts = products.length;
-  const displayedProducts = products.length || 24; // TODO implement pagination
+  const totalPages = Math.ceil(totalProducts / pageSize);
+
+  // Get current page of products
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = Math.min(startIndex + pageSize, totalProducts);
+  const currentProducts = products.slice(startIndex, endIndex);
+
+  const handlePageChange = (pageNumber: number) => {
+    const page = Math.max(1, Math.min(pageNumber, totalPages));
+    setCurrentPage(page);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortOption(e.target.value);
@@ -51,7 +75,8 @@ function ProductsGrid() {
             <>
               <div className="flex justify-between items-center mb-6">
                 <p className="text-muted-foreground">
-                  Showing {displayedProducts} of {totalProducts} products
+                  Showing {startIndex + 1}-{endIndex} of {totalProducts}{" "}
+                  products
                 </p>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-muted-foreground">
@@ -74,10 +99,10 @@ function ProductsGrid() {
                 </div>
               </div>
 
-              {products.length > 0 ? (
+              {currentProducts.length > 0 ? (
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {products.map((product: Product) => (
+                    {currentProducts.map((product: Product) => (
                       <ProductCard
                         key={product._id}
                         product={product}
@@ -85,10 +110,51 @@ function ProductsGrid() {
                     ))}
                   </div>
 
-                  {/* TODO: implement pagination */}
-                  <div className="mt-10 flex justify-center">
-                    <Button variant="outline">Load More</Button>
-                  </div>
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="mt-10 flex justify-center">
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          disabled={currentPage === 1}
+                        >
+                          <ChevronLeft className="h-4 w-4" />
+                          <span className="sr-only">Previous page</span>
+                        </Button>
+
+                        {[...Array(totalPages)].map((_, index) => {
+                          const pageNumber = index + 1;
+                          return (
+                            <Button
+                              key={pageNumber}
+                              variant={
+                                pageNumber === currentPage
+                                  ? "default"
+                                  : "outline"
+                              }
+                              size="sm"
+                              onClick={() => handlePageChange(pageNumber)}
+                              className="w-8 h-8 p-0"
+                            >
+                              {pageNumber}
+                            </Button>
+                          );
+                        })}
+
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          disabled={currentPage === totalPages}
+                        >
+                          <ChevronRight className="h-4 w-4" />
+                          <span className="sr-only">Next page</span>
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </>
               ) : (
                 <div className="text-center py-12">
