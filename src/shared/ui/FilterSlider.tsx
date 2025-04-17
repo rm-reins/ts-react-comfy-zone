@@ -194,6 +194,8 @@ export function PriceRangeSlider({
       <div className="flex items-center justify-around">
         <div className="w-20">
           <input
+            id="price-min-input"
+            name="price-min"
             type="number"
             value={localValue[0]}
             onChange={handleInputChange(true)}
@@ -207,6 +209,8 @@ export function PriceRangeSlider({
         <span className="text-muted-foreground">to</span>
         <div className="w-20">
           <input
+            id="price-max-input"
+            name="price-max"
             type="number"
             value={localValue[1]}
             onChange={handleInputChange(false)}
