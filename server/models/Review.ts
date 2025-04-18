@@ -20,6 +20,8 @@ export interface IReview extends Document {
   comment: string;
   user: mongoose.Types.ObjectId;
   product: mongoose.Types.ObjectId;
+  userName: string;
+  userSurname: string;
   images: IReviewImage[];
   createdAt: Date;
   updatedAt: Date;
@@ -66,6 +68,14 @@ const ReviewSchema = new Schema<IReview, IReviewModel>(
         },
       ],
       validate: [arrayLimit, "You can only upload 5 images"],
+    },
+    userName: {
+      type: String,
+      required: true,
+    },
+    userSurname: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }

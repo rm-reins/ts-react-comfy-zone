@@ -1,5 +1,6 @@
 import Review from "../models/Review.js";
 import Product from "../models/Product.js";
+import { User } from "../models/User.js";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import {
@@ -9,7 +10,7 @@ import {
 } from "../errors/custom-errors.js";
 
 const createReview = async (req: Request, res: Response): Promise<void> => {
-  const { product: productId } = req.body;
+  const { product: productId, rating, title, comment, images } = req.body;
   const isValidProduct = await Product.findOne({ _id: productId });
 
   if (!isValidProduct) {
@@ -25,19 +26,69 @@ const createReview = async (req: Request, res: Response): Promise<void> => {
     throw BadRequestError("Review has been already submitted for this product");
   }
 
-  req.body.user = req.user?.clerkId;
-  const review = await Review.create(req.body);
+  const user = await User.findOne({ clerkId: req.user?.clerkId });
+
+  const review = await Review.create({
+    user: req.user?.clerkId,
+    product: productId,
+    rating,
+    title,
+    comment,
+    images,
+    userName: user?.name || "Unknown",
+    userSurname: user?.surname || "User",
+  });
+
+  const allProductReviews = await Review.find({ product: productId });
+  const totalRating = allProductReviews.reduce(
+    (sum, review) => sum + review.rating,
+    0
+  );
+  const averageRating =
+    allProductReviews.length > 0 ? totalRating / allProductReviews.length : 0;
+
+  await Product.findByIdAndUpdate(
+    productId,
+    {
+      averageRating,
+      numOfReviews: allProductReviews.length,
+    },
+    { new: true, runValidators: true }
+  );
 
   res.status(StatusCodes.CREATED).json({ review });
 };
 
 const getAllReviews = async (req: Request, res: Response): Promise<void> => {
-  const reviews = await Review.find({}).populate({
-    path: "product",
-    select: "name company price",
-  });
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (Number(page) - 1) * Number(limit);
+  const totalReviews = await Review.countDocuments();
 
-  res.status(StatusCodes.OK).json({ reviews });
+  const reviews = await Review.find({})
+    .populate({
+      path: "user",
+      select: "name surname",
+    })
+    .populate({
+      path: "product",
+      select: "name company price",
+    })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(Number(limit));
+
+  const totalPages = Math.ceil(totalReviews / Number(limit));
+  const hasNextPage = Number(page) < totalPages;
+  const hasPrevPage = Number(page) > 1;
+
+  res.status(StatusCodes.OK).json({
+    docs: reviews,
+    totalDocs: totalReviews,
+    totalPages,
+    currentPage: Number(page),
+    hasNextPage,
+    hasPrevPage,
+  });
 };
 
 const getSingleReview = async (req: Request, res: Response): Promise<void> => {
@@ -54,33 +105,69 @@ const getSingleReview = async (req: Request, res: Response): Promise<void> => {
 const updateReview = async (req: Request, res: Response): Promise<void> => {
   const { id: reviewId } = req.params;
   const { rating, title, comment } = req.body;
-  const review = await Review.findOne({ _id: reviewId });
+
+  const review = await Review.findById(reviewId);
 
   if (!review) {
     throw NotFoundError("No review with id: ${reviewId}");
   }
 
   if (review.user.toString() !== req.user?.clerkId) {
-    throw UnauthorizedError("You are not authorized to view this order");
+    throw UnauthorizedError("You are not authorized to update this review");
   }
 
-  review.rating = rating;
-  review.title = title;
-  review.comment = comment;
+  const updatedReview = await Review.findByIdAndUpdate(
+    reviewId,
+    { rating, title, comment },
+    { new: true, runValidators: true }
+  );
 
-  await review.save();
-  res.status(StatusCodes.OK).json({ review });
+  if (rating && rating !== review.rating) {
+    const productId = review.product;
+    const allProductReviews = await Review.find({ product: productId });
+    const totalRating = allProductReviews.reduce(
+      (sum, review) => sum + review.rating,
+      0
+    );
+    const averageRating =
+      allProductReviews.length > 0 ? totalRating / allProductReviews.length : 0;
+
+    await Product.findByIdAndUpdate(
+      productId,
+      { averageRating },
+      { new: true, runValidators: true }
+    );
+  }
+
+  res.status(StatusCodes.OK).json({ updatedReview });
 };
 
 const deleteReview = async (req: Request, res: Response): Promise<void> => {
   const { id: reviewId } = req.params;
-  const review = await Review.findOne({ _id: reviewId });
 
+  const review = await Review.findById(reviewId);
   if (!review) {
     throw NotFoundError(`No review with id: ${reviewId}`);
   }
 
-  await review.deleteOne();
+  await Review.findByIdAndDelete(reviewId);
+
+  // Update product rating
+  const productId = review.product;
+  const allProductReviews = await Review.find({ product: productId });
+  const totalRating = allProductReviews.reduce(
+    (sum, review) => sum + review.rating,
+    0
+  );
+  const averageRating =
+    allProductReviews.length > 0 ? totalRating / allProductReviews.length : 0;
+
+  await Product.findByIdAndUpdate(
+    productId,
+    { averageRating },
+    { new: true, runValidators: true }
+  );
+
   res.status(StatusCodes.OK).json({ msg: "Review deleted" });
 };
 
@@ -89,13 +176,41 @@ const getSingleProductReviews = async (
   res: Response
 ): Promise<void> => {
   const { id: productId } = req.params;
-  const reviews = await Review.find({ product: productId });
+  const { page = 1, limit = 10 } = req.query;
+  const skip = (Number(page) - 1) * Number(limit);
+
+  const product = await Product.findById(productId);
+  if (!product) {
+    throw NotFoundError(`No product with id: ${productId}`);
+  }
+
+  const total = await Review.countDocuments({ product: productId });
+
+  const reviews = await Review.find({ product: productId })
+    .populate({
+      path: "user",
+      select: "name surname",
+    })
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(Number(limit));
 
   if (!reviews) {
     throw NotFoundError(`No reviews found for product with id: ${productId}`);
   }
 
-  res.status(StatusCodes.OK).json({ reviews, count: reviews.length });
+  const totalPages = Math.ceil(total / Number(limit));
+  const hasNextPage = Number(page) < totalPages;
+  const hasPrevPage = Number(page) > 1;
+
+  res.status(StatusCodes.OK).json({
+    docs: reviews,
+    totalDocs: total,
+    totalPages,
+    currentPage: Number(page),
+    hasNextPage,
+    hasPrevPage,
+  });
 };
 
 export {
