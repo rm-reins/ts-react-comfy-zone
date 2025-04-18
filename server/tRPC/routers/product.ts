@@ -4,20 +4,40 @@ import Product from "../../models/Product.js";
 import { TRPCError } from "@trpc/server";
 
 const productInputSchema = z.object({
-  name: z.string().min(3, "Name must be at lease 3 characters long"),
+  name: z
+    .string()
+    .min(3, "Name must be at least 3 characters long")
+    .max(100, "Name cannot be more than 100 characters"),
   price: z.number().positive("Price must be positive"),
   description: z
     .string()
-    .min(10, "Description must be at least 10 characters long"),
+    .min(10, "Description must be at least 10 characters long")
+    .max(1000, "Description cannot be more than 1000 characters"),
   images: z.array(z.string()).optional(),
-  category: z.string(),
+  category: z.enum([
+    "office",
+    "kitchen",
+    "bedroom",
+    "home decor",
+    "storage",
+    "textiles",
+    "other",
+  ]),
   company: z.string(),
+  colors: z.array(z.string()),
   featured: z.boolean().optional().default(false),
   inventory: z.number().int().nonnegative().optional().default(0),
   averageRating: z.number().optional().default(0),
   numOfReviews: z.number().int().optional().default(0),
-  createdAt: z.date().default(() => new Date()),
-  updatedAt: z.date().default(() => new Date()),
+  user: z.string().optional(),
+  createdAt: z
+    .date()
+    .optional()
+    .default(() => new Date()),
+  updatedAt: z
+    .date()
+    .optional()
+    .default(() => new Date()),
 });
 
 export const productRouter = router({
@@ -63,13 +83,27 @@ export const productRouter = router({
     .input(productInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
+        if (!ctx?.user?.clerkId) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "User must be authenticated to create a product",
+          });
+        }
+
+        // Create product with user from context
+        const productData = { ...input };
+        // Remove user field if it exists, as we'll set it from context
+        delete productData.user;
+
         const product = await Product.create({
-          ...input,
-          user: ctx?.user?.clerkId,
+          ...productData,
+          user: ctx.user.clerkId,
         });
 
         return product;
       } catch (error) {
+        if (error instanceof TRPCError) throw error;
+
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to create product",
@@ -89,7 +123,7 @@ export const productRouter = router({
       try {
         const { id, product } = input;
 
-        const existingProduct = await Product.findById(id);
+        const existingProduct = await Product.findOne({ _id: id });
 
         if (!existingProduct) {
           throw new TRPCError({
@@ -98,10 +132,18 @@ export const productRouter = router({
           });
         }
 
-        const updatedProduct = await Product.findByIdAndUpdate(id, product, {
-          new: true,
-          runValidators: true,
-        });
+        // Create a copy of the product data and remove the user field if it exists
+        const productData = { ...product };
+        delete productData.user; // Prevent updating the user field
+
+        const updatedProduct = await Product.findOneAndUpdate(
+          { _id: id },
+          productData,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
 
         return updatedProduct;
       } catch (error) {
