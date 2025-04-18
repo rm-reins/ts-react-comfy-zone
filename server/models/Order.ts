@@ -17,7 +17,7 @@ interface IOrder extends Document {
   subtotal: number;
   total: number;
   orderItems: ISingleOrderItem[];
-  status: "pending" | "failed" | "paid" | "delivered" | "cancelled";
+  status: "pending" | "paid" | "delivered" | "cancelled";
   paymentId: string;
   user: mongoose.Types.ObjectId;
   createdAt: Date;

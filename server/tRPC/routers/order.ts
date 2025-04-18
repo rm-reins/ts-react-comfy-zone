@@ -29,7 +29,7 @@ const orderSchema = z.object({
   orderItems: z.array(orderItemSchema),
   paymentId: z.string().optional(),
   status: z
-    .enum(["pending", "failed", "paid", "delivered", "cancelled"])
+    .enum(["pending", "paid", "delivered", "cancelled"])
     .default("pending"),
   user: z.string().optional(),
   createdAt: z.date().optional(),
