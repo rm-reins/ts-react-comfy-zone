@@ -81,7 +81,8 @@ export interface Review {
   comment: string;
   user: string;
   product: string;
-  images: string[];
+  userName?: string;
+  userSurname?: string;
   createdAt: Date;
   updatedAt: Date;
 }

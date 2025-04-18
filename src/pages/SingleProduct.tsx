@@ -258,7 +258,8 @@ export default function SingleProduct() {
                     <div className="flex justify-between mb-4">
                       <div className="flex items-center gap-3">
                         <span className="font-medium">
-                          {review.user?.toUpperCase() || "Anonymous"}
+                          {review.user?.toUpperCase() ||
+                            `${review?.userSurname} ${review?.userName}`}
                         </span>
                       </div>
                       <div className="flex items-center gap-1">

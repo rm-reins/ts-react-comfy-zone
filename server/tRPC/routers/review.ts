@@ -62,7 +62,7 @@ export const reviewRouter = router({
   getSingleProductReviews: publicProcedure
     .input(
       z.object({
-        productId: z.string().regex(/^[0-9a-fA-F]{24}$/),
+        productId: z.string(),
         pagination: paginationSchema,
       })
     )
@@ -74,7 +74,7 @@ export const reviewRouter = router({
         } = input;
         const skip = (page - 1) * limit;
 
-        const product = await Product.findById(productId);
+        const product = await Product.findOne({ _id: productId });
         if (!product) {
           throw new TRPCError({
             code: "NOT_FOUND",
@@ -82,7 +82,9 @@ export const reviewRouter = router({
           });
         }
 
-        const total = await Review.countDocuments({ product: productId });
+        const total = await Review.countDocuments({
+          product: productId,
+        });
 
         const reviews = await Review.find({ product: productId })
           .populate("user", "name")
