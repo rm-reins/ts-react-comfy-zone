@@ -5,13 +5,6 @@ interface IProduct extends Document {
   numOfReviews: number;
 }
 
-interface IReviewImage {
-  url: string;
-  filename: string;
-}
-
-const arrayLimit = (val: IReviewImage[]) => val.length <= 5;
-
 export interface IReview extends Document {
   _id: mongoose.Types.ObjectId;
   clerkId: string;
@@ -22,7 +15,6 @@ export interface IReview extends Document {
   product: mongoose.Types.ObjectId;
   userName: string;
   userSurname: string;
-  images: IReviewImage[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -59,15 +51,6 @@ const ReviewSchema = new Schema<IReview, IReviewModel>(
       type: Schema.Types.ObjectId,
       ref: "Product",
       required: true,
-    },
-    images: {
-      type: [
-        {
-          url: String,
-          filename: String,
-        },
-      ],
-      validate: [arrayLimit, "You can only upload 5 images"],
     },
     userName: {
       type: String,

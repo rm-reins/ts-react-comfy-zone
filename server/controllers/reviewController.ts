@@ -10,7 +10,7 @@ import {
 } from "../errors/custom-errors.js";
 
 const createReview = async (req: Request, res: Response): Promise<void> => {
-  const { product: productId, rating, title, comment, images } = req.body;
+  const { product: productId, rating, title, comment } = req.body;
   const isValidProduct = await Product.findOne({ _id: productId });
 
   if (!isValidProduct) {
@@ -34,7 +34,6 @@ const createReview = async (req: Request, res: Response): Promise<void> => {
     rating,
     title,
     comment,
-    images,
     userName: user?.name || "Unknown",
     userSurname: user?.surname || "User",
   });
