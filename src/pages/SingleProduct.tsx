@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Image, Skeleton } from "@/shared/ui";
 import {
   ChevronDown,
@@ -11,6 +11,7 @@ import {
 import { cn } from "@/utils/utils";
 import { trpc } from "@/trpc/trpc";
 import { Review, Product } from "@/trpc/types";
+import { keepPreviousData } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "@/i18n/useTranslation";
 
@@ -21,6 +22,7 @@ export default function SingleProduct() {
   const [selectedColor, setSelectedColor] = useState(0);
   const [openSection, setOpenSection] = useState<string>("description");
   const [currentPage, setCurrentPage] = useState(1);
+  const [reviewsPerPage] = useState(4);
 
   // Fetch the product - pass ID directly as a string
   const {
@@ -36,14 +38,23 @@ export default function SingleProduct() {
   const product = productData as Product;
 
   // Fetch reviews for the product
-  const { data: reviewsData, isLoading: reviewsLoading } =
-    trpc.review.getSingleProductReviews.useQuery(
-      {
-        productId: id || "",
-        pagination: { page: currentPage, limit: 4 },
-      },
-      { enabled: !!id }
-    );
+  const {
+    data: reviewsData,
+    isLoading: reviewsLoading,
+    error: reviewsError,
+    refetch: refetchReviews,
+  } = trpc.review.getSingleProductReviews.useQuery(
+    {
+      productId: id || "",
+      pagination: { page: currentPage, limit: reviewsPerPage },
+    },
+    { enabled: !!id, placeholderData: keepPreviousData }
+  );
+
+  // Reset page when product changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [id]);
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? "" : section);
@@ -79,6 +90,8 @@ export default function SingleProduct() {
   // Handle reviews data
   const reviews = (reviewsData?.docs as unknown as Review[]) || [];
   const totalPages = reviewsData?.totalPages || 1;
+  const hasNextPage = reviewsData?.hasNextPage || false;
+  const hasPrevPage = reviewsData?.hasPrevPage || false;
 
   return (
     <div className="bg-background min-h-screen p-4 md:p-8">
@@ -94,7 +107,7 @@ export default function SingleProduct() {
               {product.images
                 .slice(0, 3)
                 .map((image: string, index: number) => (
-                  <div>
+                  <div key={`thumb-${index}`}>
                     <Image
                       src={image || "/placeholder.svg"}
                       alt={`${product.name} thumbnail ${index + 1}`}
@@ -247,6 +260,18 @@ export default function SingleProduct() {
                   />
                 ))}
             </div>
+          ) : reviewsError ? (
+            <div className="text-center py-10 bg-white rounded-xl border">
+              <p className="text-red-500">
+                {reviewsError.message || t("common.errorLoadingReviews")}
+              </p>
+              <button
+                className="mt-4 px-6 py-2 bg-primary text-white rounded-full hover:bg-primary/90"
+                onClick={() => refetchReviews()}
+              >
+                {t("common.tryAgain")}
+              </button>
+            </div>
           ) : reviews.length > 0 ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -257,7 +282,7 @@ export default function SingleProduct() {
                   >
                     <div className="flex justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <span className="font-medium">
+                        <span className="font-medium text-primary">
                           {review.user?.toUpperCase() ||
                             `${review?.userSurname} ${review?.userName}`}
                         </span>
@@ -284,49 +309,139 @@ export default function SingleProduct() {
                         </span>
                       </div>
                     </div>
-                    <h4 className="font-medium mb-1">{review.title}</h4>
+                    <h4 className="font-medium mb-1 text-green-500">
+                      {review.title}
+                    </h4>
                     <p className="text-gray-600">{review.comment}</p>
                   </div>
                 ))}
               </div>
 
-              {/* Pagination */}
+              {/* Enhanced Pagination */}
               {totalPages > 1 && (
-                <div className="flex justify-between items-center mt-8">
-                  <button
-                    className="flex items-center gap-2 font-medium uppercase"
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                    disabled={currentPage === 1}
-                  >
-                    <ArrowLeft className="w-5 h-5" /> {t("common.previous")}
-                  </button>
-                  <div className="flex gap-2">
-                    {Array(totalPages)
-                      .fill(0)
-                      .map((_, i) => (
-                        <button
-                          key={i}
-                          className={cn(
-                            "w-8 h-8 rounded-full flex items-center justify-center",
-                            currentPage === i + 1
-                              ? "bg-primary text-white"
-                              : "bg-white text-gray-600 border"
+                <div className="flex justify-center items-center mt-8">
+                  <div className="flex items-center gap-3 bg-white p-2 rounded-full shadow-sm">
+                    <button
+                      className={cn(
+                        "flex items-center gap-1 font-medium px-3 py-2 rounded-full transition-colors",
+                        hasPrevPage
+                          ? "hover:bg-primary/10 text-primary"
+                          : "text-gray-300 cursor-not-allowed"
+                      )}
+                      onClick={() =>
+                        hasPrevPage && setCurrentPage(currentPage - 1)
+                      }
+                      disabled={!hasPrevPage}
+                      aria-label="Previous page"
+                    >
+                      <ArrowLeft className="w-4 h-4" />
+                      <span className="hidden sm:inline">
+                        {t("common.back")}
+                      </span>
+                    </button>
+
+                    <div className="flex gap-1">
+                      {totalPages <= 5 ? (
+                        // Show all pages if 5 or fewer
+                        Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                          (page) => (
+                            <button
+                              key={page}
+                              className={cn(
+                                "w-8 h-8 rounded-full flex items-center justify-center",
+                                currentPage === page
+                                  ? "bg-primary text-white"
+                                  : "hover:bg-primary/10 text-gray-600"
+                              )}
+                              onClick={() => setCurrentPage(page)}
+                            >
+                              {page}
+                            </button>
+                          )
+                        )
+                      ) : (
+                        // Show first, last, and pages around current if more than 5
+                        <>
+                          <button
+                            className={cn(
+                              "w-8 h-8 rounded-full flex items-center justify-center",
+                              currentPage === 1
+                                ? "bg-primary text-white"
+                                : "hover:bg-primary/10 text-gray-600"
+                            )}
+                            onClick={() => setCurrentPage(1)}
+                          >
+                            1
+                          </button>
+
+                          {currentPage > 3 && (
+                            <span className="px-1 text-primary">...</span>
                           )}
-                          onClick={() => setCurrentPage(i + 1)}
-                        >
-                          {i + 1}
-                        </button>
-                      ))}
+
+                          {Array.from(
+                            { length: Math.min(3, totalPages - 2) },
+                            (_, i) => {
+                              let pageNum;
+                              if (currentPage <= 2) pageNum = i + 2;
+                              else if (currentPage >= totalPages - 1)
+                                pageNum = totalPages - 3 + i;
+                              else pageNum = currentPage - 1 + i;
+                              return pageNum <= totalPages - 1 &&
+                                pageNum >= 2 ? (
+                                <button
+                                  key={pageNum}
+                                  className={cn(
+                                    "w-8 h-8 rounded-full flex items-center justify-center",
+                                    currentPage === pageNum
+                                      ? "bg-primary text-white"
+                                      : "hover:bg-primary/10 text-gray-600"
+                                  )}
+                                  onClick={() => setCurrentPage(pageNum)}
+                                >
+                                  {pageNum}
+                                </button>
+                              ) : null;
+                            }
+                          )}
+
+                          {currentPage < totalPages - 2 && (
+                            <span className="px-1 text-primary">...</span>
+                          )}
+
+                          <button
+                            className={cn(
+                              "w-8 h-8 rounded-full flex items-center justify-center",
+                              currentPage === totalPages
+                                ? "bg-primary text-white"
+                                : "hover:bg-primary/10 text-gray-600"
+                            )}
+                            onClick={() => setCurrentPage(totalPages)}
+                          >
+                            {totalPages}
+                          </button>
+                        </>
+                      )}
+                    </div>
+
+                    <button
+                      className={cn(
+                        "flex items-center gap-1 font-medium px-3 py-2 rounded-full transition-colors",
+                        hasNextPage
+                          ? "hover:bg-primary/10 text-primary"
+                          : "text-gray-300 cursor-not-allowed"
+                      )}
+                      onClick={() =>
+                        hasNextPage && setCurrentPage(currentPage + 1)
+                      }
+                      disabled={!hasNextPage}
+                      aria-label="Next page"
+                    >
+                      <span className="hidden sm:inline">
+                        {t("common.next")}
+                      </span>
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
-                  <button
-                    className="flex items-center gap-2 font-medium uppercase"
-                    onClick={() =>
-                      setCurrentPage(Math.min(totalPages, currentPage + 1))
-                    }
-                    disabled={currentPage === totalPages}
-                  >
-                    {t("common.next")} <ArrowRight className="w-5 h-5" />
-                  </button>
                 </div>
               )}
             </>
