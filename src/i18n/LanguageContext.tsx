@@ -1,15 +1,15 @@
 import React, {
   createContext,
   useContext,
-  useState,
   useCallback,
   ReactNode,
 } from "react";
 import { en } from "./languages/en";
 import { de } from "./languages/de";
 import { ru } from "./languages/ru";
-
-type Language = "en" | "de" | "ru";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import { setLanguage } from "@/features/language/languageSlice";
+import type { Language } from "@/features/language/languageSlice";
 
 type TranslationValue = string | { [key: string]: TranslationValue };
 
@@ -39,14 +39,20 @@ export const useLanguage = () => {
 
 interface LanguageProviderProps {
   children: ReactNode;
-  defaultLanguage?: Language;
 }
 
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({
   children,
-  defaultLanguage = "en",
 }) => {
-  const [language, setLanguage] = useState<Language>(defaultLanguage);
+  const dispatch = useAppDispatch();
+  const language = useAppSelector((state) => state.languageState.language);
+
+  const handleSetLanguage = useCallback(
+    (lang: Language) => {
+      dispatch(setLanguage(lang));
+    },
+    [dispatch]
+  );
 
   const t = useCallback(
     (key: string, params?: Record<string, string | number>) => {
@@ -80,7 +86,7 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
 
   const value = {
     language,
-    setLanguage,
+    setLanguage: handleSetLanguage,
     t,
   };
 
