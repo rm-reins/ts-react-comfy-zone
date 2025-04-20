@@ -104,7 +104,7 @@ export const orderRouter = router({
     .input(orderSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const { orderItems } = input;
+        const { orderItems, tax, shippingFee, subtotal, total } = input;
 
         if (!orderItems || orderItems.length < 1) {
           throw new TRPCError({
@@ -114,8 +114,7 @@ export const orderRouter = router({
         }
 
         const processedOrderItems: object[] = [];
-        let subtotal = 0;
-        let shippingFee = 0;
+        let serverSubtotal = 0;
 
         for (const item of orderItems) {
           const dbProduct = await Product.findOne({ _id: item._id });
@@ -124,6 +123,20 @@ export const orderRouter = router({
             throw new TRPCError({
               code: "NOT_FOUND",
               message: `No product with id: ${item._id} was found.`,
+            });
+          }
+
+          if (dbProduct.price !== item.price) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: `Invalid price for product: ${dbProduct.name}`,
+            });
+          }
+
+          if (dbProduct.inventory < item.quantity) {
+            throw new TRPCError({
+              code: "BAD_REQUEST",
+              message: `Not enough inventory for ${dbProduct.name}. Available: ${dbProduct.inventory}`,
             });
           }
 
@@ -140,21 +153,39 @@ export const orderRouter = router({
           };
 
           processedOrderItems.push(singleOrderItem);
-          subtotal += price * item.quantity;
+          serverSubtotal += price * item.quantity;
         }
 
-        const tax = Math.ceil(subtotal * 0.21);
-        shippingFee = subtotal > 200 ? 0 : 25;
-        const total = subtotal + tax + shippingFee;
+        const serverTax = Math.ceil(subtotal * 0.21);
+        const serverShippingFee = serverSubtotal > 200 ? 0 : 25;
+        const serverTotal = serverSubtotal + serverTax + serverShippingFee;
+
+        if (
+          Math.abs(serverSubtotal - subtotal) > 0.01 ||
+          serverTax !== tax ||
+          serverShippingFee !== shippingFee ||
+          Math.abs(serverTotal - total) > 0.01
+        ) {
+          throw new TRPCError({
+            code: `BAD_REQUEST`,
+            message: "Order calculation mismatch. Please try again",
+          });
+        }
 
         const order = await Order.create({
-          tax,
-          shippingFee,
-          subtotal,
-          total,
+          tax: serverTax,
+          shippingFee: serverShippingFee,
+          subtotal: serverSubtotal,
+          total: serverTotal,
           orderItems: processedOrderItems,
           user: ctx.user?.clerkId,
         });
+
+        for (const item of orderItems) {
+          await Product.findByIdAndUpdate(item._id, {
+            $inc: { inventory: -item.quantity },
+          });
+        }
 
         return order;
       } catch (error) {
