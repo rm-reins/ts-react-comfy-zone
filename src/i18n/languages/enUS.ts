@@ -106,6 +106,8 @@ export const enUS = {
   },
   cart: {
     empty: "Your cart is empty",
+    emptyMessage:
+      "Looks like you haven't added anything to your cart yet. Browse our collection and find something you'll love.",
     items: "{{count}} items",
     item: "{{count}} item",
     clearCart: "Clear Cart",
@@ -122,6 +124,7 @@ export const enUS = {
     freeShipping: "Free Shipping",
     checkout: "Proceed to Checkout",
     continueShopping: "Continue Shopping",
+    startShopping: "Start Shopping",
     title: "Shopping Cart",
     product: "Product",
     quantity: "Quantity",

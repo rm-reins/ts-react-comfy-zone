@@ -1,9 +1,11 @@
 import { ShoppingBag } from "lucide-react";
 import { Button } from "@/shared/ui";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export default function EmptyCart() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="container px-4 py-16 mx-auto text-center">
@@ -12,16 +14,15 @@ export default function EmptyCart() {
           <ShoppingBag className="h-12 w-12 text-muted-foreground" />
         </div>
       </div>
-      <h1 className="text-3xl font-bold mb-2">Your cart is empty</h1>
+      <h1 className="text-3xl font-bold mb-2">{t("cart.empty")}</h1>
       <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-        Looks like you haven't added anything to your cart yet. Browse our
-        collection and find something you'll love.
+        {t("cart.emptyMessage")}
       </p>
       <Button
         size="lg"
         onClick={() => navigate("/products")}
       >
-        Start Shopping
+        {t("cart.startShopping")}
       </Button>
     </div>
   );

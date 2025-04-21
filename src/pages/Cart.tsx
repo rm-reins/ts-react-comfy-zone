@@ -16,32 +16,7 @@ function Cart() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  const cartItems: OrderItem[] = [
-    {
-      _id: "1",
-      name: "Comfortable Sofa",
-      price: 599.99,
-      quantity: 1,
-      image: "/placeholder.svg?height=100&width=100",
-      color: "Gray",
-    },
-    {
-      _id: "2",
-      name: "Modern Coffee Table",
-      price: 149.99,
-      quantity: 2,
-      image: "/placeholder.svg?height=100&width=100",
-      color: "Walnut",
-    },
-    {
-      _id: "3",
-      name: "Decorative Cushion",
-      price: 24.99,
-      quantity: 3,
-      image: "/placeholder.svg?height=100&width=100",
-      color: "Teal",
-    },
-  ];
+  const cartItems: OrderItem[] = [];
 
   // Calculate cart totals
   const subtotal = cartItems.reduce(
@@ -132,7 +107,7 @@ function Cart() {
                     <span className="md:hidden text-sm font-medium">
                       {t("cart.price")}
                     </span>
-                    <span>${item.price.toFixed(2)}</span>
+                    <span>{item.price.toFixed(2)} €</span>
                   </div>
 
                   {/* Total */}
@@ -141,7 +116,7 @@ function Cart() {
                       {t("cart.total")}
                     </span>
                     <span className="font-medium">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      {(item.price * item.quantity).toFixed(2)} €
                     </span>
                   </div>
                 </div>
@@ -172,18 +147,18 @@ function Cart() {
                   <span className="text-muted-foreground">
                     {t("cart.subtotal")}
                   </span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{subtotal.toFixed(2)} €</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">
                     {t("cart.shipping")}
                   </span>
-                  <span>${shipping.toFixed(2)}</span>
+                  <span>{shipping.toFixed(2)} €</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between font-bold">
                   <span>{t("cart.total")}</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>{total.toFixed(2)} €</span>
                 </div>
               </div>
             </CardContent>

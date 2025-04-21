@@ -107,6 +107,8 @@ export const deDE = {
   },
   cart: {
     empty: "Ihr Warenkorb ist leer",
+    emptyMessage:
+      "Sie haben noch nichts zum Warenkorb hinzugefügt. Durchsuchen Sie unsere Kollektion und finden Sie etwas, das Ihnen gefällt.",
     items: "{{count}} Artikel",
     item: "{{count}} Artikel",
     clearCart: "Warenkorb leeren",
@@ -123,7 +125,16 @@ export const deDE = {
     freeShipping: "Kostenloser Versand",
     checkout: "Zur Kasse",
     continueShopping: "Weiter einkaufen",
+    startShopping: "Katalog",
     title: "Warenkorb",
+    product: "Produkt",
+    quantity: "Menge",
+    price: "Preis",
+    color: "Farbe",
+    remove: "Entfernen",
+    decreaseQuantity: "Verringern",
+    increaseQuantity: "Erhöhen",
+    orderSummary: "Bestellübersicht",
   },
   checkout: {
     billingAddress: "Rechnungsadresse",
