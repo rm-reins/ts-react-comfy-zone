@@ -19,7 +19,8 @@ function ProductCard({ product }: ProductCardProps) {
           <Image
             src={product.images[0]}
             alt={product.name}
-            className="object-cover object-center w-full h-full group-hover:scale-105 transition-transform duration-300"
+            layout="fill"
+            className="group-hover:scale-105 transition-transform duration-300"
           />
         </div>
         <h3 className="text-lg font-medium">{product.name}</h3>

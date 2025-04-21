@@ -105,7 +105,6 @@ export default function HeroCarousel({
                 src={image.src || "/placeholder.svg"}
                 alt={image.alt}
                 layout="fill"
-                className="object-cover"
                 priority={index === 0}
               />
               <div className="absolute inset-0 bg-black/30" />
