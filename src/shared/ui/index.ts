@@ -10,3 +10,12 @@ export { default as LanguageMenuSub } from "./LanguageMenuSub";
 export { default as UserDropdown } from "./UserDropdown";
 export { default as FeaturesSection } from "./FeaturesSection";
 export { default as Filters } from "./Filters";
+export {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "./Card";
+export { default as Separator } from "./Separator";
