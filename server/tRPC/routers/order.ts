@@ -5,16 +5,15 @@ import Product from "../../models/Product.js";
 import { TRPCError } from "@trpc/server";
 
 const orderItemSchema = z.object({
+  _id: z
+    .string()
+    .regex(/^[0-9a-fA-F]{24}$/)
+    .optional(),
   name: z.string(),
   price: z.number(),
   image: z.string(),
   quantity: z.number().min(1),
   color: z.string(),
-  size: z.string(),
-  _id: z
-    .string()
-    .regex(/^[0-9a-fA-F]{24}$/)
-    .optional(),
 });
 
 const orderSchema = z.object({
@@ -149,7 +148,6 @@ export const orderRouter = router({
             image: item.image,
             _id,
             color: item.color,
-            size: item.size,
           };
 
           processedOrderItems.push(singleOrderItem);

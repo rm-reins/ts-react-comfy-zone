@@ -7,7 +7,6 @@ interface ISingleOrderItem {
   image: string;
   quantity: number;
   color: string;
-  size: string;
 }
 
 interface IOrder extends Document {
@@ -45,10 +44,6 @@ const SingleOrderItemSchema = new Schema<ISingleOrderItem>({
     type: String,
     required: true,
   },
-  size: {
-    type: String,
-    required: true,
-  },
 });
 
 const OrderSchema = new Schema<IOrder>(
@@ -81,7 +76,6 @@ const OrderSchema = new Schema<IOrder>(
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: true,
     },
   },
   { timestamps: true }

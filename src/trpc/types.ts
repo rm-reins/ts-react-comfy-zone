@@ -50,27 +50,26 @@ export interface User {
 }
 
 export interface OrderItem {
-  _id: string;
+  _id?: string;
   name: string;
   price: number;
   image: string;
   quantity: number;
   color: string;
-  size: string;
 }
 
 export interface Order {
-  _id: string;
+  _id?: string;
   tax: number;
   shippingFee: number;
   subtotal: number;
   total: number;
   orderItems: OrderItem[];
-  paymentId: string;
-  status: "pending" | "failed" | "paid" | "delivered" | "cancelled";
-  user: string;
-  createdAt: Date;
-  updatedAt: Date;
+  paymentId?: string;
+  status?: "pending" | "paid" | "delivered" | "cancelled";
+  user?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface Review {
