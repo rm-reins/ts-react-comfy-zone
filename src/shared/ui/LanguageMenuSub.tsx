@@ -12,9 +12,9 @@ function LanguageMenuSub() {
   const { language, setLanguage, t } = useTranslation();
 
   const languages = [
-    { code: "en" as const, label: "English" },
-    { code: "de" as const, label: "Deutsch" },
-    { code: "ru" as const, label: "Русский" },
+    { code: "enUS" as const, label: "English" },
+    { code: "deDE" as const, label: "Deutsch" },
+    { code: "ruRU" as const, label: "Русский" },
   ];
 
   return (

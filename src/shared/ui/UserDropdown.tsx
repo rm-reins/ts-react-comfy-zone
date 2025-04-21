@@ -9,17 +9,36 @@ import Button from "./Button";
 import LanguageMenuSub from "./LanguageMenuSub";
 import { useTranslation } from "@/i18n/useTranslation";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useUser, useClerk } from "@clerk/clerk-react";
+import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
 
 export default function UserDropdown() {
   const { t } = useTranslation();
   const { user } = useUser();
   const { signOut } = useClerk();
   const navigate = useNavigate();
+  const { signIn, setActive, isLoaded } = useSignIn();
 
   const handleLogout = async () => {
     await signOut();
     navigate("/");
+  };
+
+  const handleDemoLogin = async () => {
+    if (!isLoaded) return;
+
+    try {
+      const result = await signIn.create({
+        identifier: import.meta.env.VITE_CLERK_SIGN_IN_DEMO_USER_EMAIL,
+        password: import.meta.env.VITE_CLERK_SIGN_IN_DEMO_USER_PASSWORD,
+      });
+
+      if (result.status === "complete") {
+        setActive({ session: result.createdSessionId });
+        navigate("/");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -58,15 +77,28 @@ export default function UserDropdown() {
             </DropdownMenuItem>
           </>
         ) : (
-          <DropdownMenuItem>
-            <NavLink
-              className="text-foreground w-full"
-              to="/sign-in"
-            >
-              {t("common.login")}
-            </NavLink>
-          </DropdownMenuItem>
+          <>
+            <DropdownMenuItem>
+              <NavLink
+                className="text-foreground w-full"
+                to="/sign-in"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate("/sign-in");
+                  setTimeout(() => window.location.reload(), 50);
+                }}
+              >
+                {t("common.login")}
+              </NavLink>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDemoLogin}>
+              <span className="text-foreground w-full cursor-pointer">
+                {t("auth.demoLogin")}
+              </span>
+            </DropdownMenuItem>
+          </>
         )}
+
         <LanguageMenuSub />
       </DropdownMenuContent>
     </DropdownMenu>

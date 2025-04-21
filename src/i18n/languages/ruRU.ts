@@ -1,4 +1,4 @@
-export const ru = {
+export const ruRU = {
   common: {
     loading: "Загрузка...",
     error: "Произошла ошибка",
@@ -64,6 +64,8 @@ export const ru = {
     passwordMismatch: "Пароли не совпадают",
     invalidEmail: "Неверный email адрес",
     requiredField: "Это поле обязательно для заполнения",
+    demoLogin: "Демо логин",
+    signInAccount: "Войдите в учетную запись",
   },
   products: {
     featured: "Рекомендуемые товары",

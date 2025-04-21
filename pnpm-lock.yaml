@@ -11,6 +11,9 @@ importers:
       '@clerk/clerk-react':
         specifier: ^5.27.0
         version: 5.27.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@clerk/localizations':
+        specifier: ^3.13.12
+        version: 3.13.12
       '@reduxjs/toolkit':
         specifier: ^2.6.1
         version: 2.6.1(react-redux@9.2.0(@types/react@19.1.1)(react@19.1.0)(redux@5.0.1))(react@19.1.0)
@@ -353,6 +356,10 @@ packages:
     peerDependencies:
       express: ^4.17.0 || ^5.0.0
 
+  '@clerk/localizations@3.13.12':
+    resolution: {integrity: sha512-/hHDgJAnjmcm1dTK0pUubR2UYDscUWtKViGpOZ+TnZTTR0uduy5/vp6eki3asydpuTu/BbAo0JujGlgp3xbdhw==}
+    engines: {node: '>=18.17.0'}
+
   '@clerk/shared@3.6.0':
     resolution: {integrity: sha512-rAbXmwXTgexye+og4iFyfyzve3is5TQL03n5k0K3qEbH7TjxUx5MbHpdTg1zRhNvrzwxpxJmcduoOuyQh1W9DA==}
     engines: {node: '>=18.17.0'}
@@ -367,6 +374,10 @@ packages:
 
   '@clerk/types@4.53.0':
     resolution: {integrity: sha512-MkJckVDQtxPK9WTbPZugsqO5dbatiX1uCtSdu4b16OKtt0adZSXX72RKQLKdRfcP/eIbijruBMrGIuZR9qLEeQ==}
+    engines: {node: '>=18.17.0'}
+
+  '@clerk/types@4.54.2':
+    resolution: {integrity: sha512-9z2odfkK58b8aa9GM6G5CmDefXKoGE8UG8f9cDp//Z4qYMqq2/uPHzDFYawJMu1Da2sUwgNeXEFqoaatXaBoXA==}
     engines: {node: '>=18.17.0'}
 
   '@colors/colors@1.6.0':
@@ -3636,6 +3647,10 @@ snapshots:
       - react-dom
       - svix
 
+  '@clerk/localizations@3.13.12':
+    dependencies:
+      '@clerk/types': 4.54.2
+
   '@clerk/shared@3.6.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@clerk/types': 4.53.0
@@ -3649,6 +3664,10 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
 
   '@clerk/types@4.53.0':
+    dependencies:
+      csstype: 3.1.3
+
+  '@clerk/types@4.54.2':
     dependencies:
       csstype: 3.1.3
 

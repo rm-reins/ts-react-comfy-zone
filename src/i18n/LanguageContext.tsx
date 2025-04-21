@@ -4,9 +4,9 @@ import React, {
   useCallback,
   ReactNode,
 } from "react";
-import { en } from "./languages/en";
-import { de } from "./languages/de";
-import { ru } from "./languages/ru";
+import { enUS } from "./languages/enUS";
+import { deDE } from "./languages/deDE";
+import { ruRU } from "./languages/ruRU";
 import { useAppDispatch, useAppSelector } from "@/hooks";
 import { setLanguage } from "@/features/language/languageSlice";
 import type { Language } from "@/features/language/languageSlice";
@@ -20,9 +20,9 @@ interface LanguageContextType {
 }
 
 const translations = {
-  en,
-  de,
-  ru,
+  enUS,
+  deDE,
+  ruRU,
 };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(

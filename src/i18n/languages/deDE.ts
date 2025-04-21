@@ -1,4 +1,4 @@
-export const de = {
+export const deDE = {
   common: {
     loading: "Laden...",
     error: "Ein Fehler ist aufgetreten",
@@ -64,6 +64,8 @@ export const de = {
     passwordMismatch: "Die Passwörter stimmen nicht überein",
     invalidEmail: "Ungültige E-Mail-Adresse",
     requiredField: "Dieses Feld ist erforderlich",
+    demoLogin: "Demo Login",
+    signInAccount: "Anmelden zu Ihrem Konto",
   },
   products: {
     featured: "Ausgewählte Produkte",

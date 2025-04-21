@@ -1,4 +1,4 @@
-export const en = {
+export const enUS = {
   common: {
     loading: "Loading...",
     error: "An error occurred",
@@ -64,6 +64,8 @@ export const en = {
     passwordMismatch: "Passwords do not match",
     invalidEmail: "Invalid email address",
     requiredField: "This field is required",
+    demoLogin: "Demo Login",
+    signInAccount: "Sign in to your account",
   },
   products: {
     featured: "Featured Products",

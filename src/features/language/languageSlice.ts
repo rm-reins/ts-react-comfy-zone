@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export type Language = "en" | "de" | "ru";
+export type Language = "enUS" | "deDE" | "ruRU";
 
 export interface LanguageState {
   language: Language;
@@ -11,9 +11,9 @@ const getInitialState = (): Language => {
     const storedLanguage = localStorage.getItem(
       "ui-language"
     ) as Language | null;
-    return storedLanguage || "en";
+    return storedLanguage || "enUS";
   }
-  return "en";
+  return "enUS";
 };
 
 const initialState: LanguageState = {

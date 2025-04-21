@@ -15,8 +15,9 @@ import {
   createBrowserRouter,
   Navigate,
   useRouteError,
+  useNavigate,
 } from "react-router-dom";
-import { SignedOut, RedirectToSignIn, useAuth } from "@clerk/clerk-react";
+import { SignedOut, useAuth } from "@clerk/clerk-react";
 import { ReactNode } from "react";
 import { ErrorFallback } from "@/shared/errors";
 
@@ -26,9 +27,12 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isSignedIn } = useAuth();
+  const navigate = useNavigate();
 
   if (!isSignedIn) {
-    return <RedirectToSignIn />;
+    navigate("/sign-in");
+    setTimeout(() => window.location.reload(), 50);
+    return null;
   }
 
   return children;
