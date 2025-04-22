@@ -1,6 +1,7 @@
 export const ruRU = {
   common: {
     loading: "Загрузка...",
+    saving: "Сохранение...",
     error: "Произошла ошибка",
     success: "Успех",
     save: "Сохранить",

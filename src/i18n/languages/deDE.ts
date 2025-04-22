@@ -1,6 +1,7 @@
 export const deDE = {
   common: {
     loading: "Laden...",
+    saving: "Speichern...",
     error: "Ein Fehler ist aufgetreten",
     success: "Erfolg",
     save: "Speichern",

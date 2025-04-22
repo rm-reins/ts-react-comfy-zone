@@ -2,14 +2,8 @@ import { useRef, useEffect, useState } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { X } from "lucide-react";
 import { Form } from "radix-ui";
-
-export interface DeliveryAddress {
-  street: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
-}
+import { Button } from "@/shared/ui";
+import { DeliveryAddress } from "@/trpc/types";
 
 interface AddressFormPopupProps {
   address: DeliveryAddress | null;
@@ -17,6 +11,7 @@ interface AddressFormPopupProps {
   isOpen: boolean;
   onClose: () => void;
   onSave: (address: DeliveryAddress) => void;
+  isSubmitting?: boolean;
 }
 
 function AddressFormPopup({
@@ -25,30 +20,39 @@ function AddressFormPopup({
   isOpen,
   onClose,
   onSave,
+  isSubmitting = false,
 }: AddressFormPopupProps) {
   const { t } = useTranslation();
   const popupRef = useRef<HTMLDivElement>(null);
+  const [hasChanges, setHasChanges] = useState(false);
 
   const [formData, setFormData] = useState<DeliveryAddress>({
+    _id: "",
     street: "",
     city: "",
     state: "",
     postalCode: "",
     country: "Germany",
+    isDefault: false,
   });
 
   useEffect(() => {
     if (address) {
-      setFormData(address);
+      setFormData({
+        ...address,
+      });
     } else {
       setFormData({
+        _id: "",
         street: "",
         city: "",
         state: "",
         postalCode: "",
         country: "Germany",
+        isDefault: false,
       });
     }
+    setHasChanges(false);
   }, [address]);
 
   useEffect(() => {
@@ -57,7 +61,7 @@ function AddressFormPopup({
         popupRef.current &&
         !popupRef.current.contains(event.target as Node)
       ) {
-        onClose();
+        handleClose();
       }
     };
 
@@ -73,7 +77,7 @@ function AddressFormPopup({
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        onClose();
+        handleClose();
       }
     };
 
@@ -97,11 +101,23 @@ function AddressFormPopup({
       [name]:
         type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
+    setHasChanges(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave(formData);
+    setHasChanges(false);
+  };
+
+  const handleClose = () => {
+    if (hasChanges && !isSubmitting) {
+      if (window.confirm(t("common.unsavedChanges"))) {
+        onClose();
+      }
+    } else {
+      onClose();
+    }
   };
 
   if (!isOpen) return null;
@@ -119,12 +135,14 @@ function AddressFormPopup({
                 ? t("account.editAddress")
                 : t("account.addNewAddress")}
             </h2>
-            <button
-              onClick={onClose}
-              className="text-neutral-500 hover:text-neutral-800 dark:text-neutral-400 dark:hover:text-white transition-colors"
+            <Button
+              onClick={handleClose}
+              variant="ghost"
+              size="default"
+              disabled={isSubmitting}
             >
               <X className="h-6 w-6" />
-            </button>
+            </Button>
           </div>
         </div>
 
@@ -148,6 +166,7 @@ function AddressFormPopup({
                   <input
                     type="text"
                     id="street"
+                    name="street"
                     value={formData.street}
                     onChange={handleChange}
                     required
@@ -175,6 +194,7 @@ function AddressFormPopup({
                   <input
                     type="text"
                     id="city"
+                    name="city"
                     value={formData.city}
                     onChange={handleChange}
                     required
@@ -196,24 +216,18 @@ function AddressFormPopup({
                   htmlFor="state"
                   className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1"
                 >
-                  {t("account.state")} *
+                  {t("account.state")}
                 </Form.Label>
                 <Form.Control asChild>
                   <input
                     type="text"
                     id="state"
+                    name="state"
                     value={formData.state}
                     onChange={handleChange}
-                    required
                     className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                   />
                 </Form.Control>
-                <Form.Message
-                  match="valueMissing"
-                  className="text-xs text-red-500 mt-1"
-                >
-                  {t("account.required")}
-                </Form.Message>
               </div>
             </Form.Field>
 
@@ -229,6 +243,7 @@ function AddressFormPopup({
                   <input
                     type="text"
                     id="postalCode"
+                    name="postalCode"
                     value={formData.postalCode}
                     onChange={handleChange}
                     required
@@ -256,6 +271,7 @@ function AddressFormPopup({
                   <input
                     type="text"
                     id="country"
+                    name="country"
                     value={formData.country}
                     onChange={handleChange}
                     required
@@ -273,17 +289,28 @@ function AddressFormPopup({
           </div>
 
           <div className="border-t border-neutral-200 dark:border-green-800 pt-6 flex flex-col md:flex-row gap-4 justify-end">
-            <button
+            <Button
               type="button"
-              onClick={onClose}
-              className="px-6 py-3 border border-neutral-300 bg-neutral-50 rounded-full text-neutral-700 hover:bg-neutral-300 transition-colors"
+              onClick={handleClose}
+              variant="outline"
+              size="xl"
+              disabled={isSubmitting}
             >
               {t("common.cancel")}
-            </button>
+            </Button>
             <Form.Submit asChild>
-              <button className="px-6 py-3 bg-green-700 text-white rounded-full hover:bg-green-800 transition-colors">
-                {mode === "edit" ? t("common.save") : t("common.add")}
-              </button>
+              <Button
+                type="submit"
+                variant="default"
+                size="xl"
+                disabled={isSubmitting}
+              >
+                {isSubmitting
+                  ? t("common.saving")
+                  : mode === "edit"
+                  ? t("common.save")
+                  : t("common.add")}
+              </Button>
             </Form.Submit>
           </div>
         </Form.Root>
