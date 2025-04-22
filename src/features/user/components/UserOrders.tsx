@@ -3,6 +3,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { OrderDetailsPopup } from "@/features/orders";
 import { Order } from "@/trpc/types";
 import { trpc } from "@/trpc/trpc";
+import { Button } from "@/shared/ui";
 
 function UserOrders() {
   const { t, language } = useTranslation();
@@ -78,7 +79,7 @@ function UserOrders() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-12">
         <div className="flex items-center justify-center mb-12">
-          <h1 className="text-3xl font-bold dark:text-white text-primary">
+          <h1 className="text-2xl sm:text-3xl font-bold dark:text-white text-primary">
             {t("account.myOrders")}
           </h1>
           <span className="ml-2 bg-primary text-white dark:bg-white dark:text-primary rounded-full w-6 h-6 flex items-center justify-center text-sm">
@@ -140,7 +141,7 @@ function UserOrders() {
                             {formatStatus(order.status)}
                           </td>
                           <td className="py-4 px-4 text-primary text-right truncate">
-                            {order.total} EUR
+                            {order.total} €
                           </td>
                         </tr>
                       ))}
@@ -158,7 +159,7 @@ function UserOrders() {
                   className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm"
                 >
                   <h2 className="text-xl font-bold text-primary mb-6">
-                    {t("orders.orderId")} #{order._id}
+                    {t("orders.orderId")} #{order._id?.slice(0, 8)}
                   </h2>
 
                   <div className="grid grid-cols-2 gap-y-6">
@@ -184,16 +185,17 @@ function UserOrders() {
                       <p className="font-semibold text-primary mb-1">
                         {t("orders.total")}
                       </p>
-                      <p className="text-primary">{order.total} EUR</p>
+                      <p className="text-primary">{order.total} €</p>
                     </div>
                   </div>
 
-                  <button
+                  <Button
                     onClick={() => handleOpenOrderDetails(order)}
-                    className="w-full mt-6 py-4 bg-primary hover:bg-green-700 text-white font-medium rounded-full transition-colors"
+                    variant="default"
+                    className="w-full mt-6"
                   >
                     {t("orders.viewOrderDetails")}
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>

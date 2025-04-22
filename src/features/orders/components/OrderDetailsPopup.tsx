@@ -2,7 +2,7 @@ import { useRef, useEffect } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { X } from "lucide-react";
 import { Order } from "@/trpc/types";
-
+import { Button } from "@/shared/ui";
 interface OrderDetailsPopupProps {
   order: Order | null;
   isOpen: boolean;
@@ -54,7 +54,7 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
       return amount;
     }
     // Otherwise format the number
-    return `€ ${amount.toFixed(2)}`.replace(".", ",");
+    return `${amount.toFixed(2)} €`.replace(".", ",");
   };
 
   // Get status color
@@ -118,7 +118,7 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
         {/* Header */}
         <div className="bg-secondary dark:bg-neutral-50 border-b border-neutral-200 dark:border-green-800 p-6">
           <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold text-primary">
+            <h2 className="flex flex-col sm:flex-row text-base sm:text-2xl font-bold text-primary">
               {t("orders.orderDetails")} #{order._id}
             </h2>
             <button
@@ -274,12 +274,13 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
         {/* Footer Actions */}
         <div className="p-6 border-t border-neutral-200 dark:border-green-800    rounded-b-xl">
           <div className="flex flex-col md:flex-row gap-4 justify-end">
-            <button
+            <Button
               onClick={onClose}
-              className="px-6 py-3 border bg-neutral-50 border-neutral-300 rounded-full text-neutral-700 hover:bg-neutral-300 transition-colors"
+              variant="outline"
+              size="xl"
             >
               {t("common.close")}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
