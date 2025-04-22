@@ -4,6 +4,7 @@ import { Button } from "@/shared/ui";
 import { X, SlidersHorizontal, ChevronDown, Check } from "lucide-react";
 import { PriceRangeSlider } from "./FilterSlider";
 import { Product } from "@/trpc/types";
+import { useTranslation } from "@/i18n/useTranslation";
 
 interface FilterOption {
   id: string;
@@ -37,6 +38,7 @@ export default function Filters({
   onClearAll,
 }: FiltersProps) {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const { t } = useTranslation();
 
   // Use local state that syncs with external values
   const [selectedCategories, setSelectedCategories] =
@@ -200,7 +202,7 @@ export default function Filters({
   const FiltersContent = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-medium">Filters</h3>
+        <h3 className="text-xl font-medium">{t("common.filters")}</h3>
         {hasActiveFilters && (
           <button
             id="clear-all-filters"
@@ -208,7 +210,7 @@ export default function Filters({
             onClick={clearAllFilters}
             className="text-sm text-muted-foreground hover:text-primary transition-colors font-medium"
           >
-            Clear all
+            {t("products.clearAll")}
           </button>
         )}
       </div>
@@ -224,7 +226,7 @@ export default function Filters({
         >
           <Accordion.Header className="w-full">
             <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium">
-              Categories
+              {t("products.categories")}
               <ChevronDown className="h-4 w-4 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
             </Accordion.Trigger>
           </Accordion.Header>
@@ -284,7 +286,7 @@ export default function Filters({
         >
           <Accordion.Header className="w-full">
             <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium">
-              Price Range
+              {t("products.priceRange")}
               <ChevronDown className="h-4 w-4 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
             </Accordion.Trigger>
           </Accordion.Header>
@@ -307,7 +309,7 @@ export default function Filters({
         >
           <Accordion.Header className="w-full">
             <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium">
-              Colors
+              {t("products.colors")}
               <ChevronDown className="h-4 w-4 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
             </Accordion.Trigger>
           </Accordion.Header>
@@ -351,7 +353,7 @@ export default function Filters({
         >
           <Accordion.Header className="w-full">
             <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium">
-              Companies
+              {t("products.companies")}
               <ChevronDown className="h-4 w-4 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
             </Accordion.Trigger>
           </Accordion.Header>
@@ -422,7 +424,7 @@ export default function Filters({
           className="w-full flex items-center justify-between"
           onClick={() => setMobileFiltersOpen(true)}
         >
-          <span>Filters</span>
+          <span>{t("common.filters")}</span>
           <SlidersHorizontal className="h-4 w-4" />
         </Button>
 
@@ -430,7 +432,7 @@ export default function Filters({
           <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
             <div className="fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-background p-6 shadow-lg">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold">Filters</h2>
+                <h2 className="text-xl font-semibold">{t("common.filters")}</h2>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -438,7 +440,7 @@ export default function Filters({
                   className="rounded-full h-8 w-8"
                 >
                   <X className="h-4 w-4" />
-                  <span className="sr-only">Close</span>
+                  <span className="sr-only">{t("common.close")}</span>
                 </Button>
               </div>
               <div className="overflow-y-auto h-[calc(100vh-10rem)]">

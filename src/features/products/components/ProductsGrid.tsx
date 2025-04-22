@@ -1,9 +1,9 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import ProductCard from "./ProductCard";
-import { Skeleton, Button } from "@/shared/ui";
+import { Skeleton, Pagination } from "@/shared/ui";
 import { Product } from "@/trpc/types";
 import { useState, useEffect, useMemo } from "react";
-import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 
 interface ProductsGridProps {
   products: Product[];
@@ -157,26 +157,28 @@ function ProductsGrid({
             <>
               <div className="flex justify-between items-center mb-6">
                 <p className="text-muted-foreground">
-                  Showing {startIndex + 1}-{endIndex} of {totalProducts}{" "}
-                  products
+                  {t("products.found", { count: totalProducts })}
                 </p>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">
-                    Sort by:
-                  </span>
                   <div className="relative">
                     <select
-                      className="appearance-none text-sm border rounded-xl px-3 py-2 pr-8 bg-transparent"
+                      className="appearance-none text-sm px-3 py-2 pr-8 bg-transparent focus:outline-none focus:ring-0"
                       value={sortOption}
                       onChange={handleSortChange}
                     >
-                      <option value="featured">Featured</option>
-                      <option value="price-asc">Price: Low to High</option>
-                      <option value="price-desc">Price: High to Low</option>
-                      <option value="newest">Newest</option>
-                      <option value="bestselling">Best Selling</option>
+                      <option value="featured">{t("products.featured")}</option>
+                      <option value="price-asc">
+                        {t("products.priceLowToHigh")}
+                      </option>
+                      <option value="price-desc">
+                        {t("products.priceHighToLow")}
+                      </option>
+                      <option value="newest">{t("products.newest")}</option>
+                      <option value="bestselling">
+                        {t("products.bestSelling")}
+                      </option>
                     </select>
-                    <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 pointer-events-none text-muted-foreground" />
+                    <ChevronsUpDown className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 pointer-events-none text-muted-foreground" />
                   </div>
                 </div>
               </div>
@@ -194,48 +196,12 @@ function ProductsGrid({
 
                   {/* Pagination */}
                   {totalPages > 1 && (
-                    <div className="mt-10 flex justify-center">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handlePageChange(currentPage - 1)}
-                          disabled={currentPage === 1}
-                        >
-                          <ChevronLeft className="h-4 w-4" />
-                          <span className="sr-only">Previous page</span>
-                        </Button>
-
-                        {[...Array(totalPages)].map((_, index) => {
-                          const pageNumber = index + 1;
-                          return (
-                            <Button
-                              key={pageNumber}
-                              variant={
-                                pageNumber === currentPage
-                                  ? "default"
-                                  : "outline"
-                              }
-                              size="sm"
-                              onClick={() => handlePageChange(pageNumber)}
-                              className="w-8 h-8 p-0"
-                            >
-                              {pageNumber}
-                            </Button>
-                          );
-                        })}
-
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handlePageChange(currentPage + 1)}
-                          disabled={currentPage === totalPages}
-                        >
-                          <ChevronRight className="h-4 w-4" />
-                          <span className="sr-only">Next page</span>
-                        </Button>
-                      </div>
-                    </div>
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={totalPages}
+                      onPageChange={handlePageChange}
+                      className="mt-10"
+                    />
                   )}
                 </>
               ) : (
