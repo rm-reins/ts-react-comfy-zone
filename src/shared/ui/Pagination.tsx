@@ -23,12 +23,12 @@ function Pagination({
 
   return (
     <div className={cn("flex justify-center", className)}>
-      <div className="flex items-center gap-3 bg-white p-2 rounded-full shadow-sm">
+      <div className="flex items-center gap-3 bg-green-50 bg-opacity-50 p-2 rounded-lg border border-green-100">
         <button
           className={cn(
-            "flex items-center gap-1 font-medium px-3 py-2 rounded-full transition-colors",
+            "flex items-center gap-1 font-medium px-3 py-2 rounded-md transition-colors",
             hasPrevPage
-              ? "hover:bg-primary/10 text-primary"
+              ? "hover:bg-green-100 text-green-600"
               : "text-gray-300 cursor-not-allowed"
           )}
           onClick={() => hasPrevPage && onPageChange(currentPage - 1)}
@@ -47,9 +47,9 @@ function Pagination({
 
         <button
           className={cn(
-            "flex items-center gap-1 font-medium px-3 py-2 rounded-full transition-colors",
+            "flex items-center gap-1 font-medium px-3 py-2 rounded-md transition-colors",
             hasNextPage
-              ? "hover:bg-primary/10 text-primary"
+              ? "hover:bg-green-100 text-green-600"
               : "text-gray-300 cursor-not-allowed"
           )}
           onClick={() => hasNextPage && onPageChange(currentPage + 1)}
@@ -78,10 +78,10 @@ function renderPaginationButtons(
       <button
         key={page}
         className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center",
+          "w-8 h-8 rounded-md flex items-center justify-center transition-colors",
           currentPage === page
-            ? "bg-primary text-white"
-            : "hover:bg-primary/10 text-gray-600"
+            ? "bg-green-600 text-white"
+            : "hover:bg-green-100 text-gray-600"
         )}
         onClick={() => onPageChange(page)}
       >
@@ -95,17 +95,17 @@ function renderPaginationButtons(
     <>
       <button
         className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center",
+          "w-8 h-8 rounded-md flex items-center justify-center transition-colors",
           currentPage === 1
-            ? "bg-primary text-white"
-            : "hover:bg-primary/10 text-gray-600"
+            ? "bg-green-600 text-white"
+            : "hover:bg-green-100 text-gray-600"
         )}
         onClick={() => onPageChange(1)}
       >
         1
       </button>
 
-      {currentPage > 3 && <span className="px-1 text-primary">...</span>}
+      {currentPage > 3 && <span className="px-1 text-green-600">...</span>}
 
       {Array.from({ length: Math.min(3, totalPages - 2) }, (_, i) => {
         let pageNum;
@@ -116,10 +116,10 @@ function renderPaginationButtons(
           <button
             key={pageNum}
             className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center",
+              "w-8 h-8 rounded-md flex items-center justify-center transition-colors",
               currentPage === pageNum
-                ? "bg-primary text-white"
-                : "hover:bg-primary/10 text-gray-600"
+                ? "bg-green-600 text-white"
+                : "hover:bg-green-100 text-gray-600"
             )}
             onClick={() => onPageChange(pageNum)}
           >
@@ -129,15 +129,15 @@ function renderPaginationButtons(
       })}
 
       {currentPage < totalPages - 2 && (
-        <span className="px-1 text-primary">...</span>
+        <span className="px-1 text-green-600">...</span>
       )}
 
       <button
         className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center",
+          "w-8 h-8 rounded-md flex items-center justify-center transition-colors",
           currentPage === totalPages
-            ? "bg-primary text-white"
-            : "hover:bg-primary/10 text-gray-600"
+            ? "bg-green-600 text-white"
+            : "hover:bg-green-100 text-gray-600"
         )}
         onClick={() => onPageChange(totalPages)}
       >

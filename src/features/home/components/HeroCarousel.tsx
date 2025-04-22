@@ -80,7 +80,7 @@ export default function HeroCarousel({
   };
 
   return (
-    <div className="bg-secondary rounded-t-xl">
+    <div className="bg-green-50 dark:bg-green-600 rounded-t-xl">
       <div
         className="relative w-full h-[500px] md:h-[600px] lg:h-[700px] overflow-hidden rounded-xl cursor-grab active:cursor-grabbing"
         onMouseDown={handleMouseDown}
@@ -117,16 +117,14 @@ export default function HeroCarousel({
           {/* Button for mobile */}
           <button
             onClick={onButtonClick}
-            className="text-white font-medium text-base flex items-center gap-2 group"
+            className="text-white flex items-center gap-2 group border-b-2 font-bold text-2xl border-white group-hover:opacity-80 border-opacity-70 uppercase"
           >
-            <span className="border-b font-medium text-xl border-white group-hover:opacity-80 border-opacity-70 pb-1">
-              {buttonText}
-              <ArrowUpRight
-                strokeWidth={2}
-                size={26}
-                className="inline-flex"
-              />
-            </span>
+            {buttonText}
+            <ArrowUpRight
+              strokeWidth={2}
+              size={32}
+              className="inline-flex"
+            />
           </button>
 
           {/* Indicators for mobile */}
@@ -165,16 +163,13 @@ export default function HeroCarousel({
           {/* Button for desktop - right aligned */}
           <button
             onClick={onButtonClick}
-            className="absolute top-0 right-12 text-white font-medium text-base flex items-center gap-2 group"
+            className="absolute bottom-8 right-12 text-2xl text-white font-bold uppercase flex items-center group border-b-2 border-white"
           >
-            <span className="border-b font-medium text-xl border-white group-hover:opacity-80 border-opacity-70 pb-1">
-              {buttonText}
-              <ArrowUpRight
-                strokeWidth={2}
-                size={26}
-                className="inline-flex"
-              />
-            </span>
+            {buttonText}
+            <ArrowUpRight
+              strokeWidth={2}
+              size={36}
+            />
           </button>
         </div>
       </div>

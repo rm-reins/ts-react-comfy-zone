@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Checkbox, Accordion } from "radix-ui";
 import { Button } from "@/shared/ui";
-import { X, SlidersHorizontal, ChevronDown, Check } from "lucide-react";
+import { SlidersHorizontal, ChevronDown, Check } from "lucide-react";
 import { PriceRangeSlider } from "./FilterSlider";
 import { Product } from "@/trpc/types";
 import { useTranslation } from "@/i18n/useTranslation";
@@ -202,13 +202,15 @@ export default function Filters({
   const FiltersContent = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-xl font-medium">{t("common.filters")}</h3>
+        <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+          {t("common.filters")}
+        </h3>
         {hasActiveFilters && (
           <button
             id="clear-all-filters"
             type="button"
             onClick={clearAllFilters}
-            className="text-sm text-muted-foreground hover:text-primary transition-colors font-medium"
+            className="text-sm text-muted-foreground dark:text-gray-300 hover:text-primary dark:hover:text-green-100 transition-colors font-medium"
           >
             {t("products.clearAll")}
           </button>
@@ -222,12 +224,12 @@ export default function Filters({
       >
         <Accordion.Item
           value="categories"
-          className="border-b pb-4"
+          className="border-b border-green-100 dark:border-green-800 pb-4"
         >
           <Accordion.Header className="w-full">
-            <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium">
+            <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium text-gray-900 dark:text-white">
               {t("products.categories")}
-              <ChevronDown className="h-4 w-4 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
+              <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
             </Accordion.Trigger>
           </Accordion.Header>
           <Accordion.Content className="pt-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
@@ -247,7 +249,7 @@ export default function Filters({
                         event.stopPropagation();
                         toggleCategory(category.id);
                       }}
-                      className="size-4 border border-input rounded flex items-center justify-center data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      className="size-4 border border-input dark:border-green-800 rounded flex items-center justify-center data-[state=checked]:bg-green-600 dark:data-[state=checked]:bg-green-500 data-[state=checked]:text-white"
                     >
                       <Checkbox.Indicator>
                         <svg
@@ -266,12 +268,12 @@ export default function Filters({
                     </Checkbox.Root>
                     <label
                       htmlFor={`category-${category.id}`}
-                      className="text-sm font-medium leading-none cursor-pointer capitalize"
+                      className="text-sm font-medium leading-none cursor-pointer capitalize text-gray-900 dark:text-gray-300"
                     >
                       {category.label}
                     </label>
                   </div>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-muted-foreground dark:text-gray-400">
                     ({category.count})
                   </span>
                 </div>
@@ -282,12 +284,12 @@ export default function Filters({
 
         <Accordion.Item
           value="price"
-          className="border-b pb-4"
+          className="border-b border-green-100 dark:border-green-800 pb-4"
         >
           <Accordion.Header className="w-full">
-            <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium">
+            <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium text-gray-900 dark:text-white">
               {t("products.priceRange")}
-              <ChevronDown className="h-4 w-4 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
+              <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
             </Accordion.Trigger>
           </Accordion.Header>
           <Accordion.Content className="pt-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
@@ -305,12 +307,12 @@ export default function Filters({
 
         <Accordion.Item
           value="colors"
-          className="border-b pb-4"
+          className="border-b border-green-100 dark:border-green-800 pb-4"
         >
           <Accordion.Header className="w-full">
-            <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium">
+            <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium text-gray-900 dark:text-white">
               {t("products.colors")}
-              <ChevronDown className="h-4 w-4 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
+              <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
             </Accordion.Trigger>
           </Accordion.Header>
           <Accordion.Content className="pt-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
@@ -327,7 +329,7 @@ export default function Filters({
                       e.stopPropagation();
                       toggleColor(color.id);
                     }}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center border transition-opacity ${
+                    className={`w-8 h-8 rounded-full flex items-center justify-center border dark:border-gray-700 transition-opacity ${
                       isSelected ? "opacity-100" : "opacity-60"
                     }`}
                     style={{ backgroundColor: color.label }}
@@ -349,12 +351,12 @@ export default function Filters({
 
         <Accordion.Item
           value="companies"
-          className="border-b pb-4"
+          className="border-b border-green-100 dark:border-green-800 pb-4"
         >
           <Accordion.Header className="w-full">
-            <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium">
+            <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium text-gray-900 dark:text-white">
               {t("products.companies")}
-              <ChevronDown className="h-4 w-4 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
+              <ChevronDown className="h-4 w-4 text-gray-500 dark:text-gray-400 transition-transform duration-200 ease-in-out data-[state=open]:rotate-180" />
             </Accordion.Trigger>
           </Accordion.Header>
           <Accordion.Content className="pt-2 data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up">
@@ -374,7 +376,7 @@ export default function Filters({
                         event.stopPropagation();
                         toggleCompany(company.id);
                       }}
-                      className="size-4 border border-input rounded flex items-center justify-center data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
+                      className="size-4 border border-input dark:border-green-800 rounded flex items-center justify-center data-[state=checked]:bg-green-600 dark:data-[state=checked]:bg-green-500 data-[state=checked]:text-white"
                     >
                       <Checkbox.Indicator>
                         <svg
@@ -393,12 +395,12 @@ export default function Filters({
                     </Checkbox.Root>
                     <label
                       htmlFor={`company-${company.id}`}
-                      className="text-sm font-medium cursor-pointer"
+                      className="text-sm font-medium cursor-pointer text-gray-900 dark:text-gray-300"
                     >
                       {company.label}
                     </label>
                   </div>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-muted-foreground dark:text-gray-400">
                     ({company.count})
                   </span>
                 </div>
@@ -421,41 +423,29 @@ export default function Filters({
       <div className="md:hidden">
         <Button
           variant="outline"
-          className="w-full flex items-center justify-between"
+          className="w-full flex items-center justify-between border-green-100 dark:border-green-800 text-gray-900 "
           onClick={() => setMobileFiltersOpen(true)}
         >
           <span>{t("common.filters")}</span>
-          <SlidersHorizontal className="h-4 w-4" />
+          <SlidersHorizontal className="h-4 w-4 text-green-600 dark:text-green-400" />
         </Button>
 
         {mobileFiltersOpen && (
           <div className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm">
-            <div className="fixed inset-y-0 right-0 z-50 w-full max-w-xs bg-background p-6 shadow-lg">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold">{t("common.filters")}</h2>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setMobileFiltersOpen(false)}
-                  className="rounded-full h-8 w-8"
-                >
-                  <X className="h-4 w-4" />
-                  <span className="sr-only">{t("common.close")}</span>
-                </Button>
-              </div>
-              <div className="overflow-y-auto h-[calc(100vh-10rem)]">
+            <div className="fixed inset-y-0 right-0 z-50 w-full bg-background dark:bg-green-600 p-6 shadow-lg">
+              <div className="overflow-y-auto h-[calc(100vh-8rem)] bg-white dark:bg-green-900/20 rounded-lg p-4">
                 <FiltersContent />
               </div>
-              <div className="mt-6 flex gap-3 sticky bottom-0 bg-background pt-4">
+              <div className="mt-6 flex gap-3 sticky bottom-0 bg-background dark:bg-green-600 pt-4">
                 <Button
                   variant="outline"
-                  className="flex-1"
+                  className="flex-1 border-green-100 dark:border-green-800 text-gray-900  hover:bg-green-50 dark:hover:bg-green-900/30"
                   onClick={() => setMobileFiltersOpen(false)}
                 >
                   Cancel
                 </Button>
                 <Button
-                  className="flex-1"
+                  className="flex-1 bg-green-600 dark:bg-green-500 text-white hover:bg-green-700 dark:hover:bg-green-600"
                   onClick={() => setMobileFiltersOpen(false)}
                 >
                   Apply Filters

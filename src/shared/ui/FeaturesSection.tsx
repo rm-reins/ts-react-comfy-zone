@@ -102,7 +102,7 @@ export default function FeaturesSection() {
   };
 
   return (
-    <div className="bg-secondary dark:bg-green-700 rounded-b-xl py-16 px-4 md:px-8 select-none">
+    <div className="bg-green-50 dark:bg-green-600 rounded-b-xl py-16 px-4 md:px-8 select-none">
       <div className="max-w-7xl mx-auto">
         {/* Mobile view with horizontal scroll */}
         <div className="md:hidden">

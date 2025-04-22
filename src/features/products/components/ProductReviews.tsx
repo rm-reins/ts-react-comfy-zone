@@ -39,8 +39,8 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
   const totalPages = reviewsData?.totalPages || 1;
 
   return (
-    <div className="mt-20 mb-10">
-      <h2 className="text-3xl font-bold text-center mb-10">
+    <div className="mt-5 mb-5">
+      <h2 className="text-2x  l sm:text-3xl font-bold text-center mb-10">
         {t("products.productReviews")}{" "}
         <span className="text-yellow-500 mr-1">★</span>
         <span className="dark:text-green-50">

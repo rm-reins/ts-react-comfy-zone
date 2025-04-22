@@ -136,33 +136,33 @@ function ProductsGrid({
                   className="group flex flex-col h-full"
                 >
                   {/* Product image skeleton */}
-                  <Skeleton className="aspect-square relative overflow-hidden rounded-xl bg-muted mb-3" />
+                  <Skeleton className="aspect-square relative overflow-hidden rounded-xl bg-muted dark:bg-green-900/30 mb-3" />
 
                   {/* Product title skeleton */}
-                  <Skeleton className="h-7 w-3/4 mb-2" />
+                  <Skeleton className="h-7 w-3/4 mb-2 dark:bg-green-900/30" />
 
                   {/* Category/type skeleton */}
-                  <Skeleton className="h-5 w-1/3 mb-4" />
+                  <Skeleton className="h-5 w-1/3 mb-4 dark:bg-green-900/30" />
 
                   {/* Price skeleton */}
-                  <Skeleton className="h-8 w-1/2 mt-auto" />
+                  <Skeleton className="h-8 w-1/2 mt-auto dark:bg-green-900/30" />
                 </div>
               ))}
             </div>
           ) : error ? (
-            <div className="text-center text-red-500">
+            <div className="text-center text-red-500 dark:text-red-400">
               {t("common.error")}: {error.message}
             </div>
           ) : (
             <>
-              <div className="flex justify-between items-center mb-6">
-                <p className="text-muted-foreground">
+              <div className="flex flex-col md:flex-row justify-between items-center mb-6">
+                <p className="text-muted-foreground dark:text-gray-300 mb-4 md:mb-0">
                   {t("products.found", { count: totalProducts })}
                 </p>
                 <div className="flex items-center gap-2">
                   <div className="relative">
                     <select
-                      className="appearance-none text-sm py-2 pr-8 bg-transparent focus:outline-none focus:ring-0"
+                      className="appearance-none text-sm px-4 py-2 pr-8 bg-green-50 dark:bg-green-900/20 bg-opacity-50 rounded-md text-gray-600 dark:text-white border border-green-100 dark:border-green-800 focus:outline-none focus:ring-0 hover:bg-green-100 dark:hover:bg-green-800/50 transition-colors"
                       value={sortOption}
                       onChange={handleSortChange}
                     >
@@ -178,7 +178,7 @@ function ProductsGrid({
                         {t("products.bestSelling")}
                       </option>
                     </select>
-                    <ChevronsUpDown className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 pointer-events-none text-muted-foreground" />
+                    <ChevronsUpDown className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 pointer-events-none text-green-600 dark:text-green-400" />
                   </div>
                 </div>
               </div>
@@ -205,11 +205,11 @@ function ProductsGrid({
                   )}
                 </>
               ) : (
-                <div className="text-center py-12">
-                  <h3 className="text-xl font-semibold mb-2">
+                <div className="text-center py-12 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-100 dark:border-green-800 p-6">
+                  <h3 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
                     {t("products.comingSoon")}
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-muted-foreground dark:text-gray-300">
                     {t("products.checkBackLater")}
                   </p>
                 </div>

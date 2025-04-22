@@ -61,10 +61,11 @@ function ProductInfo({ product }: ProductInfoProps) {
         </div>
       </div>
 
-      <div className="flex gap-2">
+      <div>
         <Button
           variant="default"
           size="xl"
+          className="w-full"
           onClick={handleAddToCart}
         >
           <Plus className="w-4 h-4" />

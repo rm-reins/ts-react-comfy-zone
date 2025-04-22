@@ -2,7 +2,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { useState } from "react";
 import { User, DeliveryAddress } from "@/trpc/types";
 import AddressFormPopup from "./AddressFormPopup";
-import { Button, Skeleton } from "@/shared/ui";
+import { Skeleton } from "@/shared/ui";
 import { trpc } from "@/trpc/trpc";
 import { TRPCClientError } from "@trpc/client";
 
@@ -134,146 +134,153 @@ function UserAddresses() {
 
   return (
     <>
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex items-center justify-center mb-12">
-          <h1 className="text-2xl sm:text-3xl font-bold text-primary dark:text-white">
-            {t("account.myAddresses")}
-          </h1>
-          <span className="ml-2 bg-primary text-white dark:bg-white dark:text-primary rounded-full w-6 h-6 flex items-center justify-center text-sm">
-            {addresses?.length}
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-2xl font-medium text-gray-900 dark:text-white">
+          {t("account.myAddresses")}
+          <span className="ml-2 bg-green-600 dark:bg-green-500 text-white rounded-full px-3 py-1 text-sm">
+            {addresses?.length || 0}
           </span>
+        </h1>
+      </div>
+
+      {isAddressesLoading ? (
+        <div className="space-y-4">
+          {[...Array(2)].map((_, index) => (
+            <div
+              key={index}
+              className="bg-green-50 dark:bg-green-900/20 bg-opacity-50 rounded-lg border border-green-100 dark:border-green-800 p-6"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <Skeleton className="h-6 w-32" />
+                <Skeleton className="h-6 w-20" />
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-4 w-1/2" />
+              </div>
+              <div className="mt-6 flex gap-4">
+                <Skeleton className="h-8 w-20" />
+                <Skeleton className="h-8 w-20" />
+              </div>
+            </div>
+          ))}
         </div>
-
-        {isAddressesLoading ? (
-          <div className="bg-white rounded-xl border border-neutral-200 p-6 max-w-120">
-            <div className="flex flex-row justify-between">
-              <Skeleton className="w-32 h-6 mb-8" />
-              <Skeleton className="w-18 h-4 mb-2" />
-            </div>
-
-            <Skeleton className="w-36 h-3 mb-2" />
-            <Skeleton className="w-28 h-3 mb-2" />
-            <Skeleton className="w-24 h-3 mb-8" />
-            <div className="flex flex-row gap-2">
-              <Skeleton className="w-20 h-6 mb-2" />
-              <Skeleton className="w-20 h-6 mb-2" />
-            </div>
+      ) : (
+        <>
+          {/* Desktop View - Grid */}
+          <div className="hidden md:grid md:grid-cols-2 gap-6">
+            {addresses?.map((address, index) => (
+              <div
+                key={index}
+                className="bg-white dark:bg-green-900/20 rounded-lg border border-green-100 dark:border-green-800 p-6"
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <h2 className="text-xl font-medium text-gray-900 dark:text-white">
+                    {user?.name} {user?.surname}
+                  </h2>
+                  {address.isDefault && (
+                    <span className="bg-green-50 dark:bg-green-800 text-green-600 dark:text-green-100 px-3 py-1 rounded-full text-sm font-medium">
+                      {t("common.default")}
+                    </span>
+                  )}
+                </div>
+                <div className="space-y-2 text-gray-600 dark:text-gray-300">
+                  <p>{address.street}</p>
+                  <p>
+                    {address.city}, {address.state} {address.postalCode}
+                  </p>
+                  <p>{address.country}</p>
+                </div>
+                <div className="mt-6 flex gap-4">
+                  <button
+                    onClick={() => handleEdit(address as DeliveryAddress)}
+                    className="text-green-600 dark:text-green-100 hover:text-green-700 dark:hover:text-white font-medium transition-colors hover:underline"
+                  >
+                    {t("common.edit")}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(address as DeliveryAddress)}
+                    className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 font-medium transition-colors"
+                  >
+                    {t("common.delete")}
+                  </button>
+                  {!address.isDefault && (
+                    <button
+                      onClick={() =>
+                        handleSetAsDefault(address as DeliveryAddress)
+                      }
+                      className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-100 font-medium transition-colors hover:underline"
+                    >
+                      {t("common.setAsDefault")}
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
-        ) : (
-          <>
-            {/* Desktop View - Grid */}
-            <div className="hidden bg-primary-light md:grid md:grid-cols-2 gap-6">
-              {addresses?.map((address, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm"
-                >
-                  <div className="flex justify-between items-start mb-4">
-                    <h2 className="text-xl font-bold text-primary">
-                      {user?.name} {user?.surname}
-                    </h2>
-                    {address.isDefault && (
-                      <span className="bg-primary-light text-primary text-m px-2 py-1 rounded-full">
-                        {t("common.default")}
-                      </span>
-                    )}
-                  </div>
-                  <div className="space-y-2 text-neutral-600">
-                    <p>{address.street}</p>
-                    <p>
-                      {address.city}, {address.state} {address.postalCode}
-                    </p>
-                    <p>{address.country}</p>
-                  </div>
-                  <div className="mt-6 flex space-x-4">
-                    <button
-                      onClick={() => handleEdit(address as DeliveryAddress)}
-                      className="text-primary hover:text-primary-light hover:underline font-medium"
-                    >
-                      {t("common.edit")}
-                    </button>
-                    <button
-                      onClick={() => handleDelete(address as DeliveryAddress)}
-                      className="text-neutral-600 hover:text-primary hover:underline font-medium"
-                    >
-                      {t("common.delete")}
-                    </button>
-                    {!address.isDefault && (
-                      <button
-                        onClick={() =>
-                          handleSetAsDefault(address as DeliveryAddress)
-                        }
-                        className="text-neutral-600 hover:text-primary hover:underline font-medium"
-                      >
-                        {t("common.setAsDefault")}
-                      </button>
-                    )}
-                  </div>
+
+          {/* Mobile View - Cards */}
+          <div className="md:hidden space-y-4">
+            {addresses?.map((address, index) => (
+              <div
+                key={index}
+                className="bg-white dark:bg-green-900/20 rounded-lg border border-green-100 dark:border-green-800 p-6"
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <h2 className="text-xl font-medium text-gray-900 dark:text-white">
+                    {user?.name} {user?.surname}
+                  </h2>
+                  {address.isDefault && (
+                    <span className="bg-green-50 dark:bg-green-800 text-green-600 dark:text-green-100 px-3 py-1 rounded-full text-sm font-medium">
+                      {t("common.default")}
+                    </span>
+                  )}
                 </div>
-              ))}
-            </div>
 
-            {/* Mobile View - Cards */}
-            <div className="md:hidden space-y-6">
-              {addresses?.map((address, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm"
-                >
-                  <div className="flex justify-between flex-row items-start mb-4">
-                    <h2 className="text-xl font-bold text-primary">
-                      {user?.name} {user?.surname}
-                    </h2>
-                    {address.isDefault && (
-                      <span className="bg-primary-light text-base px-2 py-1 rounded-full">
-                        {t("common.default")}
-                      </span>
-                    )}
-                  </div>
-                  <div className="space-y-2 text-neutral-600">
-                    <p>{address.street}</p>
-                    <p>
-                      {address.city}, {address.state} {address.postalCode}
-                    </p>
-                    <p>{address.country}</p>
-                  </div>
-                  <div className="mt-6 flex space-x-4">
-                    <button
-                      onClick={() => handleEdit(address as DeliveryAddress)}
-                      className="text-primary hover:text-primary-light hover:underline font-medium"
-                    >
-                      {t("common.edit")}
-                    </button>
-                    {!address.isDefault && (
-                      <button
-                        onClick={() =>
-                          handleSetAsDefault(address as DeliveryAddress)
-                        }
-                        className="text-neutral-600 hover:text-primary hover:underline font-medium"
-                      >
-                        {t("common.setAsDefault")}
-                      </button>
-                    )}
-                  </div>
+                <div className="space-y-2 text-gray-600 dark:text-gray-300">
+                  <p>{address.street}</p>
+                  <p>
+                    {address.city}, {address.state} {address.postalCode}
+                  </p>
+                  <p>{address.country}</p>
                 </div>
-              ))}
-            </div>
-          </>
-        )}
 
-        <div className="mt-8 text-center">
-          <Button
-            onClick={handleAdd}
-            variant="default"
-            size="xl"
-          >
-            {t("account.addNewAddress")}
-          </Button>
-        </div>
-      </main>
+                <div className="mt-6 flex gap-4">
+                  <button
+                    onClick={() => handleEdit(address as DeliveryAddress)}
+                    className="text-green-600 dark:text-green-100 hover:text-green-700 dark:hover:text-white font-medium transition-colors"
+                  >
+                    {t("common.edit")}
+                  </button>
 
-      {/* Use the external AddressFormPopup instead of inline component */}
+                  {!address.isDefault && (
+                    <button
+                      onClick={() =>
+                        handleSetAsDefault(address as DeliveryAddress)
+                      }
+                      className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-100 font-medium transition-colors"
+                    >
+                      {t("common.setAsDefault")}
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
+      <div className="mt-8 flex justify-center">
+        <button
+          onClick={handleAdd}
+          className="px-6 py-2 bg-green-600 dark:bg-green-500 text-white rounded-md hover:bg-green-700 dark:hover:bg-green-900/30 transition-colors font-medium"
+        >
+          {t("account.addNewAddress")}
+        </button>
+      </div>
+
+      {/* Address Form Popup */}
       <AddressFormPopup
         address={selectedAddress}
         mode={currentMode}
@@ -285,4 +292,5 @@ function UserAddresses() {
     </>
   );
 }
+
 export default UserAddresses;
