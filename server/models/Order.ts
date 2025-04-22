@@ -18,7 +18,7 @@ interface IOrder extends Document {
   orderItems: ISingleOrderItem[];
   status: "pending" | "paid" | "delivered" | "cancelled";
   paymentId: string;
-  user: mongoose.Types.ObjectId;
+  user: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -74,8 +74,7 @@ const OrderSchema = new Schema<IOrder>(
       type: String,
     },
     user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
     },
   },
   { timestamps: true }
