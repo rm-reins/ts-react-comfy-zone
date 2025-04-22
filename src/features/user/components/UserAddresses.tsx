@@ -234,7 +234,7 @@ function UserAddresses() {
                     >
                       {t("common.edit")}
                     </button>
-                    {index !== 0 && (
+                    {!address.isDefault && (
                       <button
                         onClick={() =>
                           handleSetAsDefault(address as DeliveryAddress)
