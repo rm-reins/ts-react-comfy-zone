@@ -4,6 +4,10 @@ import { cn } from "@/utils/utils";
 import { Product } from "@/trpc/types";
 import { useTranslation } from "@/i18n/useTranslation";
 import ProductAccordion from "./ProductAccordion";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/features/cart/cartSlice";
+import { Button } from "@/shared";
+
 interface ProductInfoProps {
   product: Product;
 }
@@ -11,10 +15,21 @@ interface ProductInfoProps {
 function ProductInfo({ product }: ProductInfoProps) {
   const { t } = useTranslation();
   const [selectedColor, setSelectedColor] = useState(0);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(
+      addItem({
+        ...product,
+        color: product.colors[selectedColor],
+        quantity: 1,
+      })
+    );
+  };
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-start">
+      <div className="flex sm:flex-row flex-col justify-between items-start">
         <div className="space-y-4">
           <div className="text-gray-500 dark:text-gray-200">
             SKU: {product._id.substring(0, 8)}
@@ -24,7 +39,7 @@ function ProductInfo({ product }: ProductInfoProps) {
             <div className="text-gray-500 mb-2 dark:text-gray-200">
               {t("products.color")}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 sm:mb-0 mb-2">
               {product.colors.map((color: string, index: number) => (
                 <button
                   key={index}
@@ -41,14 +56,20 @@ function ProductInfo({ product }: ProductInfoProps) {
             </div>
           </div>
         </div>
-        <div className="text-3xl font-bold">${product.price.toFixed(2)}</div>
+        <div className="text-3xl font-bold">
+          {`${product.price.toFixed(2)} €`}
+        </div>
       </div>
 
       <div className="flex gap-2">
-        <button className="bg-primary hover:bg-primary/90 text-white rounded-full px-4 py-2 flex items-center gap-1 flex-1 justify-center font-medium transition-colors">
+        <Button
+          variant="default"
+          size="xl"
+          onClick={handleAddToCart}
+        >
           <Plus className="w-4 h-4" />
           {t("products.addToCart")}
-        </button>
+        </Button>
       </div>
 
       {/* Product Details Accordion */}

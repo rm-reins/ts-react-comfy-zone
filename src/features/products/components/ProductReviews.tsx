@@ -86,7 +86,7 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
                 key={review._id}
                 className="bg-white rounded-xl p-6 border"
               >
-                <div className="flex justify-between mb-4">
+                <div className="flex sm:flex-row flex-col justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <span className="font-medium text-primary">
                       {review.user?.toUpperCase() ||
