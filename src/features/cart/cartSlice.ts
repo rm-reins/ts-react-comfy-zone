@@ -47,7 +47,7 @@ const cartSlice = createSlice({
         const existingItem = state.cartItems[itemIndex];
         state.cartItems[itemIndex] = {
           ...action.payload,
-          quantity: action.payload.quantity || existingItem.quantity + 1,
+          quantity: existingItem.quantity + 1,
         };
       } else {
         state.cartItems.push({
@@ -55,6 +55,9 @@ const cartSlice = createSlice({
           quantity: action.payload.quantity || 1,
         });
       }
+
+      localStorage.setItem("cart", JSON.stringify(state));
+      cartSlice.caseReducers.countTotals(state);
     },
 
     removeItem: (state, action: PayloadAction<Product & { color: string }>) => {
@@ -150,5 +153,15 @@ export const createOrder = createAsyncThunk(
     }
   }
 );
+
+export const {
+  addItem,
+  removeItem,
+  clearCart,
+  setCartItemQuantity,
+  countTotals,
+} = cartSlice.actions;
+
+export type { CartState };
 
 export default cartSlice.reducer;
