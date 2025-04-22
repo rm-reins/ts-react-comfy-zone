@@ -10,26 +10,62 @@ import {
 import { useTranslation } from "@/i18n/useTranslation";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { EmptyCart } from "@/features/cart";
-import { OrderItem } from "@/trpc/types";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { setCartItemQuantity, removeItem } from "@/features/cart/cartSlice";
 
 function Cart() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const cartItems: OrderItem[] = [];
-
-  // Calculate cart totals
-  const subtotal = cartItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  );
-  const shipping = subtotal > 0 ? 15.99 : 0;
-  const total = subtotal + shipping;
+  const {
+    cartItems,
+    cartTotal: subtotal,
+    shipping,
+    orderTotal: total,
+  } = useSelector((state: RootState) => state.cartState);
 
   // If cart is empty, show empty state
   if (cartItems.length === 0) {
     return <EmptyCart />;
   }
+
+  // Handle quantity changes
+  const handleDecreaseQuantity = (
+    itemId: string,
+    color: string,
+    currentQuantity: number
+  ) => {
+    if (currentQuantity > 1) {
+      dispatch(
+        setCartItemQuantity({
+          _id: itemId,
+          color,
+          quantity: currentQuantity - 1,
+        })
+      );
+    }
+  };
+
+  const handleIncreaseQuantity = (
+    itemId: string,
+    color: string,
+    currentQuantity: number
+  ) => {
+    dispatch(
+      setCartItemQuantity({
+        _id: itemId,
+        color,
+        quantity: currentQuantity + 1,
+      })
+    );
+  };
+
+  // Handle item removal
+  const handleRemoveItem = (item: (typeof cartItems)[0]) => {
+    dispatch(removeItem(item));
+  };
 
   return (
     <div className="container px-4 py-8 mx-auto">
@@ -47,27 +83,36 @@ function Cart() {
 
           {cartItems.map((item) => (
             <Card
-              key={item._id}
+              key={`${item._id}-${item.color}`}
               className="overflow-hidden"
             >
               <CardContent className="p-4">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                   {/* Product Info */}
                   <div className="md:col-span-6 flex gap-4 items-center">
-                    <div className="relative h-20 w-20 rounded-md overflow-hidden bg-muted">
+                    <div
+                      className="relative h-20 w-20 rounded-md overflow-hidden bg-muted cursor-pointer"
+                      onClick={() => navigate(`/products/${item._id}`)}
+                    >
                       <Image
-                        src={item.image || "/placeholder.svg"}
+                        src={item.images?.[0] || "/placeholder.svg"}
                         alt={item.name}
-                        objectFit="fill"
-                        className="object-cover"
+                        layout="fill"
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium">{item.name}</h3>
-                      <div className="text-sm text-muted-foreground mt-1">
-                        <p>
-                          {t("cart.color")}: {item.color}
-                        </p>
+                      <h3
+                        className="font-medium text-lg cursor-pointer"
+                        onClick={() => navigate(`/products/${item._id}`)}
+                      >
+                        {item.name}
+                      </h3>
+                      <div className="text-sm text-muted-foreground mt-1 flex items-center gap-2">
+                        <p>{t("cart.color")}</p>
+                        <div
+                          className="w-6 h-6 rounded-full border"
+                          style={{ backgroundColor: item.color }}
+                        />
                       </div>
                     </div>
                   </div>
@@ -82,6 +127,13 @@ function Cart() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 rounded-none"
+                        onClick={() =>
+                          handleDecreaseQuantity(
+                            item._id,
+                            item.color,
+                            item.quantity
+                          )
+                        }
                       >
                         <Minus className="h-4 w-4" />
                         <span className="sr-only">
@@ -93,6 +145,13 @@ function Cart() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 rounded-none"
+                        onClick={() =>
+                          handleIncreaseQuantity(
+                            item._id,
+                            item.color,
+                            item.quantity
+                          )
+                        }
                       >
                         <Plus className="h-4 w-4" />
                         <span className="sr-only">
@@ -107,7 +166,7 @@ function Cart() {
                     <span className="md:hidden text-sm font-medium">
                       {t("cart.price")}
                     </span>
-                    <span>{item.price.toFixed(2)} €</span>
+                    <span>{`${item.price.toFixed(2)} €`}</span>
                   </div>
 
                   {/* Total */}
@@ -116,7 +175,7 @@ function Cart() {
                       {t("cart.total")}
                     </span>
                     <span className="font-medium">
-                      {(item.price * item.quantity).toFixed(2)} €
+                      {`${(item.price * item.quantity).toFixed(2)} €`}
                     </span>
                   </div>
                 </div>
@@ -126,6 +185,7 @@ function Cart() {
                   variant="ghost"
                   size="sm"
                   className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                  onClick={() => handleRemoveItem(item)}
                 >
                   <Trash2 className="h-4 w-4 mr-2" />
                   {t("cart.remove")}
@@ -147,18 +207,18 @@ function Cart() {
                   <span className="text-muted-foreground">
                     {t("cart.subtotal")}
                   </span>
-                  <span>{subtotal.toFixed(2)} €</span>
+                  <span>{`${subtotal.toFixed(2)} €`}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">
                     {t("cart.shipping")}
                   </span>
-                  <span>{shipping.toFixed(2)} €</span>
+                  <span>{`${shipping.toFixed(2)} €`}</span>
                 </div>
                 <Separator />
                 <div className="flex justify-between font-bold">
                   <span>{t("cart.total")}</span>
-                  <span>{total.toFixed(2)} €</span>
+                  <span>{`${total.toFixed(2)} €`}</span>
                 </div>
               </div>
             </CardContent>
