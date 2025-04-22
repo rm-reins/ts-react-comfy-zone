@@ -13,17 +13,20 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
   const { t, language } = useTranslation();
   const popupRef = useRef<HTMLDivElement>(null);
 
-  const formatDate = (date: Date) => {
-    // Map language codes to locale formats
+  const formatDate = (dateInput: Date | string | undefined) => {
+    if (!dateInput) return "";
+
     const localeMap: Record<string, string> = {
-      en: "en-US",
-      de: "de-DE",
-      ru: "ru-RU",
+      enUS: "en-US",
+      deDE: "de-DE",
+      ruRU: "ru-RU",
     };
 
     const locale = localeMap[language] || "en-US";
 
-    return date.toLocaleDateString(locale, {
+    const dateObj = new Date(dateInput);
+
+    return dateObj.toLocaleDateString(locale, {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -129,7 +132,7 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
         </div>
 
         {/* Order Summary */}
-        <div className="p-6 border-b border-neutral-200 dark:border-green-800">
+        <div className="p-6 border-b dark:text-white dark:border-green-800">
           <h3 className="text-lg font-semibold text-green-800 dark:text-white mb-4">
             {t("orders.orderSummary")}
           </h3>
@@ -137,15 +140,15 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <div>
-                <p className="font-semibold text-green-800 dark:text-neutral-300 mb-1">
+                <p className="font-semibold text-green-800 dark:text-white mb-1">
                   {t("orders.fulfillmentStatus")}
                 </p>
                 <span
                   className={`inline-block px-3 py-1 rounded-full capitalize text-sm ${getStatusColor(
-                    order.status
+                    order.status || ""
                   )}`}
                 >
-                  {formatStatus(order.status)}
+                  {formatStatus(order.status || "")}
                 </span>
               </div>
             </div>
@@ -153,10 +156,10 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
             <div>
               {order.paymentId && (
                 <div className="mb-4">
-                  <p className="font-semibold text-green-800 dark:text-neutral-300 mb-1">
+                  <p className="font-semibold text-green-800 dark:text-white mb-1">
                     {t("orders.paymentId")}
                   </p>
-                  <p className="text-neutral-600 dark:text-neutral-400">
+                  <p className="text-neutral-600 dark:text-white">
                     {order.paymentId}
                   </p>
                 </div>
@@ -189,28 +192,24 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
                   <h4 className="font-semibold text-green-800 ">{item.name}</h4>
 
                   <div className="mt-2 grid grid-cols-2 gap-y-2">
-                    <div>
+                    <div className="flex items-center gap-2">
                       <p className="text-sm text-neutral-500 ">
                         {t("orders.color")}
                       </p>
-                      <p className="text-neutral-800 ">{item.color}</p>
+                      <div
+                        className="w-6 h-6 rounded-full border"
+                        style={{ backgroundColor: item.color }}
+                      />
                     </div>
 
-                    <div>
-                      <p className="text-sm text-neutral-500">
-                        {t("orders.size")}
-                      </p>
-                      <p className="text-neutral-800">{item.size}</p>
-                    </div>
-
-                    <div>
+                    <div className="flex items-center gap-2">
                       <p className="text-sm text-neutral-500">
                         {t("orders.quantity")}
                       </p>
                       <p className="text-neutral-800">{item.quantity}</p>
                     </div>
 
-                    <div>
+                    <div className="flex items-center gap-2">
                       <p className="text-sm text-neutral-500">
                         {t("orders.price")}
                       </p>
@@ -235,28 +234,28 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
         <div className="p-6">
           <div className="space-y-3">
             <div className="flex justify-between">
-              <p className="text-neutral-600 dark:text-neutral-400">
+              <p className="text-neutral-600 dark:text-white">
                 {t("orders.subtotal")}
               </p>
-              <p className="text-neutral-800 dark:text-neutral-200">
+              <p className="text-neutral-800 dark:text-white">
                 {formatCurrency(order.subtotal)}
               </p>
             </div>
 
             <div className="flex justify-between">
-              <p className="text-neutral-600 dark:text-neutral-400">
+              <p className="text-neutral-600 dark:text-white">
                 {t("orders.tax")}
               </p>
-              <p className="text-neutral-800 dark:text-neutral-200">
+              <p className="text-neutral-800 dark:text-white">
                 {formatCurrency(order.tax)}
               </p>
             </div>
 
             <div className="flex justify-between">
-              <p className="text-neutral-600 dark:text-neutral-400">
+              <p className="text-neutral-600 dark:text-white">
                 {t("orders.shipping")}
               </p>
-              <p className="text-neutral-800 dark:text-neutral-200">
+              <p className="text-neutral-800 dark:text-white">
                 {formatCurrency(order.shippingFee)}
               </p>
             </div>
