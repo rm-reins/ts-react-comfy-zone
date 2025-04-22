@@ -210,6 +210,7 @@ export const enUS = {
       delivered: "Delivered",
       cancelled: "Cancelled",
     },
+    noOrders: "You have no orders yet.",
   },
   footer: {
     aboutUs: "About Us",

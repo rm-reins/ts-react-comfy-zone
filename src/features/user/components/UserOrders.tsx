@@ -12,7 +12,6 @@ function UserOrders() {
 
   const { data, isLoading, error } = trpc.order.getCurrentUserOrders.useQuery();
   const orders = data as Order[] | undefined;
-
   const formatDate = (dateInput: Date | string | undefined) => {
     if (!dateInput) return "";
 
@@ -59,7 +58,7 @@ function UserOrders() {
   if (isLoading) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-12 flex justify-center">
-        <p className="text-lg font-medium">{t("common.loading")}</p>
+        <p className="text-xl font-medium">{t("common.loading")}</p>
       </div>
     );
   }
@@ -89,7 +88,7 @@ function UserOrders() {
 
         {!orders || orders.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-lg text-neutral-600">{t("orders.noOrders")}</p>
+            <p className="text-2xl text-neutral-600">{t("orders.noOrders")}</p>
           </div>
         ) : (
           <>

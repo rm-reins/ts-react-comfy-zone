@@ -20,7 +20,7 @@ interface ProductsGridProps {
 
 function ProductsGrid({
   products,
-  isLoading = false,
+  isLoading,
   error,
   filters,
 }: ProductsGridProps) {
@@ -133,12 +133,19 @@ function ProductsGrid({
               {Array.from({ length: 9 }).map((_, index) => (
                 <div
                   key={index}
-                  className="p-4 border rounded-xl shadow-sm flex flex-col h-full"
+                  className="group flex flex-col h-full"
                 >
-                  <Skeleton className="aspect-square w-full mb-4" />
-                  <Skeleton className="h-6 w-3/4 mb-2" />
-                  <Skeleton className="h-4 w-full mb-2" />
-                  <Skeleton className="h-4 w-1/2 mb-4" />
+                  {/* Product image skeleton */}
+                  <Skeleton className="aspect-square relative overflow-hidden rounded-xl bg-muted mb-3" />
+
+                  {/* Product title skeleton */}
+                  <Skeleton className="h-7 w-3/4 mb-2" />
+
+                  {/* Category/type skeleton */}
+                  <Skeleton className="h-5 w-1/3 mb-4" />
+
+                  {/* Price skeleton */}
+                  <Skeleton className="h-8 w-1/2 mt-auto" />
                 </div>
               ))}
             </div>

@@ -2,7 +2,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { useState } from "react";
 import { User, DeliveryAddress } from "@/trpc/types";
 import AddressFormPopup from "./AddressFormPopup";
-import { Button } from "@/shared/ui";
+import { Button, Skeleton } from "@/shared/ui";
 import { trpc } from "@/trpc/trpc";
 import { TRPCClientError } from "@trpc/client";
 
@@ -146,8 +146,19 @@ function UserAddresses() {
         </div>
 
         {isAddressesLoading ? (
-          <div className="text-center py-8">
-            <p>{t("common.loading")}</p>
+          <div className="bg-white rounded-xl border border-neutral-200 p-6 max-w-120">
+            <div className="flex flex-row justify-between">
+              <Skeleton className="w-32 h-6 mb-8" />
+              <Skeleton className="w-18 h-4 mb-2" />
+            </div>
+
+            <Skeleton className="w-36 h-3 mb-2" />
+            <Skeleton className="w-28 h-3 mb-2" />
+            <Skeleton className="w-24 h-3 mb-8" />
+            <div className="flex flex-row gap-2">
+              <Skeleton className="w-20 h-6 mb-2" />
+              <Skeleton className="w-20 h-6 mb-2" />
+            </div>
           </div>
         ) : (
           <>
@@ -210,12 +221,12 @@ function UserAddresses() {
                   key={index}
                   className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm"
                 >
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex justify-between flex-row items-start mb-4">
                     <h2 className="text-xl font-bold text-primary">
                       {user?.name} {user?.surname}
                     </h2>
-                    {index === 0 && (
-                      <span className="bg-primary-light text-white text-xs px-2 py-1 rounded-full">
+                    {address.isDefault && (
+                      <span className="bg-primary-light text-base px-2 py-1 rounded-full">
                         {t("common.default")}
                       </span>
                     )}

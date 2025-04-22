@@ -210,6 +210,7 @@ export const ruRU = {
       delivered: "Доставлено",
       cancelled: "Отменено",
     },
+    noOrders: "У вас пока нет заказов.",
   },
   footer: {
     aboutUs: "О нас",

@@ -213,6 +213,7 @@ export const deDE = {
       delivered: "Geliefert",
       cancelled: "Storniert",
     },
+    noOrders: "Sie haben noch keine Bestellungen getätigt.",
   },
   footer: {
     aboutUs: "Über uns",
