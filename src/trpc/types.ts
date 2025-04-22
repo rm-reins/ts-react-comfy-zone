@@ -65,6 +65,7 @@ export interface Order {
   subtotal: number;
   total: number;
   orderItems: OrderItem[];
+  deliveryAddress: DeliveryAddress;
   paymentId?: string;
   status?: "pending" | "paid" | "delivered" | "cancelled";
   user?: string;

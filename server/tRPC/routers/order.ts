@@ -26,6 +26,15 @@ const orderSchema = z.object({
   subtotal: z.number().min(0),
   total: z.number().min(0),
   orderItems: z.array(orderItemSchema),
+  deliveryAddress: z.object({
+    address: z.string(),
+    city: z.string(),
+    state: z.string().optional(),
+    zip: z.string(),
+    country: z.string(),
+    isDefault: z.boolean().optional(),
+    _id: z.string().optional(),
+  }),
   paymentId: z.string().optional(),
   status: z
     .enum(["pending", "paid", "delivered", "cancelled"])
@@ -176,6 +185,7 @@ export const orderRouter = router({
           subtotal: serverSubtotal,
           total: serverTotal,
           orderItems: processedOrderItems,
+          deliveryAddress: input.deliveryAddress,
           user: ctx.user?.clerkId,
         });
 
@@ -208,15 +218,24 @@ export const orderRouter = router({
           "delivered",
           "cancelled",
         ]),
+        deliveryAddress: z.object({
+          address: z.string(),
+          city: z.string(),
+          state: z.string().optional(),
+          zip: z.string(),
+          country: z.string(),
+          isDefault: z.boolean().optional(),
+          _id: z.string().optional(),
+        }),
       })
     )
     .mutation(async ({ input }) => {
       try {
-        const { orderId, orderStatus } = input;
+        const { orderId, orderStatus, deliveryAddress } = input;
 
         const order = await Order.findOneAndUpdate(
           { _id: orderId },
-          { status: orderStatus },
+          { status: orderStatus, deliveryAddress: deliveryAddress },
           {
             new: true,
             runValidators: true,

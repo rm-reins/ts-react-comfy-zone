@@ -16,6 +16,7 @@ interface IOrder extends Document {
   subtotal: number;
   total: number;
   orderItems: ISingleOrderItem[];
+  deliveryAddress: object;
   status: "pending" | "paid" | "delivered" | "cancelled";
   paymentId: string;
   user: string;
