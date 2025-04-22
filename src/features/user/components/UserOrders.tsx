@@ -194,7 +194,7 @@ function UserOrders() {
 
         {/* Desktop View - Table */}
         <div className="hidden md:block">
-          <div className="border border-neutral-200 rounded-lg overflow-hidden ">
+          <div className="border border-neutral-200 rounded-xl overflow-hidden ">
             <div className="overflow-auto max-h-[500px]">
               <table className="w-full table-fixed">
                 <colgroup>
@@ -255,7 +255,7 @@ function UserOrders() {
           {orders.map((order) => (
             <div
               key={order._id}
-              className="bg-white rounded-lg border border-neutral-200 p-6 shadow-sm"
+              className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm"
             >
               <h2 className="text-xl font-bold text-primary mb-6">
                 {t("orders.orderId")} #{order._id}

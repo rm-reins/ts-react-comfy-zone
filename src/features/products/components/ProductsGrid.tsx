@@ -133,7 +133,7 @@ function ProductsGrid({
               {Array.from({ length: 9 }).map((_, index) => (
                 <div
                   key={index}
-                  className="p-4 border rounded-lg shadow-sm flex flex-col h-full"
+                  className="p-4 border rounded-xl shadow-sm flex flex-col h-full"
                 >
                   <Skeleton className="aspect-square w-full mb-4" />
                   <Skeleton className="h-6 w-3/4 mb-2" />
@@ -159,7 +159,7 @@ function ProductsGrid({
                   </span>
                   <div className="relative">
                     <select
-                      className="appearance-none text-sm border rounded-md px-3 py-2 pr-8 bg-transparent"
+                      className="appearance-none text-sm border rounded-xl px-3 py-2 pr-8 bg-transparent"
                       value={sortOption}
                       onChange={handleSortChange}
                     >

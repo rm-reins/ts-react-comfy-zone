@@ -15,7 +15,7 @@ function ProductCard({ product }: ProductCardProps) {
         to={`/products/${product._id}`}
         className="flex flex-col h-full"
       >
-        <div className="aspect-square relative overflow-hidden rounded-lg bg-muted mb-3">
+        <div className="aspect-square relative overflow-hidden rounded-xl bg-muted mb-3">
           <Image
             src={product.images[0]}
             alt={product.name}

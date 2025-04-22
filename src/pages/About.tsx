@@ -7,7 +7,7 @@ function About() {
     <>
       <h1 className="flex flex-wrap gap-2 sm:gap-x-6 items-center justify-center text-4xl font-bold leading-none tracking-wide sm:text-6xl">
         {t("about.title")}{" "}
-        <span className="bg-primary py-2 px-4 rounded-lg tracking-widest text-white">
+        <span className="bg-primary py-2 px-4 rounded-xl tracking-widest text-white">
           comfy-zone
         </span>
       </h1>

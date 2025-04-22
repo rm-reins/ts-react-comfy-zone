@@ -86,7 +86,7 @@ function UserAddresses() {
           {addresses?.map((address, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg border border-neutral-200 p-6 shadow-sm"
+              className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm"
             >
               <div className="flex justify-between items-start mb-4">
                 <h2 className="text-xl font-bold text-primary">
@@ -131,7 +131,7 @@ function UserAddresses() {
           {addresses?.map((address, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg border border-neutral-200 p-6 shadow-sm"
+              className="bg-white rounded-xl border border-neutral-200 p-6 shadow-sm"
             >
               <div className="flex justify-between items-start mb-4">
                 <h2 className="text-xl font-bold text-primary">

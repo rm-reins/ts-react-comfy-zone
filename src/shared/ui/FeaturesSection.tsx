@@ -8,7 +8,7 @@ interface FeatureCardProps {
 
 const FeatureCard = ({ title, description }: FeatureCardProps) => {
   return (
-    <div className="bg-white rounded-lg p-6 shadow-sm min-w-30 max-w-60 md:max-w-none md:min-w-0 flex-shrink-0 md:flex-shrink-1 w-[85vw] md:w-auto mx-2 md:mx-0">
+    <div className="bg-white rounded-xl p-6 shadow-sm min-w-30 max-w-60 md:max-w-none md:min-w-0 flex-shrink-0 md:flex-shrink-1 w-[85vw] md:w-auto mx-2 md:mx-0">
       <h3 className="text-gray-800 font-medium text-lg mb-2">{title}</h3>
       <p className="text-gray-500 text-sm">{description}</p>
     </div>

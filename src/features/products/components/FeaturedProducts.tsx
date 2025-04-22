@@ -25,7 +25,7 @@ function FeaturedProducts() {
           Array.from({ length: 4 }).map((_, index) => (
             <div
               key={index}
-              className="p-4 border rounded-lg shadow-sm flex flex-col h-full"
+              className="p-4 border rounded-xl shadow-sm flex flex-col h-full"
             >
               <Skeleton className="h-48 w-full mb-4" />
               <Skeleton className="h-6 w-3/4 mb-2" />
@@ -46,8 +46,8 @@ function FeaturedProducts() {
             />
           ))
         ) : (
-          <div className="col-span-full p-4 border rounded-lg shadow-sm text-center flex flex-col h-full">
-            <div className="h-48 bg-muted rounded-md mb-4"></div>
+          <div className="col-span-full p-4 border rounded-xl shadow-sm text-center flex flex-col h-full">
+            <div className="h-48 bg-muted rounded-xl mb-4"></div>
             <h3 className="text-xl font-semibold">
               {t("products.comingSoon")}
             </h3>

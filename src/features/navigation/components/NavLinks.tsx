@@ -38,7 +38,7 @@ function NavLinks() {
               <Button
                 variant={isActive ? "default" : "outline"}
                 size="sm"
-                className="rounded-md"
+                className="rounded-xl"
               >
                 {link.label}
               </Button>

@@ -91,7 +91,7 @@ function Cart() {
                   {/* Product Info */}
                   <div className="md:col-span-6 flex gap-4 items-center">
                     <div
-                      className="relative h-20 w-20 rounded-md overflow-hidden bg-muted cursor-pointer"
+                      className="relative h-20 w-20 rounded-xl overflow-hidden bg-muted cursor-pointer"
                       onClick={() => navigate(`/products/${item._id}`)}
                     >
                       <Image
@@ -122,7 +122,7 @@ function Cart() {
                     <span className="md:hidden text-sm font-medium">
                       {t("cart.quantity")}
                     </span>
-                    <div className="flex items-center border rounded-md">
+                    <div className="flex items-center border rounded-xl">
                       <Button
                         variant="ghost"
                         size="icon"

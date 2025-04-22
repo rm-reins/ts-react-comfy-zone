@@ -175,9 +175,9 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
             {order.orderItems?.map((item, index) => (
               <div
                 key={index}
-                className="flex flex-col md:flex-row border bg-neutral-50 dark:bg-neutral-100 rounded-lg p-4 border-neutral-200 dark:border-green-800"
+                className="flex flex-col md:flex-row border bg-neutral-50 dark:bg-neutral-100 rounded-xl p-4 border-neutral-200 dark:border-green-800"
               >
-                <div className="md:w-24 h-24 rounded-md overflow-hidden mb-4 md:mb-0">
+                <div className="md:w-24 h-24 rounded-xl overflow-hidden mb-4 md:mb-0">
                   <img
                     src={item.image}
                     alt={item.name}

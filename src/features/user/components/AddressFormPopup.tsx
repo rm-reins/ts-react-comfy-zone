@@ -151,7 +151,7 @@ function AddressFormPopup({
                     value={formData.street}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                   />
                 </Form.Control>
                 <Form.Message
@@ -178,7 +178,7 @@ function AddressFormPopup({
                     value={formData.city}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                   />
                 </Form.Control>
                 <Form.Message
@@ -205,7 +205,7 @@ function AddressFormPopup({
                     value={formData.state}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                   />
                 </Form.Control>
                 <Form.Message
@@ -232,7 +232,7 @@ function AddressFormPopup({
                     value={formData.postalCode}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                   />
                 </Form.Control>
                 <Form.Message
@@ -259,7 +259,7 @@ function AddressFormPopup({
                     value={formData.country}
                     onChange={handleChange}
                     required
-                    className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
+                    className="w-full p-3 border border-neutral-300 dark:border-neutral-700 rounded-xl bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white"
                   />
                 </Form.Control>
                 <Form.Message
