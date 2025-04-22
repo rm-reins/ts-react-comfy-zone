@@ -118,7 +118,7 @@ export const ruRU = {
     appliedCoupon: "Применен купон: {{code}}",
     discount: "Скидка",
     total: "Итого",
-    subtotal: "Промежуточный итог",
+    subtotal: "Товаров на",
     tax: "Налог",
     shipping: "Доставка",
     freeShipping: "Бесплатная доставка",
