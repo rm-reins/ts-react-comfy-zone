@@ -31,7 +31,6 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   if (!isSignedIn) {
     navigate("/sign-in");
-    setTimeout(() => window.location.reload(), 50);
     return null;
   }
 
