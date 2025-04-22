@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { cn } from "@/utils/utils";
-import { Skeleton } from "@/shared/ui";
+import { Skeleton, Pagination } from "@/shared/ui";
 import { trpc } from "@/trpc/trpc";
 import { Review, Product } from "@/trpc/types";
 import { keepPreviousData } from "@tanstack/react-query";
@@ -39,8 +37,6 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
   // Handle reviews data
   const reviews = (reviewsData?.docs as unknown as Review[]) || [];
   const totalPages = reviewsData?.totalPages || 1;
-  const hasNextPage = reviewsData?.hasNextPage || false;
-  const hasPrevPage = reviewsData?.hasPrevPage || false;
 
   return (
     <div className="mt-20 mb-10">
@@ -125,47 +121,13 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center items-center mt-8">
-              <div className="flex items-center gap-3 bg-white p-2 rounded-full shadow-sm">
-                <button
-                  className={cn(
-                    "flex items-center gap-1 font-medium px-3 py-2 rounded-full transition-colors",
-                    hasPrevPage
-                      ? "hover:bg-primary/10 text-primary"
-                      : "text-gray-300 cursor-not-allowed"
-                  )}
-                  onClick={() => hasPrevPage && setCurrentPage(currentPage - 1)}
-                  disabled={!hasPrevPage}
-                  aria-label="Previous page"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  <span className="hidden sm:inline">{t("common.back")}</span>
-                </button>
-
-                <div className="flex gap-1">
-                  {renderPaginationButtons(
-                    currentPage,
-                    totalPages,
-                    setCurrentPage
-                  )}
-                </div>
-
-                <button
-                  className={cn(
-                    "flex items-center gap-1 font-medium px-3 py-2 rounded-full transition-colors",
-                    hasNextPage
-                      ? "hover:bg-primary/10 text-primary"
-                      : "text-gray-300 cursor-not-allowed"
-                  )}
-                  onClick={() => hasNextPage && setCurrentPage(currentPage + 1)}
-                  disabled={!hasNextPage}
-                  aria-label="Next page"
-                >
-                  <span className="hidden sm:inline">{t("common.next")}</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+              showNavLabels={true}
+              className="mt-8"
+            />
           )}
         </>
       ) : (
@@ -177,87 +139,6 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
         </div>
       )}
     </div>
-  );
-}
-
-// Helper function to render pagination buttons
-function renderPaginationButtons(
-  currentPage: number,
-  totalPages: number,
-  setCurrentPage: (page: number) => void
-) {
-  if (totalPages <= 5) {
-    // Show all pages if 5 or fewer
-    return Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-      <button
-        key={page}
-        className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center",
-          currentPage === page
-            ? "bg-primary text-white"
-            : "hover:bg-primary/10 text-gray-600"
-        )}
-        onClick={() => setCurrentPage(page)}
-      >
-        {page}
-      </button>
-    ));
-  }
-
-  // Show first, last, and pages around current if more than 5
-  return (
-    <>
-      <button
-        className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center",
-          currentPage === 1
-            ? "bg-primary text-white"
-            : "hover:bg-primary/10 text-gray-600"
-        )}
-        onClick={() => setCurrentPage(1)}
-      >
-        1
-      </button>
-
-      {currentPage > 3 && <span className="px-1 text-primary">...</span>}
-
-      {Array.from({ length: Math.min(3, totalPages - 2) }, (_, i) => {
-        let pageNum;
-        if (currentPage <= 2) pageNum = i + 2;
-        else if (currentPage >= totalPages - 1) pageNum = totalPages - 3 + i;
-        else pageNum = currentPage - 1 + i;
-        return pageNum <= totalPages - 1 && pageNum >= 2 ? (
-          <button
-            key={pageNum}
-            className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center",
-              currentPage === pageNum
-                ? "bg-primary text-white"
-                : "hover:bg-primary/10 text-gray-600"
-            )}
-            onClick={() => setCurrentPage(pageNum)}
-          >
-            {pageNum}
-          </button>
-        ) : null;
-      })}
-
-      {currentPage < totalPages - 2 && (
-        <span className="px-1 text-primary">...</span>
-      )}
-
-      <button
-        className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center",
-          currentPage === totalPages
-            ? "bg-primary text-white"
-            : "hover:bg-primary/10 text-gray-600"
-        )}
-        onClick={() => setCurrentPage(totalPages)}
-      >
-        {totalPages}
-      </button>
-    </>
   );
 }
 
