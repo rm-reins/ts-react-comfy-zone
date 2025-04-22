@@ -162,7 +162,7 @@ function ProductsGrid({
                 <div className="flex items-center gap-2">
                   <div className="relative">
                     <select
-                      className="appearance-none text-sm px-3 py-2 pr-8 bg-transparent focus:outline-none focus:ring-0"
+                      className="appearance-none text-sm py-2 pr-8 bg-transparent focus:outline-none focus:ring-0"
                       value={sortOption}
                       onChange={handleSortChange}
                     >

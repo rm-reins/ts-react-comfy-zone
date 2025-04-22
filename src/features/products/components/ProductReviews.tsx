@@ -125,7 +125,7 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={setCurrentPage}
-              showNavLabels={true}
+              showNavLabels={false}
               className="mt-8"
             />
           )}
