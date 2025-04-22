@@ -5,7 +5,7 @@ interface IDeliveryAddress {
   _id: Types.ObjectId;
   street: string;
   city: string;
-  state: string;
+  state?: string;
   postalCode: string;
   country: string;
   isDefault: boolean;
@@ -34,7 +34,6 @@ const DeliveryAddressSchema = new Schema<IDeliveryAddress>({
   },
   state: {
     type: String,
-    required: [true, "Please provide state/province"],
   },
   postalCode: {
     type: String,

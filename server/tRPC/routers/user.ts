@@ -3,12 +3,14 @@ import { z } from "zod";
 import { User, IDeliveryAddress } from "../../models/User.js";
 import { Admin } from "../../models/Admin.js";
 import { TRPCError } from "../trpc.js";
-import mongoose from "mongoose";
 
 const deliveryAddressSchema = z.object({
+  _id: z.string().optional(),
   street: z.string({ required_error: "Please provide street address" }),
   city: z.string({ required_error: "Please provide city name" }),
-  state: z.string({ required_error: "Please provide state/province" }),
+  state: z
+    .string({ required_error: "Please provide state/province" })
+    .optional(),
   postalCode: z.string({ required_error: "Please provide postal code" }),
   country: z
     .string({ required_error: "Please provide country" })
@@ -153,26 +155,76 @@ export const userRouter = router({
     .input(deliveryAddressSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        const updatedUser = await User.findOneAndUpdate(
-          { clerkId: ctx?.user?.clerkId },
-          { deliveryAddresses: [input] },
-          { new: true, runValidators: true }
-        );
+        const user = await User.findOne({ clerkId: ctx?.user?.clerkId });
 
-        if (!updatedUser) {
+        if (!user) {
           throw new TRPCError({
             code: "NOT_FOUND",
             message: "User profile not found",
           });
         }
 
-        return updatedUser.deliveryAddresses?.[0];
-      } catch (error) {
+        const addressToUpdate = {
+          _id: input._id,
+          street: input.street,
+          city: input.city,
+          state: input.state || "",
+          postalCode: input.postalCode,
+          country: input.country || "Germany",
+          isDefault: !!input.isDefault,
+        };
+
+        const updatedAddresses = user.deliveryAddresses.map((addr) =>
+          addr._id.toString() === input._id ? addressToUpdate : addr
+        );
+
+        try {
+          const updatedUser = await User.findOneAndUpdate(
+            { clerkId: ctx?.user?.clerkId },
+            { deliveryAddresses: updatedAddresses },
+            { new: true, runValidators: true }
+          );
+
+          if (!updatedUser) {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: "User profile not found",
+            });
+          }
+
+          const updatedAddress = updatedUser.deliveryAddresses.find(
+            (addr) => addr._id.toString() === input._id
+          );
+
+          if (!updatedAddress) {
+            throw new TRPCError({
+              code: "INTERNAL_SERVER_ERROR",
+              message: "Failed to find updated address",
+            });
+          }
+
+          return updatedAddress;
+        } catch (err) {
+          const saveError = err as Error;
+          console.error("MongoDB update error:", saveError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Database update error: ${
+              saveError.message || "Unknown error"
+            }`,
+            cause: saveError,
+          });
+        }
+      } catch (err) {
+        const error = err as Error;
+        console.error("Update delivery address error:", error);
         if (error instanceof TRPCError) throw error;
 
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to update delivery address",
+          message: `Failed to update delivery address: ${
+            error.message || "Unknown error"
+          }`,
           cause: error,
         });
       }
@@ -202,20 +254,41 @@ export const userRouter = router({
         }
 
         const addressToAdd = {
-          _id: new mongoose.Types.ObjectId(),
-          ...input,
+          street: input.street,
+          city: input.city,
+          state: input.state || "",
+          postalCode: input.postalCode,
+          country: input.country || "Germany",
+          isDefault: !!input.isDefault,
         };
 
-        user.deliveryAddresses.push(addressToAdd as IDeliveryAddress);
-        await user.save();
+        console.log("Server adding address:", addressToAdd);
 
-        return user.deliveryAddresses[user.deliveryAddresses.length - 1];
-      } catch (error) {
+        try {
+          user.deliveryAddresses.push(addressToAdd as IDeliveryAddress);
+          await user.save();
+          return user.deliveryAddresses[user.deliveryAddresses.length - 1];
+        } catch (err) {
+          const saveError = err as Error;
+          console.error("MongoDB save error:", saveError);
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: `Database save error: ${
+              saveError.message || "Unknown error"
+            }`,
+            cause: saveError,
+          });
+        }
+      } catch (err) {
+        const error = err as Error;
+        console.error("Add delivery address error:", error);
         if (error instanceof TRPCError) throw error;
 
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to add delivery address",
+          message: `Failed to add delivery address: ${
+            error.message || "Unknown error"
+          }`,
           cause: error,
         });
       }
