@@ -1,7 +1,6 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface ISingleOrderItem {
-  _id: string;
   name: string;
   price: number;
   image: string;
@@ -10,7 +9,6 @@ interface ISingleOrderItem {
 }
 
 interface IOrder extends Document {
-  _id: string;
   tax: number;
   shippingFee: number;
   subtotal: number;
@@ -20,8 +18,7 @@ interface IOrder extends Document {
   status: "pending" | "paid" | "delivered" | "cancelled";
   paymentId: string;
   user: string;
-  createdAt: Date;
-  updatedAt: Date;
+  additionalInformation?: string;
 }
 
 const SingleOrderItemSchema = new Schema<ISingleOrderItem>({
@@ -75,6 +72,9 @@ const OrderSchema = new Schema<IOrder>(
       type: String,
     },
     user: {
+      type: String,
+    },
+    additionalInformation: {
       type: String,
     },
   },

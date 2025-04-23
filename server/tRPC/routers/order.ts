@@ -36,6 +36,7 @@ const orderSchema = z.object({
     _id: z.string().optional(),
   }),
   paymentId: z.string().optional(),
+  additionalInformation: z.string().optional(),
   status: z
     .enum(["pending", "paid", "delivered", "cancelled"])
     .default("pending"),
