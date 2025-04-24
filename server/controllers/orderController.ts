@@ -91,14 +91,14 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
 
 const updateOrder = async (req: Request, res: Response): Promise<void> => {
   const { id: orderId } = req.params;
-  const { paymentId } = req.body;
+  const { paymentMethod } = req.body;
   const order = await Order.findOne({ _id: orderId });
 
   if (!order) {
     throw NotFoundError(`No order with id: ${orderId}`);
   }
 
-  order.paymentId = paymentId;
+  order.paymentMethod = paymentMethod;
   order.status = "paid";
   await order.save();
 

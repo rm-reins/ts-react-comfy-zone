@@ -65,10 +65,23 @@ export interface Order {
   subtotal: number;
   total: number;
   orderItems: OrderItem[];
-  deliveryAddress: DeliveryAddress;
-  paymentId?: string;
+  deliveryAddress: {
+    street: string;
+    city: string;
+    state?: string;
+    postalCode: string;
+    country: string;
+  };
+  contactInformation: {
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+  };
+  paymentMethod: string;
   status?: "pending" | "paid" | "delivered" | "cancelled";
   user?: string;
+  additionalInformation?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

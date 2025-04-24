@@ -27,15 +27,21 @@ const orderSchema = z.object({
   total: z.number().min(0),
   orderItems: z.array(orderItemSchema),
   deliveryAddress: z.object({
-    address: z.string(),
+    street: z.string(),
     city: z.string(),
     state: z.string().optional(),
-    zip: z.string(),
+    postalCode: z.string(),
     country: z.string(),
     isDefault: z.boolean().optional(),
     _id: z.string().optional(),
   }),
-  paymentId: z.string().optional(),
+  contactInformation: z.object({
+    name: z.string(),
+    surname: z.string(),
+    email: z.string(),
+    phone: z.string(),
+  }),
+  paymentMethod: z.string(),
   additionalInformation: z.string().optional(),
   status: z
     .enum(["pending", "paid", "delivered", "cancelled"])
@@ -187,6 +193,9 @@ export const orderRouter = router({
           total: serverTotal,
           orderItems: processedOrderItems,
           deliveryAddress: input.deliveryAddress,
+          contactInformation: input.contactInformation,
+          paymentMethod: input.paymentMethod,
+          additionalInformation: input.additionalInformation,
           user: ctx.user?.clerkId,
         });
 
@@ -212,18 +221,12 @@ export const orderRouter = router({
     .input(
       z.object({
         orderId: z.string().regex(/^[0-9a-fA-F]{24}$/),
-        orderStatus: z.enum([
-          "pending",
-          "failed",
-          "paid",
-          "delivered",
-          "cancelled",
-        ]),
+        orderStatus: z.enum(["pending", "paid", "delivered", "cancelled"]),
         deliveryAddress: z.object({
-          address: z.string(),
+          street: z.string(),
           city: z.string(),
           state: z.string().optional(),
-          zip: z.string(),
+          postalCode: z.string(),
           country: z.string(),
           isDefault: z.boolean().optional(),
           _id: z.string().optional(),

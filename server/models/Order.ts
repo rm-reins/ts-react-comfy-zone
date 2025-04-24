@@ -14,9 +14,21 @@ interface IOrder extends Document {
   subtotal: number;
   total: number;
   orderItems: ISingleOrderItem[];
-  deliveryAddress: object;
+  deliveryAddress: {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  contactInformation: {
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+  };
   status: "pending" | "paid" | "delivered" | "cancelled";
-  paymentId: string;
+  paymentMethod: string;
   user: string;
   additionalInformation?: string;
 }
@@ -65,11 +77,50 @@ const OrderSchema = new Schema<IOrder>(
     orderItems: [SingleOrderItemSchema],
     status: {
       type: String,
-      enum: ["pending", "failed", "paid", "delivered", "cancelled"],
+      enum: ["pending", "paid", "delivered", "cancelled"],
       default: "pending",
     },
-    paymentId: {
+    deliveryAddress: {
+      street: {
+        type: String,
+        required: true,
+      },
+      city: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+      },
+      postalCode: {
+        type: String,
+        required: true,
+      },
+      country: {
+        type: String,
+        required: true,
+      },
+    },
+    contactInformation: {
+      name: {
+        type: String,
+        required: true,
+      },
+      surname: {
+        type: String,
+        required: true,
+      },
+      email: {
+        type: String,
+        required: true,
+      },
+      phone: {
+        type: String,
+      },
+    },
+    paymentMethod: {
       type: String,
+      required: true,
     },
     user: {
       type: String,

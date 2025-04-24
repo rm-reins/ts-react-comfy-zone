@@ -221,7 +221,7 @@ export const ruRU = {
     viewOrderDetails: "Детали заказа",
     orderDetails: "Детали заказа",
     orderSummary: "Сводка заказа",
-    paymentId: "ID платежа",
+    paymentMethod: "Способ оплаты",
     orderItems: "Позиции заказа",
     color: "Цвет",
     size: "Размер",

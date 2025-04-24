@@ -147,13 +147,13 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
               </span>
             </div>
 
-            {order.paymentId && (
+            {order.paymentMethod && (
               <div>
                 <p className="font-medium text-gray-700 dark:text-gray-200 mb-2">
-                  {t("orders.paymentId")}
+                  {t("orders.paymentMethod")}
                 </p>
                 <p className="text-gray-600 dark:text-gray-200">
-                  {order.paymentId}
+                  {order.paymentMethod}
                 </p>
               </div>
             )}

@@ -224,7 +224,7 @@ export const deDE = {
     viewOrderDetails: "Bestelldetails ansehen",
     orderDetails: "Bestelldetails",
     orderSummary: "Bestellübersicht",
-    paymentId: "Zahlungs-ID",
+    paymentMethod: "Zahlungsmethode",
     orderItems: "Bestellte Artikel",
     color: "Farbe",
     size: "Größe",

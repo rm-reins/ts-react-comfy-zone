@@ -221,7 +221,7 @@ export const enUS = {
     viewOrderDetails: "View Order Details",
     orderDetails: "Order Details",
     orderSummary: "Order Summary",
-    paymentId: "Payment ID",
+    paymentMethod: "Payment Method",
     orderItems: "Order Items",
     color: "Color",
     size: "Size",
