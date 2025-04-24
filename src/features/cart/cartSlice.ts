@@ -1,6 +1,5 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { Product, Order, OrderItem } from "@/trpc/types";
-import { trpc } from "@/trpc/trpc";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Product } from "@/trpc/types";
 
 interface CartState {
   cartItems: (Product & { quantity: number; color: string })[];
@@ -118,41 +117,6 @@ const cartSlice = createSlice({
     },
   },
 });
-
-export const createOrder = createAsyncThunk(
-  "cart/createOrder",
-  async (_, { getState, rejectWithValue }) => {
-    try {
-      const { cart } = getState() as { cart: CartState };
-
-      const orderItems: OrderItem[] = cart.cartItems.map((item) => ({
-        _id: item._id,
-        name: item.name,
-        price: item.price,
-        image: item.images[0],
-        quantity: item.quantity,
-        color: item.color,
-      }));
-
-      const orderData: Order = {
-        tax: cart.tax,
-        shippingFee: cart.shipping,
-        subtotal: cart.cartTotal,
-        total: cart.orderTotal,
-        orderItems: orderItems,
-      };
-
-      const mutation = trpc.order.createOrder.useMutation();
-      const order = await mutation.mutateAsync(orderData);
-
-      return order;
-    } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Failed to create order"
-      );
-    }
-  }
-);
 
 export const {
   addItem,
