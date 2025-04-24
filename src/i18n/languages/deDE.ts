@@ -112,7 +112,7 @@ export const deDE = {
     noReviewsYet: "Noch keine Bewertungen für dieses Produkt.",
     relatedProducts: "Ähnliche Produkte",
     youMayAlsoLike: "Das könnte Sie auch interessieren",
-    viewProducts: "Produkte anzeigen",
+    viewProducts: "Produkte",
     comingSoon: "Demnächst verfügbar",
     checkBackLater:
       "Schauen Sie später wieder vorbei für unsere neuesten Produkte",

@@ -112,7 +112,7 @@ export const enUS = {
     noReviewsYet: "No reviews yet for this product.",
     relatedProducts: "Related Products",
     youMayAlsoLike: "You May Also Like",
-    viewProducts: "View Products",
+    viewProducts: "Products",
     comingSoon: "Coming Soon",
     checkBackLater: "Check back later for our latest products",
     clearAll: "Clear All",

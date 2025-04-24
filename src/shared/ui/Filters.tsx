@@ -442,13 +442,13 @@ export default function Filters({
                   className="flex-1 border-green-100 dark:border-green-800 text-gray-900  hover:bg-green-50 dark:hover:bg-green-900/30"
                   onClick={() => setMobileFiltersOpen(false)}
                 >
-                  Cancel
+                  {t("common.cancel")}
                 </Button>
                 <Button
                   className="flex-1 bg-green-600 dark:bg-green-500 text-white hover:bg-green-700 dark:hover:bg-green-600"
                   onClick={() => setMobileFiltersOpen(false)}
                 >
-                  Apply Filters
+                  {t("common.apply")}
                 </Button>
               </div>
             </div>

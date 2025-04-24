@@ -81,7 +81,7 @@ function UserOrders() {
   return (
     <>
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-medium text-gray-900 dark:text-white">
+        <h1 className="flex text-2xl font-medium items-center text-gray-900 dark:text-white">
           {t("account.myOrders")}
           <span className="ml-2 bg-green-600 dark:bg-green-500 text-white rounded-full px-3 py-1 text-sm">
             {orders?.length || 0}
@@ -166,7 +166,7 @@ function UserOrders() {
                   #{order._id?.slice(0, 8)}
                 </h2>
 
-                <div className="grid grid-cols-2 gap-y-4">
+                <div className="grid grid-cols-2 gap-y-4 gap-x-2">
                   <div>
                     <p className="font-medium text-gray-900 dark:text-white mb-1">
                       {t("orders.date")}
