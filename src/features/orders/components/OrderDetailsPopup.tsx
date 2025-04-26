@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
-import { X, ArrowUpRight } from "lucide-react";
+import { X, ArrowUpRight, MapPin, Phone, Mail, User, Info } from "lucide-react";
 import { Order } from "@/trpc/types";
 
 interface OrderDetailsPopupProps {
@@ -159,6 +159,81 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
             )}
           </div>
         </div>
+
+        {/* Delivery Address */}
+        {order.deliveryAddress && (
+          <div className="p-6 border-b border-green-100 dark:border-green-800">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <MapPin className="w-5 h-5" />
+              {t("orders.deliveryAddress")}
+            </h3>
+            <div className="grid grid-cols-1 gap-2">
+              <p className="text-gray-600 dark:text-gray-200">
+                {order.deliveryAddress.street}
+              </p>
+              <p className="text-gray-600 dark:text-gray-200">
+                {`${order.deliveryAddress.postalCode} ${order.deliveryAddress.city}`}
+                {order.deliveryAddress.state &&
+                  `, ${order.deliveryAddress.state}`}
+              </p>
+              <p className="text-gray-600 dark:text-gray-200">
+                {order.deliveryAddress.country}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Contact Information */}
+        {order.contactInformation && (
+          <div className="p-6 border-b border-green-100 dark:border-green-800">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <User className="w-5 h-5" />
+              {t("orders.contactInformation")}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <p className="font-medium text-gray-700 dark:text-gray-200 mb-1 flex items-center gap-2">
+                  <User className="w-4 h-4" />
+                  {t("orders.name")}
+                </p>
+                <p className="text-gray-600 dark:text-gray-200">
+                  {`${order.contactInformation.name} ${order.contactInformation.surname}`}
+                </p>
+              </div>
+              <div>
+                <p className="font-medium text-gray-700 dark:text-gray-200 mb-1 flex items-center gap-2">
+                  <Phone className="w-4 h-4" />
+                  {t("orders.phone")}
+                </p>
+                <p className="text-gray-600 dark:text-gray-200">
+                  {order.contactInformation.phone}
+                </p>
+              </div>
+              <div className="md:col-span-2">
+                <p className="font-medium text-gray-700 dark:text-gray-200 mb-1 flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  {t("orders.email")}
+                </p>
+                <p className="text-gray-600 dark:text-gray-200">
+                  {order.contactInformation.email}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Additional Information */}
+        {order.additionalInformation && (
+          <div className="p-6 border-b border-green-100 dark:border-green-800">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+              <Info className="w-5 h-5" />
+              {t("orders.additionalInformation")}
+            </h3>
+            <p className="text-gray-600 dark:text-gray-200 whitespace-pre-line">
+              {order.additionalInformation}
+            </p>
+          </div>
+        )}
 
         {/* Order Items */}
         <div className="p-6 border-b border-green-100 dark:border-green-800">
