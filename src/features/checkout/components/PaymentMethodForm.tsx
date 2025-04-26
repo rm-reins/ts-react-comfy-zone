@@ -1,7 +1,56 @@
 import { useTranslation } from "@/i18n/useTranslation";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { useState, useEffect, useRef } from "react";
+import { setOrder } from "../checkoutSlice";
 
 function PaymentMethodForm() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const checkoutState = useSelector((state: RootState) => state.checkoutState);
+  const isInitializedRef = useRef(false);
+
+  const [paymentMethod, setPaymentMethod] = useState(
+    checkoutState.order.paymentMethod || ""
+  );
+
+  // Initialize with a default payment method if none selected
+  useEffect(() => {
+    if (!isInitializedRef.current) {
+      if (checkoutState.order.paymentMethod) {
+        setPaymentMethod(checkoutState.order.paymentMethod);
+        isInitializedRef.current = true;
+        return;
+      }
+
+      if (!paymentMethod) {
+        const defaultMethod = "creditCard";
+        setPaymentMethod(defaultMethod);
+        dispatch(
+          setOrder({
+            ...checkoutState.order,
+            paymentMethod: defaultMethod,
+          })
+        );
+      }
+
+      isInitializedRef.current = true;
+    }
+  }, [checkoutState.order.paymentMethod]);
+
+  const handlePaymentMethodChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const method = e.target.value;
+    setPaymentMethod(method);
+
+    dispatch(
+      setOrder({
+        ...checkoutState.order,
+        paymentMethod: method,
+      })
+    );
+  };
 
   return (
     <>
@@ -11,6 +60,9 @@ function PaymentMethodForm() {
             type="radio"
             id="creditCard"
             name="paymentMethod"
+            value="creditCard"
+            checked={paymentMethod === "creditCard"}
+            onChange={handlePaymentMethodChange}
             className="h-4 w-4 text-green-600 dark:text-green-400 border-gray-300 dark:border-gray-600 focus:ring-green-500 dark:focus:ring-green-400"
           />
           <label
@@ -25,6 +77,9 @@ function PaymentMethodForm() {
             type="radio"
             id="paypal"
             name="paymentMethod"
+            value="paypal"
+            checked={paymentMethod === "paypal"}
+            onChange={handlePaymentMethodChange}
             className="h-4 w-4 text-green-600 dark:text-green-400 border-gray-300 dark:border-gray-600 focus:ring-green-500 dark:focus:ring-green-400"
           />
           <label
@@ -39,6 +94,9 @@ function PaymentMethodForm() {
             type="radio"
             id="bankTransfer"
             name="paymentMethod"
+            value="bankTransfer"
+            checked={paymentMethod === "bankTransfer"}
+            onChange={handlePaymentMethodChange}
             className="h-4 w-4 text-green-600 dark:text-green-400 border-gray-300 dark:border-gray-600 focus:ring-green-500 dark:focus:ring-green-400"
           />
           <label

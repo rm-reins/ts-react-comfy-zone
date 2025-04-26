@@ -53,7 +53,14 @@ const orderSlice = createSlice({
   },
 });
 
-export const { getCurrentUserOrders, setLoading, setError } =
-  orderSlice.actions;
+export const {
+  getCurrentUserOrders,
+  createOrder,
+  updateOrder,
+  setLoading,
+  getAllOrders,
+  getSingleOrder,
+  setError,
+} = orderSlice.actions;
 
 export default orderSlice.reducer;

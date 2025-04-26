@@ -1,6 +1,19 @@
-export { default as CheckoutAccordion } from "./components/CheckoutAccordion";
-export { default as ContactInfoForm } from "./components/ContactInfoForm";
-export { default as ShippingAddressForm } from "./components/ShippingAddressForm";
-export { default as PaymentMethodForm } from "./components/PaymentMethodForm";
-export { default as AdditionalInfoForm } from "./components/AdditionalInfoForm";
-export { default as OrderSummary } from "./components/OrderSummary";
+import checkoutReducer from "./checkoutSlice";
+
+import ShippingAddressForm from "./components/ShippingAddressForm";
+import ContactInfoForm from "./components/ContactInfoForm";
+import PaymentMethodForm from "./components/PaymentMethodForm";
+import AdditionalInfoForm from "./components/AdditionalInfoForm";
+import OrderSummary from "./components/OrderSummary";
+import CheckoutAccordion from "./components/CheckoutAccordion";
+
+export {
+  ShippingAddressForm,
+  ContactInfoForm,
+  PaymentMethodForm,
+  AdditionalInfoForm,
+  OrderSummary,
+  CheckoutAccordion,
+};
+
+export { checkoutReducer };

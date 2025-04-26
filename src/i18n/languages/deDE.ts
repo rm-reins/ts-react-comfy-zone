@@ -185,6 +185,22 @@ export const deDE = {
     thankYou: "Vielen Dank für Ihre Bestellung!",
     orderConfirmationEmail:
       "Wir haben eine Bestätigungs-E-Mail an {{email}} gesendet",
+    processingOrder: "Ihre Bestellung wird verarbeitet...",
+    orderPlaced: "Bestellung aufgegeben",
+    orderPlacedMessage:
+      "Ihre Bestellung wurde erfolgreich aufgegeben. Wir werden Sie benachrichtigen, sobald sie unterwegs ist.",
+    orderPlacedButton: "Bestellung ansehen",
+    formErrors: "Bitte füllen Sie alle erforderlichen Felder aus",
+    errorFirstName: "Vorname ist erforderlich",
+    errorLastName: "Nachname ist erforderlich",
+    errorEmail: "E-Mail ist erforderlich",
+    errorPhone: "Telefon ist erforderlich",
+    errorStreet: "Straße ist erforderlich",
+    errorCity: "Stadt ist erforderlich",
+    errorPostalCode: "Postleitzahl ist erforderlich",
+    errorCountry: "Land ist erforderlich",
+    errorPaymentMethod: "Zahlungsmethode ist erforderlich",
+    errorTerms: "Sie müssen die AGB akzeptieren",
   },
   account: {
     myAccount: "Mein Konto",

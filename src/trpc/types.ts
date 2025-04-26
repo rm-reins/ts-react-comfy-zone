@@ -21,13 +21,13 @@ export interface Product {
   averageRating: number;
   numOfReviews: number;
   user: string;
-  createdAt: Date;
-  updatedAt: Date;
-  __v: number;
+  createdAt?: Date;
+  updatedAt?: Date;
+  __v?: number;
 }
 
 export interface DeliveryAddress {
-  _id: string;
+  _id?: string;
   street: string;
   city: string;
   state?: string;
