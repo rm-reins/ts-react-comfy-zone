@@ -351,7 +351,7 @@ export default function Filters({
 
         <Accordion.Item
           value="companies"
-          className="border-b border-green-100 dark:border-green-800 pb-4"
+          className="pb-4"
         >
           <Accordion.Header className="w-full">
             <Accordion.Trigger className="flex w-full items-center justify-between py-2 text-base font-medium text-gray-900 dark:text-white">

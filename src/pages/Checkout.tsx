@@ -98,7 +98,7 @@ function Checkout() {
         </div>
       )}
 
-      <div className="max-w-7xl mx-auto bg-white dark:bg-green-900/20 rounded-xl shadow-sm dark:shadow-green-900/30 overflow-hidden">
+      <div className="max-w-7xl mx-auto bg-white dark:bg-green-900/20 rounded-xl shadow-sm dark:shadow-green-900/30 overflow-hidden border border-green-100 dark:border-green-800">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
           {/* First Column - Forms */}
           <div className="md:col-span-6 p-4">

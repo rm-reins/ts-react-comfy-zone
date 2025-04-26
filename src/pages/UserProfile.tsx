@@ -11,7 +11,7 @@ function UserProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-green-600 p-4 md:p-8 rounded-xl">
+    <div className="h-fit bg-white dark:bg-green-600 p-4 md:p-8 rounded-xl">
       <div className="max-w-7xl mx-auto">
         {/* Navigation Bar */}
         <div className="bg-green-50 dark:bg-green-900/20 bg-opacity-50 rounded-xl border border-green-100 dark:border-green-800 mb-6">

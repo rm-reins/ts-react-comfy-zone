@@ -53,7 +53,7 @@ function Products() {
     <div className="container mx-auto py-8 px-4 bg-white dark:bg-green-600 rounded-xl">
       <div className="flex flex-col md:flex-row gap-8">
         {/* Sidebar with filters */}
-        <div className="md:w-64 bg-white dark:bg-green-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 shadow-sm">
+        <div className="md:w-64 bg-white dark:bg-green-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 shadow-sm h-fit">
           <Filters
             products={products}
             initialCategories={categories}
