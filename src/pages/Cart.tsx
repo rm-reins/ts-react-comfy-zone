@@ -13,23 +13,29 @@ import { EmptyCart } from "@/features/cart";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { setCartItemQuantity, removeItem } from "@/features/cart/cartSlice";
+import { useEffect, useState } from "react";
 
 function Cart() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cartState = useSelector((state: RootState) => state.cartState);
+  const [hasItems, setHasItems] = useState(cartState.cartItems.length > 0);
+
+  useEffect(() => {
+    setHasItems(cartState.cartItems.length > 0);
+  }, [cartState.cartItems.length]);
+
+  if (!hasItems) {
+    return <EmptyCart />;
+  }
 
   const {
     cartItems,
     cartTotal: subtotal,
     shipping,
     orderTotal: total,
-  } = useSelector((state: RootState) => state.cartState);
-
-  // If cart is empty, show empty state
-  if (cartItems.length === 0) {
-    return <EmptyCart />;
-  }
+  } = cartState;
 
   // Handle quantity changes
   const handleDecreaseQuantity = (

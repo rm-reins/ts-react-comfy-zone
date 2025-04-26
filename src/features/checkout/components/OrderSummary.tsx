@@ -11,8 +11,9 @@ import {
   setOrder,
   calculateTotals,
 } from "@/features/checkout/checkoutSlice";
+import { clearCart } from "@/features/cart/cartSlice";
 import type { RootState } from "@/store/store";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 interface OrderSummaryProps {
   cart: CartState;
@@ -32,10 +33,11 @@ function OrderSummary({ cart, setIsLoading, setError }: OrderSummaryProps) {
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [localIsLoading, setLocalIsLoading] = useState(false);
+  const isInitializedRef = useRef(false);
 
   // Update cart items in checkout state whenever cart changes
   useEffect(() => {
-    if (cart.cartItems.length > 0) {
+    if (!isInitializedRef.current && cart.cartItems.length > 0) {
       const orderItems: OrderItem[] = cart.cartItems.map((item) => ({
         _id: item._id,
         name: item.name,
@@ -58,6 +60,7 @@ function OrderSummary({ cart, setIsLoading, setError }: OrderSummaryProps) {
 
       // Recalculate totals after updating cart items
       dispatch(calculateTotals());
+      isInitializedRef.current = true;
     }
   }, [cart, dispatch]);
 
@@ -123,6 +126,7 @@ function OrderSummary({ cart, setIsLoading, setError }: OrderSummaryProps) {
 
       dispatch(createOrder(newOrder));
       dispatch(resetCheckout());
+      dispatch(clearCart());
       localStorage.removeItem("cart");
       navigate("/profile");
     } catch (error) {
