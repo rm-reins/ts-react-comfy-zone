@@ -163,7 +163,7 @@ export default function HeroCarousel({
           {/* Button for desktop - right aligned */}
           <button
             onClick={onButtonClick}
-            className="absolute bottom-8 right-12 text-2xl text-white font-bold uppercase flex items-center group border-b-2 border-white"
+            className="absolute bottom-8 right-12 text-2xl text-white font-bold uppercase flex items-center group border-b-2 border-white cursor-pointer"
           >
             {buttonText}
             <ArrowUpRight
