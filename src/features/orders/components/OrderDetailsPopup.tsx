@@ -67,6 +67,19 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
     }
   };
 
+  const formatPaymentMethod = (method: string) => {
+    switch (method) {
+      case "creditCard":
+        return t("orders.creditCard");
+      case "paypal":
+        return t("orders.paypal");
+      case "bankTransfer":
+        return t("orders.bankTransfer");
+      default:
+        return method;
+    }
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -153,7 +166,7 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
                   {t("orders.paymentMethod")}
                 </p>
                 <p className="text-gray-600 dark:text-gray-200">
-                  {order.paymentMethod}
+                  {formatPaymentMethod(order.paymentMethod)}
                 </p>
               </div>
             )}
