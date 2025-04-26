@@ -15,7 +15,6 @@ import {
   createBrowserRouter,
   Navigate,
   useRouteError,
-  useNavigate,
 } from "react-router-dom";
 import { SignedOut, useAuth } from "@clerk/clerk-react";
 import { ReactNode } from "react";
@@ -27,14 +26,17 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isSignedIn } = useAuth();
-  const navigate = useNavigate();
 
   if (!isSignedIn) {
-    navigate("/sign-in");
-    return null;
+    return (
+      <Navigate
+        to="/sign-in"
+        replace
+      />
+    );
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 function RouterErrorElement() {
