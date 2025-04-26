@@ -164,14 +164,18 @@ function OrderSummary({ cart, setIsLoading, setError }: OrderSummaryProps) {
             <span className="text-gray-600 dark:text-gray-200">
               {t("checkout.orderItems")}:
             </span>
-            <span className="dark:text-white">{cart.numItemsInCart}</span>
+            <span className="dark:text-white">
+              {cart.numItemsInCart} {t("checkout.pieces")}
+            </span>
           </div>
 
           <div className="flex justify-between pb-2 border-b border-green-100 dark:border-green-800">
             <span className="text-gray-600 dark:text-gray-200">
               {t("checkout.orderAmount")}:
             </span>
-            <span className="dark:text-white">{cart.cartTotal.toFixed(2)}</span>
+            <span className="dark:text-white">
+              {cart.cartTotal.toFixed(2)} €
+            </span>
           </div>
 
           <div className="flex justify-between pb-2 border-b border-green-100 dark:border-green-800">
@@ -179,7 +183,7 @@ function OrderSummary({ cart, setIsLoading, setError }: OrderSummaryProps) {
               {t("checkout.orderShipping")}:
             </span>
             <span className="text-gray-400 dark:text-gray-200">
-              {cart.shipping.toFixed(2)}
+              {cart.shipping.toFixed(2)} €
             </span>
           </div>
 
@@ -188,7 +192,7 @@ function OrderSummary({ cart, setIsLoading, setError }: OrderSummaryProps) {
               {t("checkout.orderSubtotal")}
             </span>
             <span className="text-gray-900 dark:text-green-100">
-              {cart.orderTotal.toFixed(2)}
+              {cart.orderTotal.toFixed(2)} €
             </span>
           </div>
 

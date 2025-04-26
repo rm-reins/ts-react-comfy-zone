@@ -199,6 +199,7 @@ export const enUS = {
     errorCountry: "Country is required",
     errorPaymentMethod: "Payment method is required",
     errorTerms: "You must accept terms and conditions",
+    pieces: "pcs.",
   },
   account: {
     myAccount: "My Account",

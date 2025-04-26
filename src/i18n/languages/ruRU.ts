@@ -199,6 +199,7 @@ export const ruRU = {
     errorCountry: "Страна обязательна",
     errorPaymentMethod: "Способ оплаты обязателен",
     errorTerms: "Вы должны принять условия пользовательского соглашения",
+    pieces: "шт.",
   },
   account: {
     myAccount: "Мой аккаунт",

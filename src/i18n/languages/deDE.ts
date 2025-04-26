@@ -201,6 +201,7 @@ export const deDE = {
     errorCountry: "Land ist erforderlich",
     errorPaymentMethod: "Zahlungsmethode ist erforderlich",
     errorTerms: "Sie müssen die AGB akzeptieren",
+    pieces: "Stk.",
   },
   account: {
     myAccount: "Mein Konto",
