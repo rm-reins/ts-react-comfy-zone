@@ -4,6 +4,11 @@ import Order from "../../models/Order.js";
 import Product from "../../models/Product.js";
 import { TRPCError } from "@trpc/server";
 
+// Utility function to ensure consistent handling of price precision
+const roundToTwoDecimals = (value: number): number => {
+  return Math.round(value * 100) / 100;
+};
+
 const orderItemSchema = z.object({
   _id: z
     .string()
@@ -170,9 +175,14 @@ export const orderRouter = router({
           serverSubtotal += price * item.quantity;
         }
 
-        const serverTax = Math.ceil(subtotal * 0.21);
+        serverSubtotal = roundToTwoDecimals(serverSubtotal);
+
+        const serverTax = Math.ceil(serverSubtotal * 0.21);
         const serverShippingFee = serverSubtotal > 200 ? 0 : 25;
-        const serverTotal = serverSubtotal + serverTax + serverShippingFee;
+
+        const serverTotal = roundToTwoDecimals(
+          serverSubtotal + serverTax + serverShippingFee
+        );
 
         if (
           Math.abs(serverSubtotal - subtotal) > 0.01 ||

@@ -6,6 +6,10 @@ interface CheckoutState {
   error: string | null;
 }
 
+const roundToTwoDecimals = (value: number): number => {
+  return Math.round(value * 100) / 100;
+};
+
 const initialState: CheckoutState = {
   order: {
     _id: "",
@@ -44,14 +48,18 @@ const checkoutSlice = createSlice({
     },
 
     calculateTotals: (state) => {
-      state.order.subtotal = state.order.orderItems.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
+      // Calculate subtotal and round to 2 decimal places
+      state.order.subtotal = roundToTwoDecimals(
+        state.order.orderItems.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        )
       );
       state.order.tax = Math.ceil(state.order.subtotal * 0.21);
       state.order.shippingFee = state.order.subtotal > 200 ? 0 : 25;
-      state.order.total =
-        state.order.subtotal + state.order.tax + state.order.shippingFee;
+      state.order.total = roundToTwoDecimals(
+        state.order.subtotal + state.order.tax + state.order.shippingFee
+      );
     },
 
     resetCheckout: () => initialState,

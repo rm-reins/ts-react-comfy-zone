@@ -8,6 +8,10 @@ import {
   UnauthorizedError,
 } from "../errors/custom-errors.js";
 
+const roundToTwoDecimals = (value: number): number => {
+  return Math.round(value * 100) / 100;
+};
+
 const getAllOrders = async (req: Request, res: Response): Promise<void> => {
   const orders = await Order.find({});
   res.status(StatusCodes.OK).json({ orders });
@@ -97,9 +101,14 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
     serverSubtotal += price * item.quantity;
   }
 
+  serverSubtotal = roundToTwoDecimals(serverSubtotal);
+
   const serverTax = Math.ceil(serverSubtotal * 0.21);
   const serverShippingFee = serverSubtotal > 200 ? 0 : 25;
-  const serverTotal = serverSubtotal + serverTax + serverShippingFee;
+
+  const serverTotal = roundToTwoDecimals(
+    serverSubtotal + serverTax + serverShippingFee
+  );
 
   // Verify calculation matches client calculation
   if (
