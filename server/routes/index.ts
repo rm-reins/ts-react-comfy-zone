@@ -9,6 +9,7 @@ import { syncClerkUser } from "../middleware/clerk-user.js";
 import { adminRouter } from "./adminRoutes.js";
 import { uploadImageRouter } from "./uploadImageRoutes.js";
 import { webhookRouter } from "./webhookRoutes.js";
+import { translationRouter } from "./translationRoutes.js";
 
 const authMiddleware = requireAuth({
   signInUrl: "/sign-in",
@@ -23,6 +24,7 @@ export const setupRoutes = (app: Application) => {
 
   // Public
   app.use("/api/v1/auth", authRouter);
+  app.use("/api/v1/translations", translationRouter);
 
   // Webhooks (public, but secured by signature verification)
   app.use("/api/v1/webhooks/clerk", webhookRouter);

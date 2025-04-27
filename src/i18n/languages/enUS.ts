@@ -48,6 +48,7 @@ export const enUS = {
     setAsDefault: "Set as Default",
     user: "User",
     add: "Add",
+    showOriginal: "Show Original",
   },
   auth: {
     signIn: "Sign In",

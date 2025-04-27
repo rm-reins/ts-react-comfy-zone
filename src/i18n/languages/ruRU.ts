@@ -48,6 +48,7 @@ export const ruRU = {
     setAsDefault: "Сделать исходным",
     user: "Пользователь",
     add: "Добавить",
+    showOriginal: "Показать оригинал",
   },
   auth: {
     signIn: "Вход",

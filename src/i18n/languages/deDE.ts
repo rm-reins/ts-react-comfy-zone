@@ -48,6 +48,7 @@ export const deDE = {
     setAsDefault: "Als Standard festlegen",
     user: "Benutzer",
     add: "Hinzufügen",
+    showOriginal: "Original anzeigen",
   },
   auth: {
     signIn: "Anmelden",

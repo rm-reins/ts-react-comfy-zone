@@ -4,6 +4,7 @@ import { trpc } from "@/trpc/trpc";
 import { Review, Product } from "@/trpc/types";
 import { keepPreviousData } from "@tanstack/react-query";
 import { useTranslation } from "@/i18n/useTranslation";
+import ReviewCard from "./ReviewCard";
 
 interface ProductReviewsProps {
   product: Product;
@@ -78,44 +79,10 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {reviews.map((review) => (
-              <div
+              <ReviewCard
                 key={review._id}
-                className="bg-white rounded-xl p-6 border"
-              >
-                <div className="flex sm:flex-row flex-col justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <span className="font-medium text-primary">
-                      {review.user?.toUpperCase() ||
-                        `${review?.userSurname} ${review?.userName}`}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="flex">
-                      {Array(5)
-                        .fill(0)
-                        .map((_, i) => (
-                          <span
-                            key={i}
-                            className={
-                              i < review.rating
-                                ? "text-primary"
-                                : "text-gray-300"
-                            }
-                          >
-                            ★
-                          </span>
-                        ))}
-                    </div>
-                    <span className="text-gray-400 text-sm">
-                      {new Date(review.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                </div>
-                <h4 className="font-medium mb-1 text-green-500">
-                  {review.title}
-                </h4>
-                <p className="text-gray-600">{review.comment}</p>
-              </div>
+                review={review}
+              />
             ))}
           </div>
 
