@@ -68,11 +68,13 @@ This project uses a hybrid API approach:
      MONGO_URI=your_mongodb_connection_string
 
      # Clerk Authentication
-     CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-     CLERK_SECRET_KEY=your_clerk_secret_key
-     CLERK_WEBHOOK_SECRET=your_clerk_webhook_secret
+     CLERK_PUBLISHABLE_KEY
+     CLERK_SECRET_KEY
+     CLERK_WEBHOOK_SECRET
+
      # Add this for dev
-     VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+     VITE_CLERK_PUBLISHABLE_KEY
+     VITE_DEEPL_API_KEY
 
      # For demo user
      VITE_CLERK_SIGN_IN_DEMO_USER_EMAIL
