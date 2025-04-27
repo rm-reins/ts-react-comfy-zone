@@ -133,7 +133,7 @@ function AddressFormPopup({
             <h2 className="text-2xl font-medium text-gray-900 dark:text-white">
               {mode === "edit"
                 ? t("account.editAddress")
-                : t("account.addAddress")}
+                : t("account.addNewAddress")}
             </h2>
             <button
               onClick={handleClose}
