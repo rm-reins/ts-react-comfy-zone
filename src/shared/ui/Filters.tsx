@@ -98,7 +98,7 @@ export default function Filters({
     ).length;
     return {
       id: category.toLowerCase().replace(/\s+/g, "-"),
-      label: category,
+      label: t(`products.categoryType.${category}`),
       count,
     };
   });

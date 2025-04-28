@@ -1,15 +1,23 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 interface IProduct extends Document {
-  name: string;
+  name: {
+    enUS: string;
+    ruRU: string;
+    deDE: string;
+  };
   price: number;
-  description: string;
+  description: {
+    enUS: string;
+    ruRU: string;
+    deDE: string;
+  };
   images: string[];
   category:
     | "office"
     | "kitchen"
     | "bedroom"
-    | "home decor"
+    | "homeDecor"
     | "storage"
     | "textiles"
     | "other";
@@ -25,7 +33,11 @@ interface IProduct extends Document {
 const ProductSchema = new Schema<IProduct>(
   {
     name: {
-      type: String,
+      type: {
+        enUS: String,
+        ruRU: String,
+        deDE: String,
+      },
       trim: true,
       required: [true, "Please provide product name"],
       maxLength: [100, "Name cannot be more than 100 characters"],
@@ -36,7 +48,11 @@ const ProductSchema = new Schema<IProduct>(
       default: 0,
     },
     description: {
-      type: String,
+      type: {
+        enUS: String,
+        ruRU: String,
+        deDE: String,
+      },
       required: [true, "Please provide product description"],
       maxLength: [1000, "Description cannot be more than 1000 characters"],
     },
@@ -52,7 +68,7 @@ const ProductSchema = new Schema<IProduct>(
         "office",
         "kitchen",
         "bedroom",
-        "home decor",
+        "homeDecor",
         "storage",
         "textiles",
         "other",

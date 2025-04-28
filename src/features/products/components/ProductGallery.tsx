@@ -13,8 +13,8 @@ function ProductGallery({ images, productName }: ProductGalleryProps) {
   return (
     <>
       {/* Left Column - Thumbnails */}
-      <div className="space-y-6">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold">
+      <div className="space-y-4">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold break-words hyphens-auto">
           {productName}
         </h1>
 

@@ -7,8 +7,10 @@ import {
   ProductInfo,
   ProductReviews,
 } from "@/features/products";
+import { useTranslation } from "@/i18n/useTranslation";
 
 export default function SingleProduct() {
+  const { language } = useTranslation();
   const { id } = useParams<{ id: string }>();
 
   // Fetch the product - pass ID directly as a string
@@ -51,6 +53,8 @@ export default function SingleProduct() {
     );
   }
 
+  const productName = product.name[language];
+
   return (
     <div className="bg-background dark:bg-green-600 min-h-screen p-4 md:p-8 rounded-xl">
       <div className="max-w-7xl mx-auto">
@@ -58,7 +62,7 @@ export default function SingleProduct() {
           {/* Product Gallery Component */}
           <ProductGallery
             images={product.images}
-            productName={product.name}
+            productName={productName}
           />
 
           {/* Product Info Component - Add a container with styling */}

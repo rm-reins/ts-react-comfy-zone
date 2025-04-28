@@ -2,15 +2,23 @@ export type AppRouter = import("../../server/tRPC/routers/appRouter").AppRouter;
 
 export interface Product {
   _id: string;
-  name: string;
+  name: {
+    enUS: string;
+    ruRU: string;
+    deDE: string;
+  };
   price: number;
-  description: string;
+  description: {
+    enUS: string;
+    ruRU: string;
+    deDE: string;
+  };
   images: string[];
   category:
     | "office"
     | "kitchen"
     | "bedroom"
-    | "home decor"
+    | "homeDecor"
     | "storage"
     | "textiles"
     | "other";

@@ -8,17 +8,19 @@ interface ProductAccordionProps {
 }
 
 function ProductAccordion({ product }: ProductAccordionProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [openSection, setOpenSection] = useState<string>("description");
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? "" : section);
   };
 
+  const productDescription = product.description[language];
+
   return (
     <div className="space-y-3 text-primary">
       <div className="p-4 bg-white text-gray-600 rounded-xl">
-        <p>{product.description}</p>
+        <p>{productDescription}</p>
       </div>
 
       <div className="border rounded-xl overflow-hidden">
@@ -38,7 +40,8 @@ function ProductAccordion({ product }: ProductAccordionProps) {
         {openSection === "details" && (
           <div className="p-4 bg-white text-gray-600">
             <p className="capitalize">
-              {t("products.category")}: {product.category}
+              {t("products.category")}:{" "}
+              {t(`products.categoryType.${product.category}`)}
             </p>
             <p>
               {t("products.company")}: {product.company}

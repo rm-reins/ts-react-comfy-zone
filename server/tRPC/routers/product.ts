@@ -4,21 +4,41 @@ import Product from "../../models/Product.js";
 import { TRPCError } from "@trpc/server";
 
 const productInputSchema = z.object({
-  name: z
-    .string()
-    .min(3, "Name must be at least 3 characters long")
-    .max(100, "Name cannot be more than 100 characters"),
+  name: z.object({
+    enUS: z
+      .string()
+      .min(3, "Name must be at least 3 characters long")
+      .max(100, "Name cannot be more than 100 characters"),
+    ruRU: z
+      .string()
+      .min(3, "Name must be at least 3 characters long")
+      .max(100, "Name cannot be more than 100 characters"),
+    deDE: z
+      .string()
+      .min(3, "Name must be at least 3 characters long")
+      .max(100, "Name cannot be more than 100 characters"),
+  }),
   price: z.number().positive("Price must be positive"),
-  description: z
-    .string()
-    .min(10, "Description must be at least 10 characters long")
-    .max(1000, "Description cannot be more than 1000 characters"),
+  description: z.object({
+    enUS: z
+      .string()
+      .min(10, "Description must be at least 10 characters long")
+      .max(1000, "Description cannot be more than 1000 characters"),
+    ruRU: z
+      .string()
+      .min(10, "Description must be at least 10 characters long")
+      .max(1000, "Description cannot be more than 1000 characters"),
+    deDE: z
+      .string()
+      .min(10, "Description must be at least 10 characters long")
+      .max(1000, "Description cannot be more than 1000 characters"),
+  }),
   images: z.array(z.string()).optional(),
   category: z.enum([
     "office",
     "kitchen",
     "bedroom",
-    "home decor",
+    "homeDecor",
     "storage",
     "textiles",
     "other",
