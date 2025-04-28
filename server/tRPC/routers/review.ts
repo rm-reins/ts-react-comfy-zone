@@ -7,6 +7,7 @@ import {
 import { z } from "zod";
 import Review, { IReviewModel } from "../../models/Review.js";
 import Product from "../../models/Product.js";
+import { User } from "../../models/User.js";
 import { TRPCError } from "@trpc/server";
 import {
   paginationSchema,
@@ -87,7 +88,7 @@ export const reviewRouter = router({
         });
 
         const reviews = await Review.find({ product: productId })
-          .populate("user", "name")
+          .populate("user", "name surname")
           .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit);
@@ -136,9 +137,17 @@ export const reviewRouter = router({
           });
         }
 
+        const user = await User.findOne({ clerkId: ctx.user?.clerkId });
+        if (!user) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: "User not found in database",
+          });
+        }
+
         const existingReview = await Review.findOne({
           product: productId,
-          user: ctx.user?.clerkId,
+          user: user._id,
         });
 
         if (existingReview) {
@@ -149,11 +158,13 @@ export const reviewRouter = router({
         }
 
         const review = await Review.create({
-          user: ctx.user?.clerkId,
+          user: user._id,
           product: productId,
           rating,
           title,
           comment,
+          userName: user.name,
+          userSurname: user.surname,
         });
 
         const allProductReviews = await Review.find({ product: productId });

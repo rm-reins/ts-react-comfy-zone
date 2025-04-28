@@ -5,6 +5,7 @@ import { Review, Product } from "@/trpc/types";
 import { keepPreviousData } from "@tanstack/react-query";
 import { useTranslation } from "@/i18n/useTranslation";
 import ReviewCard from "./ReviewCard";
+import ProductReviewPopup from "./ProductReviewPopup";
 
 interface ProductReviewsProps {
   product: Product;
@@ -12,11 +13,15 @@ interface ProductReviewsProps {
 }
 
 function ProductReviews({ product, productId }: ProductReviewsProps) {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [reviewsPerPage] = useState(4);
 
-  // Fetch reviews for the product
+  const createReview = trpc.review.createReview.useMutation();
+
+  const productName =
+    product.name[language as keyof typeof product.name] || product.name.enUS;
+
   const {
     data: reviewsData,
     isLoading: reviewsLoading,
@@ -30,6 +35,29 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
     { enabled: !!productId, placeholderData: keepPreviousData }
   );
 
+  // Review submission handler
+  const handleSubmitReview = async (reviewData: {
+    rating: number;
+    title: string;
+    comment: string;
+    productId: string;
+  }) => {
+    try {
+      await createReview.mutateAsync({
+        product: reviewData.productId,
+        rating: reviewData.rating,
+        title: reviewData.title,
+        comment: reviewData.comment,
+      });
+
+      console.log("Submitting review:", reviewData);
+
+      await refetchReviews();
+    } catch (error) {
+      console.error("Failed to submit review:", error);
+    }
+  };
+
   // Reset page when product changes
   useEffect(() => {
     setCurrentPage(1);
@@ -41,7 +69,7 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
 
   return (
     <div className="mt-5 mb-5">
-      <h2 className="text-2x  l sm:text-3xl font-bold text-center mb-10">
+      <h2 className="text-2xl sm:text-3xl font-bold text-center mb-5">
         {t("products.productReviews")}{" "}
         <span className="text-yellow-500 mr-1">★</span>
         <span className="dark:text-green-50">
@@ -51,6 +79,14 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
           ({product.numOfReviews})
         </span>
       </h2>
+
+      <div className="flex justify-center sm:justify-end mb-5">
+        <ProductReviewPopup
+          productName={productName}
+          productId={productId}
+          onSubmit={handleSubmitReview}
+        />
+      </div>
 
       {reviewsLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -100,9 +136,11 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
       ) : (
         <div className="text-center py-10 bg-white rounded-xl border">
           <p className="text-gray-500">{t("products.noReviewsYet")}</p>
-          <button className="mt-4 px-6 py-2 bg-primary text-white rounded-full hover:bg-primary/90">
-            {t("products.beTheFirstToReview")}
-          </button>
+          <ProductReviewPopup
+            productName={productName}
+            productId={productId}
+            onSubmit={handleSubmitReview}
+          />
         </div>
       )}
     </div>

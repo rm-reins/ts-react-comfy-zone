@@ -49,6 +49,8 @@ export const deDE = {
     user: "Benutzer",
     add: "Hinzufügen",
     showOriginal: "Original anzeigen",
+    submitting: "Senden...",
+    tryAgain: "Erneut versuchen",
   },
   auth: {
     signIn: "Anmelden",
@@ -74,6 +76,7 @@ export const deDE = {
   },
   products: {
     featured: "Empfehlungen",
+    addReview: "Bewertung hinzufügen",
     priceLowToHigh: "Preis absteigend",
     priceHighToLow: "Preis aufsteigend",
     newest: "Neuheiten",
@@ -128,6 +131,19 @@ export const deDE = {
     checkBackLater:
       "Schauen Sie später wieder vorbei für unsere neuesten Produkte",
     clearAll: "Zurücksetzen",
+    rating: "Bewertung",
+    ratingRequired: "Bewertung ist erforderlich",
+    reviewTitle: "Bewertungstitel",
+    reviewComment: "Bewertungskommentar",
+    reviewPlaceholder: "Hier Ihre Bewertung schreiben...",
+    submitReview: "Bewertung absenden",
+    reviewProduct: "Bewertung auf {{product}}",
+    reviewSubmitted: "Bewertung erfolgreich abgesendet",
+    reviewThanks: "Vielen Dank für Ihre Bewertung!",
+    alreadyReviewed:
+      "Sie haben bereits eine Bewertung für dieses Produkt abgegeben",
+    reviewFailed: "Fehler beim Absenden der Bewertung",
+    signInRequired: "Sie müssen angemeldet sein, um eine Bewertung abzugeben",
   },
   cart: {
     empty: "Ihr Warenkorb ist leer",

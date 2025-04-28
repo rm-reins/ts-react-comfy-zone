@@ -17,8 +17,7 @@ const ReviewCard = ({ review }: { review: Review }) => {
       <div className="flex sm:flex-row flex-col justify-between mb-4">
         <div className="flex items-center gap-3">
           <span className="font-medium text-primary">
-            {review.user?.toUpperCase() ||
-              `${review?.userSurname} ${review?.userName}`}
+            {`${review?.userSurname} ${review?.userName}`}
           </span>
           <TranslateButton
             isTranslating={isTranslating}
