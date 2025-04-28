@@ -25,7 +25,7 @@ export const TranslateButton = ({
         variant="ghost"
         size="sm"
         onClick={onReset}
-        className={`text-xs ${className}`}
+        className={`text-xs ${className} text-primary`}
       >
         {t("common.showOriginal")}
       </Button>
@@ -38,12 +38,12 @@ export const TranslateButton = ({
       size="sm"
       onClick={onTranslate}
       disabled={isTranslated}
-      className={`text-xs ${className}`}
+      className={`text-xs ${className} text-primary`}
     >
       {isTranslating ? (
         <Loader2 className="mr-1 h-3 w-3 animate-spin" />
       ) : (
-        <Languages className="mr-1 h-3 w-3" />
+        <Languages className="h-3 w-3" />
       )}
     </Button>
   );
