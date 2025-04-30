@@ -1,13 +1,15 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { useState } from "react";
 import { User, DeliveryAddress } from "@/trpc/types";
-import AddressFormPopup from "./AddressFormPopup";
-import { Skeleton, AlertDialog } from "@/shared/ui";
 import { trpc } from "@/trpc/trpc";
 import { TRPCClientError } from "@trpc/client";
+import AddressFormPopup from "./AddressFormPopup";
+import { Skeleton, AlertDialog, useToast } from "@/shared/ui";
+import { Pencil, Trash2 } from "lucide-react";
 
 function UserAddresses() {
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [isAddressFormOpen, setIsAddressFormOpen] = useState(false);
   const [selectedAddress, setSelectedAddress] =
     useState<DeliveryAddress | null>(null);
@@ -49,8 +51,21 @@ function UserAddresses() {
 
       setIsDeleteDialogOpen(false);
       await refetchAddresses();
+      showToast({
+        title: t("account.addressDeleted"),
+        description: t("account.addressDeletedDescription"),
+        variant: "success",
+      });
     } catch (error) {
       console.error("Error deleting address:", error);
+      showToast({
+        title: t("common.error"),
+        description:
+          error instanceof Error
+            ? error.message
+            : t("account.errorDeletingAddress"),
+        variant: "error",
+      });
     }
   };
 
@@ -61,8 +76,21 @@ function UserAddresses() {
         addressId: address._id as string,
       });
       await refetchAddresses();
+      showToast({
+        title: t("account.defaultAddressUpdated"),
+        description: t("account.defaultAddressUpdatedDescription"),
+        variant: "success",
+      });
     } catch (error) {
       console.error("Error setting default address:", error);
+      showToast({
+        title: t("common.error"),
+        description:
+          error instanceof Error
+            ? error.message
+            : t("account.errorSettingDefaultAddress"),
+        variant: "error",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -90,6 +118,12 @@ function UserAddresses() {
           country: address.country,
           isDefault: address.isDefault || false,
         });
+
+        showToast({
+          title: t("account.addressAdded"),
+          description: t("account.addressAddedDescription"),
+          variant: "success",
+        });
       } else if (selectedAddress?._id) {
         console.log("Updating address with data:", {
           _id: selectedAddress._id,
@@ -110,6 +144,12 @@ function UserAddresses() {
           country: address.country,
           isDefault: address.isDefault || false,
         });
+
+        showToast({
+          title: t("account.addressUpdated"),
+          description: t("account.addressUpdatedDescription"),
+          variant: "success",
+        });
       }
       setIsAddressFormOpen(false);
       await refetchAddresses();
@@ -124,10 +164,17 @@ function UserAddresses() {
         if (error.shape?.cause) {
           console.error("Cause:", error.shape.cause);
         }
-        // Show user-friendly error message
-        alert(`Error: ${error.message}`);
+        showToast({
+          title: t("common.error"),
+          description: error.message,
+          variant: "error",
+        });
       } else {
-        alert("Failed to save address");
+        showToast({
+          title: t("common.error"),
+          description: t("account.errorSavingAddress"),
+          variant: "error",
+        });
       }
     } finally {
       setIsLoading(false);
@@ -197,25 +244,25 @@ function UserAddresses() {
                 <div className="mt-6 flex gap-4">
                   <button
                     onClick={() => handleEdit(address as DeliveryAddress)}
-                    className="text-green-600 dark:text-green-100 hover:text-green-700 dark:hover:text-white font-medium transition-colors hover:underline"
+                    className="text-green-600 dark:text-green-100 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-md p-2 dark:hover:text-white font-medium transition-colors"
                   >
-                    {t("common.edit")}
+                    <Pencil />
                   </button>
                   <button
                     onClick={() => {
                       setSelectedAddress(address as DeliveryAddress);
                       setIsDeleteDialogOpen(true);
                     }}
-                    className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 font-medium transition-colors"
+                    className="text-red-600 dark:text-red-100 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md p-2 dark:hover:text-white font-medium transition-colors"
                   >
-                    {t("common.delete")}
+                    <Trash2 />
                   </button>
                   {!address.isDefault && (
                     <button
                       onClick={() =>
                         handleSetAsDefault(address as DeliveryAddress)
                       }
-                      className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-100 font-medium transition-colors hover:underline"
+                      className="text-gray-600 dark:text-gray-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-md p-2 dark:hover:text-white font-medium transition-colors"
                     >
                       {t("common.setAsDefault")}
                     </button>
@@ -254,9 +301,18 @@ function UserAddresses() {
                 <div className="mt-6 flex gap-4">
                   <button
                     onClick={() => handleEdit(address as DeliveryAddress)}
-                    className="text-green-600 dark:text-green-100 hover:text-green-700 dark:hover:text-white font-medium transition-colors"
+                    className="text-green-600 dark:text-green-100 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-md p-2 dark:hover:text-white font-medium transition-colors"
                   >
-                    {t("common.edit")}
+                    <Pencil />
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedAddress(address as DeliveryAddress);
+                      setIsDeleteDialogOpen(true);
+                    }}
+                    className="text-red-600 dark:text-red-100 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-md p-2 dark:hover:text-white font-medium transition-colors"
+                  >
+                    <Trash2 />
                   </button>
 
                   {!address.isDefault && (
@@ -264,7 +320,7 @@ function UserAddresses() {
                       onClick={() =>
                         handleSetAsDefault(address as DeliveryAddress)
                       }
-                      className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-100 font-medium transition-colors"
+                      className="text-gray-600 dark:text-gray-300 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded-md p-2 dark:hover:text-white font-medium transition-colors"
                     >
                       {t("common.setAsDefault")}
                     </button>

@@ -261,6 +261,19 @@ export const deDE = {
     deleteAddress: "Adresse löschen",
     confirmDeleteAddress:
       "Sind Sie sicher, dass Sie diese Adresse löschen möchten?",
+    defaultAddressUpdated: "Standardadresse aktualisiert",
+    defaultAddressUpdatedDescription:
+      "Die Standardadresse wurde erfolgreich aktualisiert",
+    errorSettingDefaultAddress: "Fehler beim Festlegen der Standardadresse",
+    addressDeleted: "Adresse gelöscht",
+    addressDeletedDescription: "Die Adresse wurde erfolgreich gelöscht",
+    errorDeletingAddress: "Fehler beim Löschen der Adresse",
+    addressAdded: "Adresse hinzugefügt",
+    addressAddedDescription: "Die Adresse wurde erfolgreich hinzugefügt",
+    errorAddingAddress: "Fehler beim Hinzufügen der Adresse",
+    addressUpdated: "Adresse aktualisiert",
+    addressUpdatedDescription: "Die Adresse wurde erfolgreich aktualisiert",
+    errorUpdatingAddress: "Fehler beim Aktualisieren der Adresse",
   },
   orders: {
     orderId: "Best.-Nr.",
