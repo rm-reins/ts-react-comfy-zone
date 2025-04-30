@@ -9,6 +9,7 @@ import { TrpcProvider } from "./trpc/trpc";
 import { ErrorBoundary } from "@/shared";
 import { LanguageProvider } from "./i18n/LanguageContext";
 import { ruRU, deDE, enUS } from "@clerk/localizations";
+import { ToastProvider } from "@/shared/ui";
 
 const publishableKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -43,9 +44,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <TrpcProvider>
         <Provider store={store}>
           <ThemeProvider>
-            <LanguageProvider>
-              <App />
-            </LanguageProvider>
+            <ToastProvider>
+              <LanguageProvider>
+                <App />
+              </LanguageProvider>
+            </ToastProvider>
           </ThemeProvider>
         </Provider>
       </TrpcProvider>
