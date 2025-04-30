@@ -66,7 +66,7 @@ export default function SingleProduct() {
           />
 
           {/* Product Info Component - Add a container with styling */}
-          <div className="bg-white dark:bg-green-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 shadow-sm">
+          <div className="bg-white col-span-2 lg:col-span-1 dark:bg-green-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 shadow-sm">
             <ProductInfo product={product} />
           </div>
         </div>
