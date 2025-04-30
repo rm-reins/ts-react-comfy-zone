@@ -2,7 +2,7 @@ import { User } from "@/trpc/types";
 import { useTranslation } from "@/i18n/useTranslation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { setOrder } from "../checkoutSlice";
 
 interface ContactInfoFormProps {
@@ -13,45 +13,36 @@ function ContactInfoForm({ user }: ContactInfoFormProps) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const checkoutState = useSelector((state: RootState) => state.checkoutState);
-  const isInitializedRef = useRef(false);
 
   const [contactInfo, setContactInfo] = useState({
-    name: checkoutState.order.contactInformation.name || "",
-    surname: checkoutState.order.contactInformation.surname || "",
-    phone: checkoutState.order.contactInformation.phone || "",
-    email: checkoutState.order.contactInformation.email || "",
+    name: checkoutState.order.contactInformation.name || user?.name || "",
+    surname:
+      checkoutState.order.contactInformation.surname || user?.surname || "",
+    phone: checkoutState.order.contactInformation.phone || user?.phone || "",
+    email: checkoutState.order.contactInformation.email || user?.email || "",
   });
 
-  // Initialize from checkout state or user data only on first render
+  // Initialize from user data when it becomes available (e.g. after async loading)
   useEffect(() => {
-    if (!isInitializedRef.current) {
-      if (
-        checkoutState.order.contactInformation.name ||
-        checkoutState.order.contactInformation.surname ||
-        checkoutState.order.contactInformation.email ||
-        checkoutState.order.contactInformation.phone
-      ) {
-        // Already using Redux state from useState above, no need to update
-        isInitializedRef.current = true;
-        return;
-      }
+    if (user) {
+      const hasExistingData = Object.values(contactInfo).some(
+        (value) => value !== ""
+      );
 
-      // If Redux state is empty and user data is available, use the user data
-      if (user) {
+      // Only overwrite with user data if we don't already have data in the form
+      if (!hasExistingData) {
         const updatedContactInfo = {
-          name: user.name || contactInfo.name,
-          surname: user.surname || contactInfo.surname,
-          phone: user.phone || contactInfo.phone,
-          email: user.email || contactInfo.email,
+          name: user.name || "",
+          surname: user.surname || "",
+          phone: user.phone || "",
+          email: user.email || "",
         };
 
         setContactInfo(updatedContactInfo);
         updateCheckoutState(updatedContactInfo);
       }
-
-      isInitializedRef.current = true;
     }
-  }, [user, checkoutState.order.contactInformation]);
+  }, [user]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
