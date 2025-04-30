@@ -20,3 +20,4 @@ export {
 } from "./Card";
 export { default as Separator } from "./Separator";
 export { default as Pagination } from "./Pagination";
+export { default as AlertDialog } from "./AlertDialog";

@@ -2,7 +2,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { useState } from "react";
 import { User, DeliveryAddress } from "@/trpc/types";
 import AddressFormPopup from "./AddressFormPopup";
-import { Skeleton } from "@/shared/ui";
+import { Skeleton, AlertDialog } from "@/shared/ui";
 import { trpc } from "@/trpc/trpc";
 import { TRPCClientError } from "@trpc/client";
 
@@ -13,6 +13,7 @@ function UserAddresses() {
     useState<DeliveryAddress | null>(null);
   const [currentMode, setCurrentMode] = useState<"add" | "edit">("add");
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const {
     data: addresses,
@@ -46,6 +47,7 @@ function UserAddresses() {
         addressId: address._id as string,
       });
 
+      setIsDeleteDialogOpen(false);
       await refetchAddresses();
     } catch (error) {
       console.error("Error deleting address:", error);
@@ -200,7 +202,10 @@ function UserAddresses() {
                     {t("common.edit")}
                   </button>
                   <button
-                    onClick={() => handleDelete(address as DeliveryAddress)}
+                    onClick={() => {
+                      setSelectedAddress(address as DeliveryAddress);
+                      setIsDeleteDialogOpen(true);
+                    }}
                     className="text-gray-600 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 font-medium transition-colors"
                   >
                     {t("common.delete")}
@@ -279,6 +284,14 @@ function UserAddresses() {
           {t("account.addNewAddress")}
         </button>
       </div>
+
+      {/* Delete Dialog */}
+      <AlertDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+        onDelete={() => handleDelete(selectedAddress as DeliveryAddress)}
+        address={selectedAddress as DeliveryAddress}
+      />
 
       {/* Address Form Popup */}
       <AddressFormPopup
