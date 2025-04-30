@@ -40,7 +40,7 @@ function OrderSummary({ cart, setIsLoading, setError }: OrderSummaryProps) {
     if (!isInitializedRef.current && cart.cartItems.length > 0) {
       const orderItems: OrderItem[] = cart.cartItems.map((item) => ({
         _id: item._id,
-        name: item.name,
+        name: item.name["enUS"],
         price: item.price,
         image: item.images[0],
         quantity: item.quantity,

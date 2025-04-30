@@ -16,7 +16,7 @@ import { setCartItemQuantity, removeItem } from "@/features/cart/cartSlice";
 import { useEffect, useState } from "react";
 
 function Cart() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cartState = useSelector((state: RootState) => state.cartState);
@@ -104,7 +104,7 @@ function Cart() {
                     >
                       <Image
                         src={item.images?.[0] || "/placeholder.svg"}
-                        alt={item.name}
+                        alt={item.name[language]}
                         layout="fill"
                       />
                     </div>
@@ -113,7 +113,7 @@ function Cart() {
                         className="font-medium text-lg cursor-pointer text-gray-900 dark:text-white"
                         onClick={() => navigate(`/products/${item._id}`)}
                       >
-                        {item.name}
+                        {item.name[language]}
                       </h3>
                       <div className="text-sm text-muted-foreground dark:text-gray-300 mt-1 flex items-center gap-2">
                         <p>{t("cart.color")}</p>
