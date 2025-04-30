@@ -254,6 +254,8 @@ export const ruRU = {
     addNewAddress: "Добавить новый адрес",
     editAddress: "Редактировать адрес",
     required: "Это поле обязательно для заполнения",
+    deleteAddress: "Удалить адрес",
+    confirmDeleteAddress: "Вы уверены, что хотите удалить этот адрес?",
   },
   orders: {
     orderId: "Ном. заказа",

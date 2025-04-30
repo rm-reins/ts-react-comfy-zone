@@ -254,6 +254,8 @@ export const enUS = {
     addNewAddress: "Add New Address",
     editAddress: "Edit Address",
     required: "This field is required",
+    deleteAddress: "Delete Address",
+    confirmDeleteAddress: "Are you sure you want to delete this address?",
   },
   orders: {
     orderId: "Order No.",

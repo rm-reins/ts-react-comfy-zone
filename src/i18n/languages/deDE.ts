@@ -258,6 +258,9 @@ export const deDE = {
     addNewAddress: "Neue Adresse hinzufügen",
     editAddress: "Adresse bearbeiten",
     required: "Dieses Feld ist erforderlich",
+    deleteAddress: "Adresse löschen",
+    confirmDeleteAddress:
+      "Sind Sie sicher, dass Sie diese Adresse löschen möchten?",
   },
   orders: {
     orderId: "Best.-Nr.",
