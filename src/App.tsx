@@ -19,13 +19,17 @@ import {
 import { SignedOut, useAuth } from "@clerk/clerk-react";
 import { ReactNode } from "react";
 import { ErrorFallback } from "@/shared/errors";
-
+import { Skeleton } from "@/shared/ui";
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn, isLoaded } = useAuth();
+
+  if (!isLoaded) {
+    return <Skeleton className="w-full h-full" />;
+  }
 
   if (!isSignedIn) {
     return (
