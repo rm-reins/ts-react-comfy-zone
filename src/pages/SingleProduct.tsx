@@ -58,20 +58,22 @@ export default function SingleProduct() {
   return (
     <div className="bg-background dark:bg-green-600 min-h-screen p-4 md:p-8 rounded-xl">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Product Gallery Component */}
-          <ProductGallery
-            images={product.images}
-            productName={productName}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Product Gallery Component - Full width on mobile, 1/3 on desktop */}
+          <div className="lg:col-span-2 order-1">
+            <ProductGallery
+              images={product.images}
+              productName={productName}
+            />
+          </div>
 
-          {/* Product Info Component - Add a container with styling */}
-          <div className="bg-white col-span-2 lg:col-span-1 dark:bg-green-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 shadow-sm">
+          {/* Product Info Component - Full width on mobile, 2/3 on desktop */}
+          <div className="bg-white lg:col-span-1 dark:bg-green-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 shadow-sm order-2 h-fit">
             <ProductInfo product={product} />
           </div>
         </div>
 
-        {/* Product Reviews Component - Add a container with styling */}
+        {/* Product Reviews Component */}
         <div className="bg-white dark:bg-green-900/20 p-4 rounded-xl border border-green-100 dark:border-green-800 shadow-sm mt-8">
           <ProductReviews
             product={product}
