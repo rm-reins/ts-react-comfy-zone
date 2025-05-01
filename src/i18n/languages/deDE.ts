@@ -56,6 +56,7 @@ export const deDE = {
     signIn: "Anmelden",
     signUp: "Registrieren",
     signOut: "Abmelden",
+    signOutDescription: "Sie wurden erfolgreich abgemeldet",
     forgotPassword: "Passwort vergessen",
     resetPassword: "Passwort zurücksetzen",
     email: "E-Mail",
@@ -72,7 +73,9 @@ export const deDE = {
     invalidEmail: "Ungültige E-Mail-Adresse",
     requiredField: "Dieses Feld ist erforderlich",
     demoLogin: "Demo Login",
+    demoLoginDescription: "Sie sind als Demo-Benutzer angemeldet",
     signInAccount: "Anmelden zu Ihrem Konto",
+    errorDemoLogin: "Fehler beim Anmelden als Demo-Benutzer",
   },
   products: {
     featured: "Empfehlungen",
@@ -144,6 +147,15 @@ export const deDE = {
       "Sie haben bereits eine Bewertung für dieses Produkt abgegeben",
     reviewFailed: "Fehler beim Absenden der Bewertung",
     signInRequired: "Sie müssen angemeldet sein, um eine Bewertung abzugeben",
+    addedToCart: "Zu Warenkorb hinzugefügt",
+    addedToCartDescription:
+      "Das Produkt wurde erfolgreich zu Ihrem Warenkorb hinzugefügt",
+    errorAddingToCart: "Fehler beim Hinzufügen des Produkts zum Warenkorb",
+    removedFromCart: "Aus Warenkorb entfernt",
+    removedFromCartDescription:
+      "Das Produkt wurde erfolgreich aus Ihrem Warenkorb entfernt",
+    errorRemovingFromCart:
+      "Fehler beim Entfernen des Produkts aus dem Warenkorb",
   },
   cart: {
     empty: "Ihr Warenkorb ist leer",

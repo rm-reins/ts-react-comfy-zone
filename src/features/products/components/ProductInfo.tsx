@@ -7,6 +7,7 @@ import ProductAccordion from "./ProductAccordion";
 import { useDispatch } from "react-redux";
 import { addItem } from "@/features/cart/cartSlice";
 import { Button } from "@/shared";
+import { useToast } from "@/shared/ui";
 
 interface ProductInfoProps {
   product: Product;
@@ -14,17 +15,35 @@ interface ProductInfoProps {
 
 function ProductInfo({ product }: ProductInfoProps) {
   const { t } = useTranslation();
+  const { showToast } = useToast();
   const [selectedColor, setSelectedColor] = useState(0);
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
-    dispatch(
-      addItem({
-        ...product,
-        color: product.colors[selectedColor],
-        quantity: 1,
-      })
-    );
+    try {
+      dispatch(
+        addItem({
+          ...product,
+          color: product.colors[selectedColor],
+          quantity: 1,
+        })
+      );
+      showToast({
+        title: t("products.addedToCart"),
+        description: t("products.addedToCartDescription"),
+        variant: "success",
+      });
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+      showToast({
+        title: t("common.error"),
+        description:
+          error instanceof Error
+            ? error.message
+            : t("products.errorAddingToCart"),
+        variant: "error",
+      });
+    }
   };
 
   return (

@@ -10,17 +10,29 @@ import LanguageMenuSub from "./LanguageMenuSub";
 import { useTranslation } from "@/i18n/useTranslation";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
+import { useToast } from "@/shared/ui";
 
 export default function UserDropdown() {
   const { t } = useTranslation();
   const { user } = useUser();
+  const { showToast } = useToast();
   const { signOut } = useClerk();
   const navigate = useNavigate();
   const { signIn, setActive, isLoaded } = useSignIn();
 
   const handleLogout = async () => {
-    await signOut();
-    navigate("/");
+    try {
+      await signOut();
+      navigate("/", { state: { logout: true } });
+    } catch (error) {
+      console.error("Error logging out:", error);
+      showToast({
+        title: t("common.error"),
+        description:
+          error instanceof Error ? error.message : t("auth.errorLogout"),
+        variant: "error",
+      });
+    }
   };
 
   const handleDemoLogin = async () => {
@@ -36,8 +48,20 @@ export default function UserDropdown() {
         setActive({ session: result.createdSessionId });
         navigate("/");
       }
+
+      showToast({
+        title: t("auth.demoLogin"),
+        description: t("auth.demoLoginDescription"),
+        variant: "success",
+      });
     } catch (error) {
-      console.error(error);
+      console.error("Error logging in as demo user:", error);
+      showToast({
+        title: t("common.error"),
+        description:
+          error instanceof Error ? error.message : t("auth.errorDemoLogin"),
+        variant: "error",
+      });
     }
   };
 

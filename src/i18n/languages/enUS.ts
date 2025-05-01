@@ -56,6 +56,7 @@ export const enUS = {
     signIn: "Sign In",
     signUp: "Sign Up",
     signOut: "Sign Out",
+    signOutDescription: "You have been signed out successfully",
     forgotPassword: "Forgot Password",
     resetPassword: "Reset Password",
     email: "Email",
@@ -72,7 +73,9 @@ export const enUS = {
     invalidEmail: "Invalid email address",
     requiredField: "This field is required",
     demoLogin: "Demo Login",
+    demoLoginDescription: "You are logged in as a demo user",
     signInAccount: "Sign in to your account",
+    errorDemoLogin: "Error logging in as demo user",
   },
   products: {
     featured: "Featured Products",
@@ -142,6 +145,14 @@ export const enUS = {
     alreadyReviewed: "You've already submitted a review for this product",
     reviewFailed: "Failed to submit review",
     signInRequired: "You must be signed in to leave a review",
+    addedToCart: "Added to cart",
+    addedToCartDescription:
+      "The product has been added to your cart successfully",
+    errorAddingToCart: "Error adding item to cart",
+    removedFromCart: "Removed from cart",
+    removedFromCartDescription:
+      "The product has been removed from your cart successfully",
+    errorRemovingFromCart: "Error removing item from cart",
   },
   cart: {
     empty: "Your cart is empty",

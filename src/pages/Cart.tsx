@@ -14,9 +14,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { setCartItemQuantity, removeItem } from "@/features/cart/cartSlice";
 import { useEffect, useState } from "react";
+import { useToast } from "@/shared/ui";
 
 function Cart() {
   const { t, language } = useTranslation();
+  const { showToast } = useToast();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cartState = useSelector((state: RootState) => state.cartState);
@@ -70,7 +72,24 @@ function Cart() {
 
   // Handle item removal
   const handleRemoveItem = (item: (typeof cartItems)[0]) => {
-    dispatch(removeItem(item));
+    try {
+      dispatch(removeItem(item));
+      showToast({
+        title: t("products.removedFromCart"),
+        description: t("products.removedFromCartDescription"),
+        variant: "success",
+      });
+    } catch (error) {
+      console.error("Error removing item from cart:", error);
+      showToast({
+        title: t("common.error"),
+        description:
+          error instanceof Error
+            ? error.message
+            : t("products.errorRemovingFromCart"),
+        variant: "error",
+      });
+    }
   };
 
   return (
