@@ -36,14 +36,12 @@ This project uses a hybrid API approach:
 
 ## Current Status
 
-- **Frontend**: Partially complete - Includes product browsing, filtering, cart management, checkout, and user profile.
+- **Frontend**: Partial implementation - Includes product browsing, filtering, cart management, checkout, and user profile.
+  Admin page is developed separately and will be added when ready. You can check out approximate design here [Excalidraw Sketch](https://excalidraw.com/#json=ScfpFI0DiGhjAbmh8Li5S,ZdaqR2Jg1sJZu3ghtLcbSg)
 - **Backend**: Complete - Full TypeScript API with both tRPC and REST endpoints.
 - **Authentication**: Implemented with Clerk, including webhook integration.
 - **In Progress**:
-  - Comments translation
-  - Products localization
   - Admin page
-  - Product comment submission
 
 ## Setup
 
