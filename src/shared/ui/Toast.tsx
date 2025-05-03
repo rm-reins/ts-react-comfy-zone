@@ -15,11 +15,11 @@ interface ToastProps {
 
 const variantStyles = {
   success:
-    "bg-green-50 border-green-600 dark:bg-green-900 dark:border-green-500",
-  error: "bg-red-50 border-red-600 dark:bg-red-900 dark:border-red-500",
+    "bg-green-50 border-green-600 dark:bg-green-700 dark:border-green-500",
+  error: "bg-red-50 border-red-600 dark:bg-red-700 dark:border-red-500",
   warning:
-    "bg-amber-50 border-amber-600 dark:bg-amber-900 dark:border-amber-500",
-  info: "bg-blue-50 border-blue-600 dark:bg-blue-900 dark:border-blue-500",
+    "bg-amber-50 border-amber-600 dark:bg-amber-700 dark:border-amber-500",
+  info: "bg-blue-50 border-blue-600 dark:bg-blue-700 dark:border-blue-500",
 };
 
 const Toast: React.FC<ToastProps> = ({
@@ -72,7 +72,7 @@ const Toast: React.FC<ToastProps> = ({
           <X className="h-4 w-4" />
         </ToastPrimitive.Close>
       </ToastPrimitive.Root>
-      <ToastPrimitive.Viewport className="fixed bottom-0 right-0 z-[2147483647] m-0 flex w-[390px] max-w-[100vw] list-none flex-col gap-2.5 p-6 outline-none" />
+      <ToastPrimitive.Viewport className="fixed top-0 left-0 z-30 m-0 flex w-[390px] max-w-[100vw] list-none flex-col gap-2.5 p-6 outline-none" />
     </ToastPrimitive.Provider>
   );
 };
