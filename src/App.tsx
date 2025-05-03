@@ -20,6 +20,7 @@ import { SignedOut, useAuth } from "@clerk/clerk-react";
 import { ReactNode } from "react";
 import { ErrorFallback } from "@/shared/errors";
 import { Skeleton } from "@/shared/ui";
+import AdminPage from "./pages/AdminPage";
 interface ProtectedRouteProps {
   children: ReactNode;
 }
@@ -91,6 +92,15 @@ const router = createBrowserRouter([
         element: <About />,
       },
     ],
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute>
+        <AdminPage />
+      </ProtectedRoute>
+    ),
+    errorElement: <RouterErrorElement />,
   },
   {
     path: "/sign-in/*",
