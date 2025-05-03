@@ -57,6 +57,17 @@ export interface User {
   updatedAt: Date;
 }
 
+export interface Admin {
+  _id: string;
+  name: string;
+  surname: string;
+  email: string;
+  phone?: string;
+  role: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface OrderItem {
   _id?: string;
   name: string;

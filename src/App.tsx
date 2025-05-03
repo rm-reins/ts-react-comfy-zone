@@ -21,12 +21,46 @@ import { ReactNode } from "react";
 import { ErrorFallback } from "@/shared/errors";
 import { Skeleton } from "@/shared/ui";
 import AdminPage from "./pages/AdminPage";
+import { trpc } from "./trpc/trpc";
+import { Admin } from "@/trpc/types";
+
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isSignedIn, isLoaded } = useAuth();
+
+  if (!isLoaded) {
+    return <Skeleton className="w-full h-full" />;
+  }
+
+  if (!isSignedIn) {
+    return (
+      <Navigate
+        to="/sign-in"
+        replace
+      />
+    );
+  }
+
+  return <>{children}</>;
+};
+
+const AdminRoute = ({ children }: ProtectedRouteProps) => {
+  const { isSignedIn, isLoaded } = useAuth();
+  const { data: admin } = trpc.admin.getCurrentAdmin.useQuery() as {
+    data: Admin | undefined;
+  };
+
+  if (admin?.role !== "admin") {
+    return (
+      <Navigate
+        to="/"
+        replace
+      />
+    );
+  }
 
   if (!isLoaded) {
     return <Skeleton className="w-full h-full" />;
@@ -96,9 +130,9 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: (
-      <ProtectedRoute>
+      <AdminRoute>
         <AdminPage />
-      </ProtectedRoute>
+      </AdminRoute>
     ),
     errorElement: <RouterErrorElement />,
   },
