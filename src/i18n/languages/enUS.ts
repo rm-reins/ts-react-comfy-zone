@@ -77,6 +77,12 @@ export const enUS = {
     signInAccount: "Sign in to your account",
     errorDemoLogin: "Error logging in as demo user",
   },
+  admin: {
+    dashboard: "Dashboard",
+    users: "Users",
+    products: "Products",
+    orders: "Orders",
+  },
   products: {
     featured: "Featured Products",
     addReview: "Add Review",

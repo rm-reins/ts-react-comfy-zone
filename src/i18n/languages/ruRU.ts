@@ -77,6 +77,12 @@ export const ruRU = {
     signInAccount: "Войдите в учетную запись",
     errorDemoLogin: "Ошибка при входе в демо-аккаунт",
   },
+  admin: {
+    dashboard: "Панель управления",
+    users: "Пользователи",
+    products: "Товары",
+    orders: "Заказы",
+  },
   products: {
     featured: "Рекомендации",
     addReview: "Добавить отзыв",

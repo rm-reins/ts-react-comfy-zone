@@ -77,6 +77,12 @@ export const deDE = {
     signInAccount: "Anmelden zu Ihrem Konto",
     errorDemoLogin: "Fehler beim Anmelden als Demo-Benutzer",
   },
+  admin: {
+    dashboard: "Dashboard",
+    users: "Benutzer",
+    products: "Produkte",
+    orders: "Bestellungen",
+  },
   products: {
     featured: "Empfehlungen",
     addReview: "Bewertung hinzufügen",

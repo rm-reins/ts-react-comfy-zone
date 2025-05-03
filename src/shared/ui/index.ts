@@ -1,7 +1,6 @@
 export { default as Button } from "./Button";
 export { default as ModeToggle } from "./ModeToggle";
 export { default as CartButton } from "./CartButton";
-export { DropdownMenu } from "./DropdownMenu";
 export { default as LinksDropdown } from "./LinksDropdown";
 export { default as Image } from "./Image";
 export { default as Skeleton } from "./Skeleton";
@@ -18,6 +17,23 @@ export {
   CardContent,
   CardFooter,
 } from "./Card";
+export {
+  DropdownMenu,
+  DropdownMenuPortal,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+} from "./DropdownMenu";
 export { default as Separator } from "./Separator";
 export { default as Pagination } from "./Pagination";
 export { default as AlertDialog } from "./AlertDialog";
