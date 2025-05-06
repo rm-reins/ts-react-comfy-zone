@@ -49,20 +49,12 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
 const AdminRoute = ({ children }: ProtectedRouteProps) => {
   const { isSignedIn, isLoaded } = useAuth();
-  const { data: admin } = trpc.admin.getCurrentAdmin.useQuery() as {
+  const { data: admin, isLoading } = trpc.admin.getCurrentAdmin.useQuery() as {
     data: Admin | undefined;
+    isLoading: boolean;
   };
 
-  if (admin?.role !== "admin") {
-    return (
-      <Navigate
-        to="/"
-        replace
-      />
-    );
-  }
-
-  if (!isLoaded) {
+  if (!isLoaded || isLoading) {
     return <Skeleton className="w-full h-full" />;
   }
 
@@ -70,6 +62,15 @@ const AdminRoute = ({ children }: ProtectedRouteProps) => {
     return (
       <Navigate
         to="/sign-in"
+        replace
+      />
+    );
+  }
+
+  if (admin?.role !== "admin") {
+    return (
+      <Navigate
+        to="/"
         replace
       />
     );

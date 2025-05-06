@@ -1,4 +1,5 @@
 import About from "./About";
+import AdminPage from "./AdminPage";
 import Cart from "./Cart";
 import Checkout from "./Checkout";
 import Landing from "./Landing";
@@ -11,6 +12,7 @@ import SignUpPage from "./SignUp";
 
 export {
   About,
+  AdminPage,
   Cart,
   Checkout,
   Landing,
