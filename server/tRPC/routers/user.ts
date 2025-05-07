@@ -1,6 +1,7 @@
 import { router, protectedProcedure } from "../trpc.js";
 import { z } from "zod";
 import { User, IDeliveryAddress } from "../../models/User.js";
+import { Admin } from "../../models/Admin.js";
 import { TRPCError } from "../trpc.js";
 
 const deliveryAddressSchema = z.object({
@@ -34,15 +35,16 @@ export const userRouter = router({
   currentUser: protectedProcedure.query(async ({ ctx }) => {
     try {
       const user = await User.findOne({ clerkId: ctx?.user?.clerkId });
+      const admin = await Admin.findOne({ clerkId: ctx?.user?.clerkId });
 
-      if (!user) {
+      if (!user && !admin) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "User profile not found",
         });
       }
 
-      return user;
+      return user || admin;
     } catch (error) {
       if (error instanceof TRPCError) throw error;
 

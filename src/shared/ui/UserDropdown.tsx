@@ -9,12 +9,16 @@ import Button from "./Button";
 import LanguageMenuSub from "./LanguageMenuSub";
 import { useTranslation } from "@/i18n/useTranslation";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useUser, useClerk, useSignIn } from "@clerk/clerk-react";
+import { useClerk, useSignIn } from "@clerk/clerk-react";
 import { useToast } from "@/shared/ui";
+import { trpc } from "@/trpc/trpc";
+import { User as UserType, Admin as AdminType } from "@/trpc/types";
 
 export default function UserDropdown() {
   const { t } = useTranslation();
-  const { user } = useUser();
+  const { data: user } = trpc.user.currentUser.useQuery() as {
+    data: (UserType | AdminType) | undefined;
+  };
   const { showToast } = useToast();
   const { signOut } = useClerk();
   const navigate = useNavigate();
@@ -82,24 +86,53 @@ export default function UserDropdown() {
         sideOffset={25}
       >
         {user ? (
-          <>
-            <DropdownMenuItem>
-              <NavLink
-                className="text-foreground w-full"
-                to="/profile"
-              >
-                {t("common.profile")}
-              </NavLink>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleLogout}>
-              <NavLink
-                className="text-foreground w-full"
-                to=""
-              >
-                {t("common.logout")}
-              </NavLink>
-            </DropdownMenuItem>
-          </>
+          user.role === "admin" ? (
+            <>
+              <DropdownMenuItem>
+                <NavLink
+                  className="text-foreground w-full"
+                  to="/"
+                >
+                  {t("common.home")}
+                </NavLink>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <NavLink
+                  className="text-foreground w-full"
+                  to="/admin"
+                >
+                  {t("admin.dashboard")}
+                </NavLink>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
+                <NavLink
+                  className="text-foreground w-full"
+                  to=""
+                >
+                  {t("common.logout")}
+                </NavLink>
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <>
+              <DropdownMenuItem>
+                <NavLink
+                  className="text-foreground w-full"
+                  to="/profile"
+                >
+                  {t("common.profile")}
+                </NavLink>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>
+                <NavLink
+                  className="text-foreground w-full"
+                  to=""
+                >
+                  {t("common.logout")}
+                </NavLink>
+              </DropdownMenuItem>
+            </>
+          )
         ) : (
           <>
             <DropdownMenuItem>
