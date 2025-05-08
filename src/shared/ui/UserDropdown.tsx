@@ -11,18 +11,15 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useClerk, useSignIn } from "@clerk/clerk-react";
 import { useToast } from "@/shared/ui";
-import { trpc } from "@/trpc/trpc";
-import { User as UserType, Admin as AdminType } from "@/trpc/types";
+import { useAuthUser } from "@/features/auth/useAuthUser";
 
 export default function UserDropdown() {
   const { t } = useTranslation();
-  const { data: user } = trpc.user.currentUser.useQuery() as {
-    data: (UserType | AdminType) | undefined;
-  };
+  const { isSignedIn, isAdmin } = useAuthUser();
   const { showToast } = useToast();
   const { signOut } = useClerk();
   const navigate = useNavigate();
-  const { signIn, setActive, isLoaded } = useSignIn();
+  const { signIn, setActive: setSignInActive, isLoaded } = useSignIn();
 
   const handleLogout = async () => {
     try {
@@ -49,7 +46,7 @@ export default function UserDropdown() {
       });
 
       if (result.status === "complete") {
-        setActive({ session: result.createdSessionId });
+        setSignInActive({ session: result.createdSessionId });
         navigate("/");
       }
 
@@ -85,8 +82,8 @@ export default function UserDropdown() {
         align="end"
         sideOffset={25}
       >
-        {user ? (
-          user.role === "admin" ? (
+        {isSignedIn ? (
+          isAdmin ? (
             <>
               <DropdownMenuItem>
                 <NavLink

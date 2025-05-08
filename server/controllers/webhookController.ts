@@ -4,6 +4,7 @@ import { Webhook } from "svix";
 import { User } from "../models/User.js";
 import { Admin } from "../models/Admin.js";
 import { logger } from "../utils/logger.js";
+import { clerkClient } from "@clerk/express";
 
 // Define types for Clerk webhook events
 interface WebhookEvent {
@@ -171,6 +172,62 @@ const handleUserCreated = async (data: ClerkUser) => {
       lastName: last_name,
     });
 
+    try {
+      const { data: organizations } =
+        await clerkClient.organizations.getOrganizationList();
+      const defaultOrg = organizations.find(
+        (org) => org.name === process.env.ORG
+      );
+
+      if (defaultOrg) {
+        logger.info({
+          message: "Adding user to default organization",
+          clerkId,
+          organizationId: defaultOrg.id,
+          organizationName: defaultOrg.name,
+        });
+
+        await clerkClient.organizations.createOrganizationMembership({
+          organizationId: defaultOrg.id,
+          userId: clerkId,
+          role: "org:member",
+        });
+
+        logger.info({
+          message: "Successfully added user to organization",
+          clerkId,
+          organizationId: defaultOrg.id,
+        });
+      } else {
+        logger.warn({
+          message: "Default organization not found, creating one.",
+        });
+
+        const newOrg = await clerkClient.organizations.createOrganization({
+          name: process.env.ORG!,
+        });
+
+        await clerkClient.organizations.createOrganizationMembership({
+          organizationId: newOrg.id,
+          userId: clerkId,
+          role: "org:member",
+        });
+
+        logger.info({
+          message: "Created default organization and added user",
+          clerkId,
+          organizationId: newOrg.id,
+        });
+      }
+    } catch (orgError) {
+      logger.error({
+        message: "Error adding user to organization",
+        error: orgError instanceof Error ? orgError.message : String(orgError),
+        stack: orgError instanceof Error ? orgError.stack : undefined,
+        clerkId,
+      });
+    }
+
     // Check if the user already exists
     const existingUser = await User.findOne({ clerkId });
     const existingAdmin = await Admin.findOne({ clerkId });
@@ -181,7 +238,7 @@ const handleUserCreated = async (data: ClerkUser) => {
         clerkId,
         userId: String(existingUser._id),
       });
-      // User exists - let's update it with more complete information
+
       await User.findOneAndUpdate(
         { clerkId },
         {

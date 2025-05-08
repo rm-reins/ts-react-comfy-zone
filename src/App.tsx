@@ -16,20 +16,22 @@ import {
   Navigate,
   useRouteError,
 } from "react-router-dom";
-import { SignedOut, useAuth } from "@clerk/clerk-react";
-import { ReactNode } from "react";
+import { SignedOut } from "@clerk/clerk-react";
+import { ReactNode, useEffect, useState } from "react";
 import { ErrorFallback } from "@/shared/errors";
 import { Skeleton } from "@/shared/ui";
 import AdminPage from "./pages/AdminPage";
-import { trpc } from "./trpc/trpc";
-import { Admin } from "@/trpc/types";
+import {
+  useSetActiveOrganization,
+  useAuthUser,
+} from "@/features/auth/useAuthUser";
 
 interface ProtectedRouteProps {
   children: ReactNode;
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isSignedIn, isLoaded } = useAuthUser();
 
   if (!isLoaded) {
     return <Skeleton className="w-full h-full" />;
@@ -48,13 +50,22 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 };
 
 const AdminRoute = ({ children }: ProtectedRouteProps) => {
-  const { isSignedIn, isLoaded } = useAuth();
-  const { data: admin, isLoading } = trpc.admin.getCurrentAdmin.useQuery() as {
-    data: Admin | undefined;
-    isLoading: boolean;
-  };
+  const { isSignedIn, isAdmin, isLoaded, isOrgLoaded } = useAuthUser();
+  const [isReady, setIsReady] = useState(false);
 
-  if (!isLoaded || isLoading) {
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      // Short delay to allow organization data to load
+
+      const timer = setTimeout(() => {
+        setIsReady(true);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isLoaded, isSignedIn, isOrgLoaded]);
+
+  if (!isLoaded || !isReady) {
     return <Skeleton className="w-full h-full" />;
   }
 
@@ -67,7 +78,7 @@ const AdminRoute = ({ children }: ProtectedRouteProps) => {
     );
   }
 
-  if (admin?.role !== "admin") {
+  if (!isAdmin) {
     return (
       <Navigate
         to="/"
@@ -164,8 +175,9 @@ const router = createBrowserRouter([
   },
 ]);
 
-function App() {
+function AppWithOrganizationInit() {
+  useSetActiveOrganization();
   return <RouterProvider router={router} />;
 }
 
-export default App;
+export default AppWithOrganizationInit;
