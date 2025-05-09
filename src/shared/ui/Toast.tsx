@@ -33,7 +33,7 @@ const Toast: React.FC<ToastProps> = ({
   return (
     <ToastPrimitive.Provider swipeDirection="right">
       <ToastPrimitive.Root
-        className={`grid grid-cols-[auto_max-content] items-center gap-x-4 rounded-md border p-4 shadow-md ${variantStyles[variant]}
+        className={`grid grid-cols-[auto_max-content] items-center gap-x-4 rounded-xl border p-4 shadow-md ${variantStyles[variant]}
         data-[swipe=cancel]:translate-x-0 
         data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] 
         data-[state=closed]:animate-hide 
