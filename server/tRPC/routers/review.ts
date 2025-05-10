@@ -7,7 +7,6 @@ import {
 import { z } from "zod";
 import Review, { IReviewModel } from "../../models/Review.js";
 import Product from "../../models/Product.js";
-import { User } from "../../models/User.js";
 import { TRPCError } from "@trpc/server";
 import {
   paginationSchema,
@@ -25,10 +24,6 @@ export const reviewRouter = router({
         const totalReviews = await Review.countDocuments();
 
         const reviews = await Review.find({})
-          .populate({
-            path: "user",
-            select: "name",
-          })
           .populate({
             path: "product",
             select: "name",
@@ -88,7 +83,6 @@ export const reviewRouter = router({
         });
 
         const reviews = await Review.find({ product: productId })
-          .populate("user", "name surname")
           .sort({ createdAt: -1 })
           .skip(skip)
           .limit(limit);
@@ -123,11 +117,20 @@ export const reviewRouter = router({
         rating: z.number().min(1).max(5),
         title: z.string().min(2).max(100),
         comment: z.string().max(300),
+        userName: z.string().min(1).optional(),
+        userSurname: z.string().min(1).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       try {
-        const { product: productId, rating, title, comment } = input;
+        const {
+          product: productId,
+          rating,
+          title,
+          comment,
+          userName,
+          userSurname,
+        } = input;
 
         const product = await Product.findById(productId);
         if (!product) {
@@ -137,17 +140,9 @@ export const reviewRouter = router({
           });
         }
 
-        const user = await User.findOne({ clerkId: ctx.user?.clerkId });
-        if (!user) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "User not found in database",
-          });
-        }
-
         const existingReview = await Review.findOne({
           product: productId,
-          user: user._id,
+          clerkId: ctx.userId,
         });
 
         if (existingReview) {
@@ -158,13 +153,13 @@ export const reviewRouter = router({
         }
 
         const review = await Review.create({
-          user: user._id,
+          clerkId: ctx.userId,
           product: productId,
           rating,
           title,
           comment,
-          userName: user.name,
-          userSurname: user.surname,
+          userName,
+          userSurname,
         });
 
         const allProductReviews = await Review.find({ product: productId });
@@ -219,7 +214,7 @@ export const reviewRouter = router({
           });
         }
 
-        if (review.user.toString() !== ctx.user?.clerkId) {
+        if (review.clerkId !== ctx.userId) {
           throw new TRPCError({
             code: "FORBIDDEN",
             message: "You are not authorized to update this review",

@@ -1,8 +1,9 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { useState } from "react";
-import { User, DeliveryAddress } from "@/trpc/types";
+import { DeliveryAddress } from "@/trpc/types";
 import { trpc } from "@/trpc/trpc";
 import { TRPCClientError } from "@trpc/client";
+import { useUser } from "@clerk/clerk-react";
 import AddressFormPopup from "./AddressFormPopup";
 import { Skeleton, AlertDialog, useToast } from "@/shared/ui";
 import { Pencil, Trash2 } from "lucide-react";
@@ -18,18 +19,23 @@ function UserAddresses() {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const {
-    data: addresses,
+    data: addressesData,
     refetch: refetchAddresses,
     isLoading: isAddressesLoading,
-  } = trpc.user.getDeliveryAddresses.useQuery();
-  const { data: user } = trpc.user.currentUser.useQuery() as {
-    data: User | undefined;
-  };
+  } = trpc.address.getCurrentUserAddresses.useQuery();
+  const { user } = useUser();
 
-  const addAddressMutation = trpc.user.addDeliveryAddress.useMutation();
-  const updateAddressMutation = trpc.user.updateDeliveryAddress.useMutation();
-  const setDefaultAddressMutation = trpc.user.setDefaultAddress.useMutation();
-  const deleteAddressMutation = trpc.user.deleteDeliveryAddress.useMutation();
+  const addresses = addressesData as DeliveryAddress[] | undefined;
+
+  if (!user) {
+    return null;
+  }
+
+  const addAddressMutation = trpc.address.createAddress.useMutation();
+  const updateAddressMutation = trpc.address.updateAddress.useMutation();
+  const setDefaultAddressMutation =
+    trpc.address.setDefaultAddress.useMutation();
+  const deleteAddressMutation = trpc.address.deleteAddress.useMutation();
 
   const handleEdit = (address: DeliveryAddress) => {
     setSelectedAddress(address);
@@ -45,9 +51,7 @@ function UserAddresses() {
 
   const handleDelete = async (address: DeliveryAddress) => {
     try {
-      await deleteAddressMutation.mutateAsync({
-        addressId: address._id as string,
-      });
+      await deleteAddressMutation.mutateAsync({ _id: address._id });
 
       setIsDeleteDialogOpen(false);
       await refetchAddresses();
@@ -72,9 +76,7 @@ function UserAddresses() {
   const handleSetAsDefault = async (address: DeliveryAddress) => {
     try {
       setIsLoading(true);
-      await setDefaultAddressMutation.mutateAsync({
-        addressId: address._id as string,
-      });
+      await setDefaultAddressMutation.mutateAsync({ _id: address._id });
       await refetchAddresses();
       showToast({
         title: t("account.defaultAddressUpdated"),
@@ -101,21 +103,15 @@ function UserAddresses() {
       setIsLoading(true);
 
       if (currentMode === "add") {
-        console.log("Adding address with data:", {
-          street: address.street,
-          city: address.city,
-          state: address.state || "",
-          postalCode: address.postalCode,
-          country: address.country,
-          isDefault: address.isDefault || false,
-        });
-
         await addAddressMutation.mutateAsync({
+          firstName: address.firstName,
+          lastName: address.lastName,
           street: address.street,
           city: address.city,
           state: address.state || "",
           postalCode: address.postalCode,
           country: address.country,
+          clerkId: user.id,
           isDefault: address.isDefault || false,
         });
 
@@ -125,23 +121,16 @@ function UserAddresses() {
           variant: "success",
         });
       } else if (selectedAddress?._id) {
-        console.log("Updating address with data:", {
-          _id: selectedAddress._id,
-          street: address.street,
-          city: address.city,
-          state: address.state || "",
-          postalCode: address.postalCode,
-          country: address.country,
-          isDefault: address.isDefault || false,
-        });
-
         await updateAddressMutation.mutateAsync({
           _id: selectedAddress._id,
+          firstName: address.firstName,
+          lastName: address.lastName,
           street: address.street,
           city: address.city,
           state: address.state || "",
           postalCode: address.postalCode,
           country: address.country,
+          clerkId: user.id,
           isDefault: address.isDefault || false,
         });
 
@@ -219,14 +208,14 @@ function UserAddresses() {
         <>
           {/* Desktop View - Grid */}
           <div className="hidden md:grid md:grid-cols-2 gap-6">
-            {addresses?.map((address, index) => (
+            {addresses?.map((address: DeliveryAddress, index) => (
               <div
                 key={index}
                 className="bg-white dark:bg-green-900/20 rounded-lg border border-green-100 dark:border-green-800 p-6"
               >
                 <div className="flex justify-between items-start mb-4">
                   <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-                    {user?.name} {user?.surname}
+                    {address?.firstName} {address?.lastName}
                   </h2>
                   {address.isDefault && (
                     <span className="bg-green-50 dark:bg-green-800 text-green-600 dark:text-green-100 px-3 py-1 rounded-full text-sm font-medium">
@@ -281,7 +270,7 @@ function UserAddresses() {
               >
                 <div className="flex justify-between items-start mb-4">
                   <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-                    {user?.name} {user?.surname}
+                    {user?.firstName} {user?.lastName}
                   </h2>
                   {address.isDefault && (
                     <span className="bg-green-50 dark:bg-green-800 text-green-600 dark:text-green-100 px-3 py-1 rounded-full text-sm font-medium">

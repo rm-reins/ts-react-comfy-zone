@@ -3,6 +3,7 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { X, ArrowUpRight } from "lucide-react";
 import { Form } from "radix-ui";
 import { DeliveryAddress } from "@/trpc/types";
+import { useUser } from "@clerk/clerk-react";
 
 interface AddressFormPopupProps {
   address: DeliveryAddress | null;
@@ -24,6 +25,7 @@ function AddressFormPopup({
   const { t } = useTranslation();
   const popupRef = useRef<HTMLDivElement>(null);
   const [hasChanges, setHasChanges] = useState(false);
+  const { user } = useUser();
 
   const [formData, setFormData] = useState<DeliveryAddress>({
     _id: "",
@@ -31,7 +33,10 @@ function AddressFormPopup({
     city: "",
     state: "",
     postalCode: "",
-    country: "Germany",
+    country: "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    clerkId: user?.id || "",
     isDefault: false,
   });
 
@@ -47,7 +52,10 @@ function AddressFormPopup({
         city: "",
         state: "",
         postalCode: "",
-        country: "Germany",
+        country: "",
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        clerkId: user?.id || "",
         isDefault: false,
       });
     }
@@ -151,6 +159,55 @@ function AddressFormPopup({
           className="p-6"
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <Form.Field name="firstName">
+              <div>
+                <Form.Label
+                  htmlFor="firstName"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  {t("account.firstName")} *
+                </Form.Label>
+                <Form.Control asChild>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    required
+                    className="w-full p-3 bg-green-50 dark:bg-green-900/20 bg-opacity-50 border border-green-100 dark:border-green-800 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-green-600 dark:focus:ring-green-500 focus:border-transparent transition-colors"
+                  />
+                </Form.Control>
+                <Form.Message
+                  match="valueMissing"
+                  className="text-sm text-red-600 dark:text-red-400 mt-1"
+                >
+                  {t("account.required")}
+                </Form.Message>
+              </div>
+            </Form.Field>
+
+            <Form.Field name="lastName">
+              <div>
+                <Form.Label
+                  htmlFor="lastName"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  {t("account.lastName")} *
+                </Form.Label>
+                <Form.Control asChild>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className="w-full p-3 bg-green-50 dark:bg-green-900/20 bg-opacity-50 border border-green-100 dark:border-green-800 rounded-lg text-gray-900 dark:text-white focus:ring-2 focus:ring-green-600 dark:focus:ring-green-500 focus:border-transparent transition-colors"
+                  />
+                </Form.Control>
+              </div>
+            </Form.Field>
+
             <Form.Field
               name="street"
               className="md:col-span-2"

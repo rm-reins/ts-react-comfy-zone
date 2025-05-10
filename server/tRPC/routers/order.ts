@@ -51,7 +51,7 @@ const orderSchema = z.object({
   status: z
     .enum(["pending", "paid", "delivered", "cancelled"])
     .default("pending"),
-  user: z.string().optional(),
+  clerkId: z.string(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
 });
@@ -73,7 +73,7 @@ export const orderRouter = router({
 
   getCurrentUserOrders: protectedProcedure.query(async ({ ctx }) => {
     try {
-      const orders = await Order.find({ user: ctx.user?.clerkId });
+      const orders = await Order.find({ clerkId: ctx.userId });
 
       return orders;
     } catch (error) {
@@ -99,8 +99,8 @@ export const orderRouter = router({
         }
 
         if (
-          ctx.user?.role !== "admin" &&
-          order.user.toString() !== ctx.user?.clerkId
+          ctx.auth?.orgRole !== "admin" &&
+          order.clerkId !== ctx.auth?.userId
         ) {
           throw new TRPCError({
             code: "FORBIDDEN",
@@ -206,7 +206,7 @@ export const orderRouter = router({
           contactInformation: input.contactInformation,
           paymentMethod: input.paymentMethod,
           additionalInformation: input.additionalInformation,
-          user: ctx.user?.clerkId,
+          clerkId: ctx.userId,
         });
 
         for (const item of orderItems) {

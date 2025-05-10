@@ -4,8 +4,9 @@ import { CartState } from "@/features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { trpc } from "@/trpc/trpc";
-import { Order, User, OrderItem } from "@/trpc/types";
+import { Order, OrderItem } from "@/trpc/types";
 import { createOrder } from "@/features/orders/orderSlice";
+import { useUser } from "@clerk/clerk-react";
 import {
   resetCheckout,
   setOrder,
@@ -27,9 +28,7 @@ function OrderSummary({ cart, setIsLoading, setError }: OrderSummaryProps) {
   const navigate = useNavigate();
   const checkoutState = useSelector((state: RootState) => state.checkoutState);
   const createOrderMutation = trpc.order.createOrder.useMutation();
-  const { data: user } = trpc.user.currentUser.useQuery() as {
-    data: User | undefined;
-  };
+  const { user } = useUser();
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [localIsLoading, setLocalIsLoading] = useState(false);
@@ -116,7 +115,7 @@ function OrderSummary({ cart, setIsLoading, setError }: OrderSummaryProps) {
         contactInformation: checkoutState.order.contactInformation,
         paymentMethod: checkoutState.order.paymentMethod,
         status: checkoutState.order.status,
-        user: user?.clerkId,
+        clerkId: user!.id,
         additionalInformation: checkoutState.order.additionalInformation,
       };
 

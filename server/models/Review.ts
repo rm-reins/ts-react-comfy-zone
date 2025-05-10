@@ -8,11 +8,10 @@ interface IProduct extends Document {
 export interface IReview extends Document {
   _id: mongoose.Types.ObjectId;
   clerkId: string;
+  product: mongoose.Types.ObjectId;
   rating: number;
   title: string;
   comment: string;
-  user: mongoose.Types.ObjectId;
-  product: mongoose.Types.ObjectId;
   userName: string;
   userSurname: string;
   createdAt: Date;
@@ -26,6 +25,15 @@ export interface IReviewModel extends Model<IReview> {
 
 const ReviewSchema = new Schema<IReview, IReviewModel>(
   {
+    clerkId: {
+      type: String,
+      required: true,
+    },
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
     rating: {
       type: Number,
       min: 1,
@@ -42,16 +50,6 @@ const ReviewSchema = new Schema<IReview, IReviewModel>(
       type: String,
       required: [true, "Please provide review text"],
     },
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    product: {
-      type: Schema.Types.ObjectId,
-      ref: "Product",
-      required: true,
-    },
     userName: {
       type: String,
       required: true,
@@ -64,7 +62,7 @@ const ReviewSchema = new Schema<IReview, IReviewModel>(
   { timestamps: true }
 );
 
-ReviewSchema.index({ product: 1, user: 1 }, { unique: true });
+ReviewSchema.index({ product: 1, clerkId: 1 }, { unique: true });
 
 ReviewSchema.statics.calcAvgRating = async function (
   this: IReviewModel,

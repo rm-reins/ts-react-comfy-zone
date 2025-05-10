@@ -10,12 +10,15 @@ import compression from "compression";
 import morgan from "morgan";
 import { randomUUID } from "crypto";
 import { logger } from "../utils/logger.js";
+import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { createContext } from "../tRPC/context.js";
+import { appRouter } from "../tRPC/routers/appRouter.js";
 
 export const setupCommonMiddleware = (app: Application) => {
   const corsOptions = {
     origin:
       config.environment === "development"
-        ? [config.clientUrl, "https://hoppscotch.io", "null"] // Allow Hoppscotch in dev
+        ? [config.clientUrl, "https://hoppscotch.io", "null"]
         : config.clientUrl,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
@@ -69,5 +72,32 @@ export const setupCommonMiddleware = (app: Application) => {
   app.use(cookieParser());
   app.use(express.urlencoded({ extended: true, limit: "2mb" }));
 
-  app.use(clerkMiddleware());
+  app.use(
+    "/api/trpc",
+    clerkMiddleware(),
+    (req, res, next) => {
+      logger.info({
+        message: "tRPC request",
+        path: req.path,
+        auth: req.auth ? "Auth present" : "No auth",
+        userId: req.auth?.userId || "none",
+        body: req.body,
+      });
+      next();
+    },
+    createExpressMiddleware({
+      router: appRouter,
+      createContext,
+      onError: ({ error, type, path, input, ctx }) => {
+        logger.error({
+          message: `tRPC error on ${path}`,
+          type,
+          error: error.message,
+          stack: error.stack,
+          userId: ctx?.userId || "none",
+          input,
+        });
+      },
+    })
+  );
 };

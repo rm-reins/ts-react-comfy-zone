@@ -1,6 +1,5 @@
 import Review from "../models/Review.js";
 import Product from "../models/Product.js";
-import { User } from "../models/User.js";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import {
@@ -19,23 +18,21 @@ const createReview = async (req: Request, res: Response): Promise<void> => {
 
   const hasReview = await Review.findOne({
     product: productId,
-    user: req.user?.clerkId,
+    clerkId: req.user?.id,
   });
 
   if (hasReview) {
     throw BadRequestError("Review has been already submitted for this product");
   }
 
-  const user = await User.findOne({ clerkId: req.user?.clerkId });
-
   const review = await Review.create({
-    user: req.user?.clerkId,
+    clerkId: req.user?.id,
     product: productId,
     rating,
     title,
     comment,
-    userName: user?.name || "Unknown",
-    userSurname: user?.surname || "User",
+    userName: req.user?.firstName || "Unknown",
+    userSurname: req.user?.lastName || "User",
   });
 
   const allProductReviews = await Review.find({ product: productId });
@@ -64,10 +61,6 @@ const getAllReviews = async (req: Request, res: Response): Promise<void> => {
   const totalReviews = await Review.countDocuments();
 
   const reviews = await Review.find({})
-    .populate({
-      path: "user",
-      select: "name surname",
-    })
     .populate({
       path: "product",
       select: "name company price",
@@ -111,7 +104,7 @@ const updateReview = async (req: Request, res: Response): Promise<void> => {
     throw NotFoundError("No review with id: ${reviewId}");
   }
 
-  if (review.user.toString() !== req.user?.clerkId) {
+  if (review.clerkId !== req.user?.id) {
     throw UnauthorizedError("You are not authorized to update this review");
   }
 
@@ -186,10 +179,6 @@ const getSingleProductReviews = async (
   const total = await Review.countDocuments({ product: productId });
 
   const reviews = await Review.find({ product: productId })
-    .populate({
-      path: "user",
-      select: "name surname",
-    })
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(Number(limit));

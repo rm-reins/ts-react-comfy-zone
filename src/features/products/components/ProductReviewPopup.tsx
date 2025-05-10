@@ -61,15 +61,6 @@ export default function ProductReviewPopup({
     }
 
     try {
-      // Submit directly with the mutation
-      createReviewMutation.mutate({
-        product: productId,
-        rating,
-        title,
-        comment,
-      });
-
-      // Also call the onSubmit prop if provided (for compatibility)
       if (onSubmit) {
         onSubmit({
           rating,
@@ -86,6 +77,9 @@ export default function ProductReviewPopup({
       );
       setIsSubmitting(false);
     }
+
+    setIsSubmitting(false);
+    setIsOpen(false);
   };
 
   const resetForm = () => {

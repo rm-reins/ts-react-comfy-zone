@@ -1,7 +1,8 @@
 import { useTranslation } from "@/i18n/useTranslation";
+import { DeliveryAddress } from "@/trpc/types";
 import { trpc } from "@/trpc/trpc";
-import { User, DeliveryAddress } from "@/trpc/types";
-import { useState, useEffect, useMemo } from "react";
+import { useUser } from "@clerk/clerk-react";
+import { useState, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import {
@@ -15,29 +16,17 @@ import {
 
 function Checkout() {
   const { t } = useTranslation();
+  const { user } = useUser();
   const cart = useSelector((state: RootState) => state.cartState);
   const checkoutState = useSelector((state: RootState) => state.checkoutState);
-  const { data: user } = trpc.user.currentUser.useQuery() as {
-    data: User | undefined;
-  };
   const [openSection, setOpenSection] = useState<string>("contactInfo");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [defaultAddress, setDefaultAddress] = useState<
-    DeliveryAddress | undefined
-  >(undefined);
 
-  // Set default address from user profile when available
-  useEffect(() => {
-    if (user?.deliveryAddresses && user.deliveryAddresses.length > 0) {
-      const defaultAddr = user.deliveryAddresses.find((addr) => addr.isDefault);
-      if (defaultAddr) {
-        setDefaultAddress(defaultAddr);
-      } else {
-        setDefaultAddress(user.deliveryAddresses[0]);
-      }
-    }
-  }, [user]);
+  const { data: address } = trpc.address.getAddress.useQuery({
+    clerkId: user!.id,
+    isDefault: true,
+  });
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? "" : section);
@@ -110,7 +99,7 @@ function Checkout() {
               onToggle={() => toggleSection("contactInfo")}
               isCompleted={isContactInfoComplete}
             >
-              <ContactInfoForm user={user} />
+              <ContactInfoForm address={address as DeliveryAddress} />
             </CheckoutAccordion>
 
             {/* Delivery Section */}
@@ -121,7 +110,9 @@ function Checkout() {
               onToggle={() => toggleSection("shippingAddress")}
               isCompleted={isShippingAddressComplete}
             >
-              <ShippingAddressForm defaultAddress={defaultAddress} />
+              <ShippingAddressForm
+                defaultAddress={address as DeliveryAddress}
+              />
             </CheckoutAccordion>
 
             {/* Payment Section */}

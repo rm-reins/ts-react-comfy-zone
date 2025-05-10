@@ -103,7 +103,7 @@ export const productRouter = router({
     .input(productInputSchema)
     .mutation(async ({ ctx, input }) => {
       try {
-        if (!ctx?.user?.clerkId) {
+        if (!ctx?.userId) {
           throw new TRPCError({
             code: "UNAUTHORIZED",
             message: "User must be authenticated to create a product",
@@ -117,7 +117,7 @@ export const productRouter = router({
 
         const product = await Product.create({
           ...productData,
-          user: ctx.user.clerkId,
+          user: ctx.userId,
         });
 
         return product;

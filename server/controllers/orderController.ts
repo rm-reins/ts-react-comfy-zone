@@ -25,10 +25,7 @@ const getSingleOrder = async (req: Request, res: Response): Promise<void> => {
     throw NotFoundError(`No order with id: ${orderId}`);
   }
 
-  if (
-    req.user?.role !== "admin" &&
-    order.user.toString() !== req.user?.clerkId
-  ) {
+  if (req.user?.role !== "admin" && order.clerkId !== req.user?.clerkId) {
     throw UnauthorizedError("You are not authorized to view this order");
   }
 
@@ -39,7 +36,7 @@ const getCurrentUserOrders = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const orders = await Order.find({ user: req.user?.clerkId });
+  const orders = await Order.find({ clerkId: req.user?.clerkId });
   res.status(StatusCodes.OK).json({ orders, count: orders.length });
 };
 
@@ -130,7 +127,7 @@ const createOrder = async (req: Request, res: Response): Promise<void> => {
     contactInformation,
     paymentMethod,
     additionalInformation,
-    user: req.user?.clerkId,
+    clerkId: req.user?.clerkId,
     status: "pending",
   });
 

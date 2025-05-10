@@ -35,26 +35,16 @@ export interface Product {
 }
 
 export interface DeliveryAddress {
-  _id?: string;
+  _id: string;
+  firstName: string;
+  lastName: string;
   street: string;
   city: string;
   state?: string;
   postalCode: string;
   country: string;
+  clerkId: string;
   isDefault: boolean;
-}
-
-export interface User {
-  _id: string;
-  name: string;
-  surname: string;
-  email: string;
-  phone?: string;
-  clerkId?: string;
-  role: string;
-  deliveryAddresses?: DeliveryAddress[];
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 export interface Admin {
@@ -99,7 +89,7 @@ export interface Order {
   };
   paymentMethod: string;
   status?: "pending" | "paid" | "delivered" | "cancelled";
-  user?: string;
+  clerkId?: string;
   additionalInformation?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -111,7 +101,6 @@ export interface Review {
   rating: number;
   title: string;
   comment: string;
-  user: string;
   product: string;
   userName?: string;
   userSurname?: string;

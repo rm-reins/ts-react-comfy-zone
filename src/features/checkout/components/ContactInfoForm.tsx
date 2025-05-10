@@ -1,25 +1,36 @@
-import { User } from "@/trpc/types";
 import { useTranslation } from "@/i18n/useTranslation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useState, useEffect } from "react";
 import { setOrder } from "../checkoutSlice";
+import { useUser } from "@clerk/clerk-react";
+import { DeliveryAddress } from "@/trpc/types";
 
-interface ContactInfoFormProps {
-  user?: User;
-}
-
-function ContactInfoForm({ user }: ContactInfoFormProps) {
+function ContactInfoForm({ address }: { address: DeliveryAddress }) {
   const { t } = useTranslation();
+  const { user } = useUser();
   const dispatch = useDispatch();
   const checkoutState = useSelector((state: RootState) => state.checkoutState);
 
   const [contactInfo, setContactInfo] = useState({
-    name: checkoutState.order.contactInformation.name || user?.name || "",
+    name:
+      checkoutState.order.contactInformation.name ||
+      user?.firstName ||
+      address?.firstName ||
+      "",
     surname:
-      checkoutState.order.contactInformation.surname || user?.surname || "",
-    phone: checkoutState.order.contactInformation.phone || user?.phone || "",
-    email: checkoutState.order.contactInformation.email || user?.email || "",
+      checkoutState.order.contactInformation.surname ||
+      user?.lastName ||
+      address?.lastName ||
+      "",
+    phone:
+      checkoutState.order.contactInformation.phone ||
+      user?.primaryPhoneNumber?.phoneNumber ||
+      "",
+    email:
+      checkoutState.order.contactInformation.email ||
+      user?.primaryEmailAddress?.emailAddress ||
+      "",
   });
 
   // Initialize from user data when it becomes available (e.g. after async loading)
@@ -32,10 +43,10 @@ function ContactInfoForm({ user }: ContactInfoFormProps) {
       // Only overwrite with user data if we don't already have data in the form
       if (!hasExistingData) {
         const updatedContactInfo = {
-          name: user.name || "",
-          surname: user.surname || "",
-          phone: user.phone || "",
-          email: user.email || "",
+          name: user.firstName || address.firstName || "",
+          surname: user.lastName || address.lastName || "",
+          phone: user.primaryPhoneNumber?.phoneNumber || "",
+          email: user.primaryEmailAddress?.emailAddress || "",
         };
 
         setContactInfo(updatedContactInfo);

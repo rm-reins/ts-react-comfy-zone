@@ -1,47 +1,23 @@
 import { Request, Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { User } from "../models/User.js";
-import { Admin } from "../models/Admin.js";
+import { getAuth } from "@clerk/express";
 
-// This middleware will be used after Clerk's requireAuth middleware
-// It will check if the authenticated Clerk user exists in our database
-export const syncClerkUser = (
+export const requireUser = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  Promise.resolve().then(async () => {
-    try {
-      if (!req.auth || !req.auth.userId) {
-        return next();
-      }
+  const auth = getAuth(req);
 
-      const clerkUserId = req.auth.userId;
+  if (!auth.userId) {
+    res.status(StatusCodes.UNAUTHORIZED).json({
+      success: false,
+      message: "Unauthorized. Please sign in to continue.",
+    });
+    return;
+  }
 
-      const admin = await Admin.findOne({ clerkId: clerkUserId });
-
-      if (admin) {
-        req.user = admin;
-        return next();
-      }
-
-      const user = await User.findOne({ clerkId: clerkUserId });
-
-      if (!user) {
-        return res.status(StatusCodes.FORBIDDEN).json({
-          success: false,
-          message:
-            "Please complete registration before you will be able to access this resource.",
-          code: "REGISTRATION_REQUIRED",
-        });
-      }
-
-      req.user = user;
-      next();
-    } catch (error) {
-      next(error);
-    }
-  });
+  next();
 };
 
 export const isAdmin = (
@@ -49,7 +25,17 @@ export const isAdmin = (
   res: Response,
   next: NextFunction
 ): void => {
-  if (!req.user || !("role" in req.user) || req.user.role !== "admin") {
+  const auth = getAuth(req);
+
+  if (!auth.userId) {
+    res.status(StatusCodes.UNAUTHORIZED).json({
+      success: false,
+      message: "Unauthorized. Please sign in to continue.",
+    });
+    return;
+  }
+
+  if (!auth.orgRole || auth.orgRole !== "org:admin") {
     res.status(StatusCodes.FORBIDDEN).json({
       success: false,
       message: "Access denied. Admin privileges required.",

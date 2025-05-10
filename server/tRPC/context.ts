@@ -1,11 +1,16 @@
-import type { IUser } from "../models/User.js";
-import { User } from "../models/User.js";
-import { Admin, type IAdmin } from "../models/Admin.js";
 import { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import { logger } from "../utils/logger.js";
+import { getAuth } from "@clerk/express";
 
 export interface Context {
-  user?: IUser | IAdmin;
+  userId?: string;
+  auth?: {
+    userId: string;
+    sessionId?: string;
+    orgId?: string;
+    orgRole?: string;
+    [key: string]: unknown;
+  };
   requestId?: string;
   req: CreateExpressContextOptions["req"];
   res: CreateExpressContextOptions["res"];
@@ -15,38 +20,47 @@ export async function createContext({
   req,
   res,
 }: CreateExpressContextOptions): Promise<Context> {
-  let user: IUser | IAdmin | undefined = undefined;
+  try {
+    const clerkAuth = getAuth(req);
+    const userId = clerkAuth?.userId;
 
-  // Check if we have auth from Clerk
-  if (req.auth?.userId) {
-    logger.info(`Creating tRPC context with userId: ${req.auth.userId}`);
-
-    const adminUser = await Admin.findOne({ clerkId: req.auth.userId });
-
-    if (adminUser) {
-      user = adminUser;
-      logger.info("Admin user found in context");
+    if (userId) {
+      logger.info({
+        message: "tRPC context created with authenticated user",
+        userId,
+        sessionId: clerkAuth?.sessionId || undefined,
+      });
     } else {
-      const regularUser = await User.findOne({ clerkId: req.auth.userId });
-      if (regularUser) {
-        user = regularUser;
-        logger.info("Regular user found in context");
-      } else {
-        logger.warn(
-          `No user found in database for Clerk ID: ${req.auth.userId}`
-        );
-      }
+      logger.warn({
+        message: "Unauthenticated request to tRPC endpoint.",
+        path: req.path,
+        hasAuthHeader: !!req.headers.authorization,
+      });
     }
-  } else {
-    logger.warn("No auth.userId in request for tRPC context");
+
+    const auth = userId
+      ? {
+          userId,
+          sessionId: clerkAuth?.sessionId || "",
+          orgId: clerkAuth?.orgId,
+          orgRole: clerkAuth?.orgRole,
+        }
+      : undefined;
+
+    return {
+      req,
+      res,
+      userId: userId || undefined,
+      auth,
+      requestId: req.id,
+    };
+  } catch (error) {
+    logger.error({
+      message: "Error in tRPC context creation",
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
+
+    return { req, res, requestId: req.id };
   }
-
-  const requestId = req.id;
-
-  return {
-    req,
-    res,
-    user,
-    requestId,
-  };
 }

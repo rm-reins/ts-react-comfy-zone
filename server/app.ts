@@ -5,23 +5,21 @@ import { Server } from "http";
 import connectDB from "./db/connect.js";
 import { config } from "./config/index.js";
 import { setupRoutes } from "./routes/index.js";
-import { clerkMiddleware } from "@clerk/express";
 import path from "path";
 import { fileURLToPath } from "url";
 // Middleware
 import { notFoundMiddleware } from "./middleware/not-found.js";
 import { logger, enhancedErrorHandler } from "./middleware/error-handler.js";
 import { setupCommonMiddleware } from "./middleware/index.js";
-// tRPC
-import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { createContext } from "./tRPC/context.js";
-import { appRouter } from "./tRPC/routers/appRouter.js";
 
 // Get __dirname equivalent in ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+// Parse JSON bodies BEFORE routes
+app.use(express.json({ limit: "2mb" }));
 
 // Setup common middleware
 setupCommonMiddleware(app);
@@ -63,31 +61,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
-// Parse JSON bodies BEFORE routes
-app.use(express.json({ limit: "2mb" }));
-
 // Setup routes for REST API
 setupRoutes(app);
-
-// Setup tRPC with debugging
-app.use(
-  "/api/trpc",
-  clerkMiddleware(),
-  (req, res, next) => {
-    logger.info({
-      message: "tRPC request",
-      path: req.path,
-      auth: req.auth ? "Auth present" : "No auth",
-      userId: req.auth?.userId || "none",
-      body: req.body,
-    });
-    next();
-  },
-  createExpressMiddleware({
-    router: appRouter,
-    createContext,
-  })
-);
 
 // Serve static frontend files in production
 if (process.env.NODE_ENV === "production") {

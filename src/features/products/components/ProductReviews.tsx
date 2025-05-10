@@ -6,6 +6,7 @@ import { keepPreviousData } from "@tanstack/react-query";
 import { useTranslation } from "@/i18n/useTranslation";
 import ReviewCard from "./ReviewCard";
 import ProductReviewPopup from "./ProductReviewPopup";
+import { useUser } from "@clerk/clerk-react";
 
 interface ProductReviewsProps {
   product: Product;
@@ -16,6 +17,7 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
   const { t, language } = useTranslation();
   const [currentPage, setCurrentPage] = useState(1);
   const [reviewsPerPage] = useState(4);
+  const { user } = useUser();
 
   const createReview = trpc.review.createReview.useMutation();
 
@@ -48,8 +50,11 @@ function ProductReviews({ product, productId }: ProductReviewsProps) {
         rating: reviewData.rating,
         title: reviewData.title,
         comment: reviewData.comment,
+        userName: user?.firstName || "User",
+        userSurname: user?.lastName || "Anonymous",
       });
 
+      console.log("User:", user);
       console.log("Submitting review:", reviewData);
 
       await refetchReviews();

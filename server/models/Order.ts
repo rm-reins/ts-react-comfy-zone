@@ -29,7 +29,7 @@ interface IOrder extends Document {
   };
   status: "pending" | "paid" | "delivered" | "cancelled";
   paymentMethod: string;
-  user: string;
+  clerkId: string;
   additionalInformation?: string;
 }
 
@@ -122,8 +122,9 @@ const OrderSchema = new Schema<IOrder>(
       type: String,
       required: true,
     },
-    user: {
+    clerkId: {
       type: String,
+      required: true,
     },
     additionalInformation: {
       type: String,

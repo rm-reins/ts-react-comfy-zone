@@ -38,7 +38,7 @@ const trpcServer = initTRPC.context<Context>().create({
 });
 
 export const protectedProcedure = trpcServer.procedure.use(({ ctx, next }) => {
-  if (!ctx.user) {
+  if (!ctx.userId) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message:
@@ -53,14 +53,14 @@ export const protectedProcedure = trpcServer.procedure.use(({ ctx, next }) => {
 });
 
 export const adminProcedure = trpcServer.procedure.use(({ ctx, next }) => {
-  if (!ctx.user) {
+  if (!ctx.userId || !ctx.auth) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "Authentication required",
     });
   }
 
-  if (!("role" in ctx.user) || ctx.user.role !== "admin") {
+  if (!("orgRole" in ctx.auth) || ctx.auth?.orgRole !== "admin") {
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "Access denied. Admin privileges required",
