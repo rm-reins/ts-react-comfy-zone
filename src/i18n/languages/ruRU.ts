@@ -78,10 +78,21 @@ export const ruRU = {
     errorDemoLogin: "Ошибка при входе в демо-аккаунт",
   },
   admin: {
-    dashboard: "Панель управления",
+    dashboard: "Сводка",
     users: "Пользователи",
     products: "Товары",
     orders: "Заказы",
+    dashboardContent: {
+      totalRevenue: "Выручка",
+      newCustomers: "Новые клиенты",
+      totalProducts: "Всего товаров",
+      activeOrders: "Активные заказы",
+      salesOverview: "Обзор продаж",
+      fromLastMonth: "от прошлого месяца",
+      salesDataInfo: "Данные о продажах за последние 30 дней",
+      revenue: "выручка",
+      profit: "прибыль",
+    },
   },
   products: {
     featured: "Рекомендации",

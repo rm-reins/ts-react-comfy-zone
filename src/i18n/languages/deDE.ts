@@ -78,10 +78,21 @@ export const deDE = {
     errorDemoLogin: "Fehler beim Anmelden als Demo-Benutzer",
   },
   admin: {
-    dashboard: "Dashboard",
+    dashboard: "Übersicht",
     users: "Benutzer",
     products: "Produkte",
     orders: "Bestellungen",
+    dashboardContent: {
+      totalRevenue: "Gesamtumsatz",
+      newCustomers: "Neue Kunden",
+      totalProducts: "Gesamtanzahl Produkte",
+      activeOrders: "Aktive Bestellungen",
+      salesOverview: "Verkaufsübersicht",
+      fromLastMonth: "von letztem Monat",
+      salesDataInfo: "Verkaufsdaten für die letzten 30 Tage",
+      revenue: "Umsatz",
+      profit: "Gewinn",
+    },
   },
   products: {
     featured: "Empfehlungen",

@@ -82,6 +82,17 @@ export const enUS = {
     users: "Users",
     products: "Products",
     orders: "Orders",
+    dashboardContent: {
+      totalRevenue: "Total Revenue",
+      newCustomers: "New Customers",
+      totalProducts: "Total Products",
+      activeOrders: "Active Orders",
+      salesOverview: "Sales Overview",
+      fromLastMonth: "from last month",
+      salesDataInfo: "Sales data for the past 30 days",
+      revenue: "revenue",
+      profit: "profit",
+    },
   },
   products: {
     featured: "Featured Products",

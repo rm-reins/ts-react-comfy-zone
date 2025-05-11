@@ -38,3 +38,16 @@ export { default as Separator } from "./Separator";
 export { default as Pagination } from "./Pagination";
 export { default as AlertDialog } from "./AlertDialog";
 export { Toast, useToast, ToastProvider } from "./Toast";
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableFooter,
+  TableCaption,
+} from "./Table";
+export { Badge, badgeVariants } from "./Badge";
+export { Avatar, AvatarImage, AvatarFallback } from "./Avatar";
+export { default as Input } from "./Input";
