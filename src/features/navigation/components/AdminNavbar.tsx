@@ -62,21 +62,21 @@ function AdminNavbar({ activeView, setActiveView }: AdminNavbarProps) {
   return (
     <div className="flex flex-col h-screen">
       <nav className="pb-2 p-3.5 md:p-1 top-0">
-        <div className="align-element flex justify-between items-center">
+        <div className="align-element flex justify-between items-center gap-x-4">
           <Logo />
           <AdminLinksDropdown
             menuItems={menuItems}
             activeView={activeView}
             setActiveView={setActiveView}
           />
-          <div className="absolute left-1/2 transform -translate-x-1/2">
+          <div className="flex-1 min-w-0 flex justify-center">
             <AdminNavLinks
               menuItems={menuItems}
               activeView={activeView}
               setActiveView={setActiveView}
             />
           </div>
-          <div className="flex justify-center items-center gap-x-4">
+          <div className="flex items-center gap-x-4 flex-shrink-0">
             <ModeToggle />
             <CartButton />
             <UserDropdown />
