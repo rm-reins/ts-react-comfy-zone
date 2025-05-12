@@ -81,11 +81,16 @@ const users = [
   },
 ];
 
-function UsersTable() {
+interface UsersTableProps {
+  readOnly?: boolean;
+}
+
+function UsersTable({ readOnly = false }: UsersTableProps) {
   const [sortField, setSortField] = useState("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [searchTerm, setSearchTerm] = useState("");
   const { t } = useTranslation();
+
   const handleSort = (field: string) => {
     if (field === sortField) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -119,6 +124,14 @@ function UsersTable() {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{t("admin.users")}</CardTitle>
+        {readOnly && (
+          <Badge
+            variant="outline"
+            className="bg-amber-100 text-amber-800 border-amber-200"
+          >
+            {t("admin.readOnlyMode")}
+          </Badge>
+        )}
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between mb-4">
@@ -147,7 +160,7 @@ function UsersTable() {
                 <TableHead className="w-[250px]">
                   <Button
                     variant="ghost"
-                    className="p-0 font-medium"
+                    className="p-0 font-medium hover:bg-transparent"
                     onClick={() => handleSort("name")}
                     size="sm"
                   >
@@ -163,7 +176,7 @@ function UsersTable() {
                 <TableHead>
                   <Button
                     variant="ghost"
-                    className="p-0 font-medium"
+                    className="p-0 font-medium hover:bg-transparent"
                     onClick={() => handleSort("role")}
                     size="sm"
                   >
@@ -179,7 +192,7 @@ function UsersTable() {
                 <TableHead>
                   <Button
                     variant="ghost"
-                    className="p-0 font-medium"
+                    className="p-0 font-medium hover:bg-transparent"
                     onClick={() => handleSort("status")}
                     size="sm"
                   >
@@ -240,12 +253,14 @@ function UsersTable() {
                     <Button
                       variant="ghost"
                       size="icon"
+                      disabled={readOnly}
                     >
                       <Pencil className="h-4 w-4" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
+                      disabled={readOnly}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

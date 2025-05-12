@@ -120,6 +120,14 @@ export default function UserDropdown() {
                   {t("common.profile")}
                 </NavLink>
               </DropdownMenuItem>
+              <DropdownMenuItem>
+                <NavLink
+                  className="text-foreground w-full"
+                  to="/admin"
+                >
+                  {t("admin.dashboard")}
+                </NavLink>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={handleLogout}>
                 <NavLink
                   className="text-foreground w-full"

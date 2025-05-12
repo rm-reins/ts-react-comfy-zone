@@ -31,7 +31,11 @@ import { trpc } from "@/trpc/trpc";
 import { useTranslation } from "@/i18n/useTranslation";
 import { Product } from "@/trpc/types";
 
-function ProductsTable() {
+interface ProductsTableProps {
+  readOnly?: boolean;
+}
+
+function ProductsTable({ readOnly = false }: ProductsTableProps) {
   const [sortField, setSortField] = useState("name");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [searchTerm, setSearchTerm] = useState("");
@@ -86,10 +90,19 @@ function ProductsTable() {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{t("admin.products")}</CardTitle>
-        <Button size="sm">
-          <Plus className="mr-2 h-4 w-4" />
-          {t("admin.productsContent.addProduct")}
-        </Button>
+        {readOnly ? (
+          <Badge
+            variant="outline"
+            className="bg-amber-100 text-amber-800 border-amber-200"
+          >
+            {t("admin.readOnlyMode")}
+          </Badge>
+        ) : (
+          <Button size="sm">
+            <Plus className="mr-2 h-4 w-4" />
+            {t("admin.productsContent.addProduct")}
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between mb-4">
@@ -218,11 +231,14 @@ function ProductsTable() {
                         <DropdownMenuItem>
                           {t("admin.productsContent.viewDetails")}
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem disabled={readOnly}>
                           {t("admin.productsContent.editProduct")}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem className="text-red-600">
+                        <DropdownMenuItem
+                          className="text-red-600"
+                          disabled={readOnly}
+                        >
                           {t("admin.productsContent.deleteProduct")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>

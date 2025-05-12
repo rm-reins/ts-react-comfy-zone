@@ -12,10 +12,18 @@ import {
 } from "@/features/admin";
 
 // Placeholder components - replace with your actual imports
-const Dashboard = () => <DashboardContent />;
-const UserManagement = () => <UsersTable />;
-const ProductManagement = () => <ProductsTable />;
-const OrderManagement = () => <OrdersTable />;
+const Dashboard = ({ readOnly }: { readOnly?: boolean }) => (
+  <DashboardContent readOnly={readOnly} />
+);
+const UserManagement = ({ readOnly }: { readOnly?: boolean }) => (
+  <UsersTable readOnly={readOnly} />
+);
+const ProductManagement = ({ readOnly }: { readOnly?: boolean }) => (
+  <ProductsTable readOnly={readOnly} />
+);
+const OrderManagement = ({ readOnly }: { readOnly?: boolean }) => (
+  <OrdersTable readOnly={readOnly} />
+);
 
 type MenuItem = {
   id: string;
@@ -26,31 +34,36 @@ type MenuItem = {
 interface AdminNavbarProps {
   activeView: string;
   setActiveView: (view: string) => void;
+  readOnly?: boolean;
 }
 
-function AdminNavbar({ activeView, setActiveView }: AdminNavbarProps) {
+function AdminNavbar({
+  activeView,
+  setActiveView,
+  readOnly = false,
+}: AdminNavbarProps) {
   const { t } = useTranslation();
 
   const menuItems: MenuItem[] = [
     {
       id: "dashboard",
       label: t("admin.dashboard"),
-      component: <Dashboard />,
+      component: <Dashboard readOnly={readOnly} />,
     },
     {
       id: "users",
       label: t("admin.users"),
-      component: <UserManagement />,
+      component: <UserManagement readOnly={readOnly} />,
     },
     {
       id: "products",
       label: t("admin.products"),
-      component: <ProductManagement />,
+      component: <ProductManagement readOnly={readOnly} />,
     },
     {
       id: "orders",
       label: t("admin.orders"),
-      component: <OrderManagement />,
+      component: <OrderManagement readOnly={readOnly} />,
     },
   ];
 

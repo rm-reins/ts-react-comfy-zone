@@ -12,15 +12,37 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  Badge,
 } from "@/shared/ui";
 import { SalesChart } from "./SalesChart";
 import { useTranslation } from "@/i18n/useTranslation";
 
-function DashboardContent() {
+interface DashboardContentProps {
+  readOnly?: boolean;
+}
+
+function DashboardContent({ readOnly = false }: DashboardContentProps) {
   const { t } = useTranslation();
 
   return (
     <div className="space-y-4">
+      {readOnly && (
+        <Card className="border-amber-200">
+          <CardContent className="p-4">
+            <div className="flex items-center">
+              <Badge
+                variant="outline"
+                className="bg-amber-100 text-amber-800 border-amber-200 mr-2"
+              >
+                {t("admin.readOnlyMode")}
+              </Badge>
+              <span className="text-amber-800">
+                {t("admin.readOnlyModeDescription")}
+              </span>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
