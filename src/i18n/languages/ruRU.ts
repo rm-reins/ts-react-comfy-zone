@@ -78,10 +78,15 @@ export const ruRU = {
     errorDemoLogin: "Ошибка при входе в демо-аккаунт",
   },
   admin: {
-    dashboard: "Сводка",
+    dashboard: "Консоль",
     users: "Пользователи",
     products: "Товары",
     orders: "Заказы",
+    readOnlyMode: "Режим чтения",
+    readOnlyModeDescription:
+      "Вы просматриваете данные в режиме чтения. Изменения не могут быть произведены.",
+    readOnlyHeader:
+      "Режим чтения: вы можете просматривать, но не изменять данные администратора",
     dashboardContent: {
       totalRevenue: "Выручка",
       newCustomers: "Новые клиенты",

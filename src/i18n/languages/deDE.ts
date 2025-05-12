@@ -78,10 +78,14 @@ export const deDE = {
     errorDemoLogin: "Fehler beim Anmelden als Demo-Benutzer",
   },
   admin: {
-    dashboard: "Übersicht",
+    dashboard: "Dashboard",
     users: "Benutzer",
     products: "Produkte",
     orders: "Bestellungen",
+    readOnlyMode: "Lesemodus",
+    readOnlyModeDescription:
+      "Sie sind im Lesemodus. Keine Änderungen können vorgenommen werden.",
+    readOnlyHeader: "Demo Modus: Sie können ansehen, aber nicht ändern",
     dashboardContent: {
       totalRevenue: "Gesamtumsatz",
       newCustomers: "Neue Kunden",

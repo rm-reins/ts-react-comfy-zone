@@ -82,6 +82,10 @@ export const enUS = {
     users: "Users",
     products: "Products",
     orders: "Orders",
+    readOnlyMode: "Read-Only Mode",
+    readOnlyModeDescription:
+      "You are viewing dashboard data in demo mode. No changes can be made.",
+    readOnlyHeader: "Demo Mode: You can view but not modify admin data",
     dashboardContent: {
       totalRevenue: "Total Revenue",
       newCustomers: "New Customers",
