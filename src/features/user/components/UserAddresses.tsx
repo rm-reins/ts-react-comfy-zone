@@ -270,7 +270,7 @@ function UserAddresses() {
               >
                 <div className="flex justify-between items-start mb-4">
                   <h2 className="text-xl font-medium text-gray-900 dark:text-white">
-                    {user?.firstName} {user?.lastName}
+                    {address?.firstName} {address?.lastName}
                   </h2>
                   {address.isDefault && (
                     <span className="bg-green-50 dark:bg-green-800 text-green-600 dark:text-green-100 px-3 py-1 rounded-full text-sm font-medium">
