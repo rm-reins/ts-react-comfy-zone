@@ -27,7 +27,7 @@ function DashboardContent({ readOnly = false }: DashboardContentProps) {
   return (
     <div className="space-y-4">
       {readOnly && (
-        <Card className="border-amber-200">
+        <Card className="border-amber-200 bg-white">
           <CardContent className="p-4">
             <div className="flex items-center">
               <Badge
