@@ -60,7 +60,7 @@ export const adminProcedure = trpcServer.procedure.use(({ ctx, next }) => {
     });
   }
 
-  if (!("orgRole" in ctx.auth) || ctx.auth?.orgRole !== "admin") {
+  if (!("orgRole" in ctx.auth) || ctx.auth?.orgRole !== "org:admin") {
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "Access denied. Admin privileges required",
