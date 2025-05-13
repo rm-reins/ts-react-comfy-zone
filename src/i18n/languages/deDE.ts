@@ -120,6 +120,18 @@ export const deDE = {
       editUser: "Benutzer bearbeiten",
       deleteUser: "Benutzer löschen",
     },
+    ordersContent: {
+      orderId: "Bestellnummer",
+      customer: "Kunde",
+      date: "Datum",
+      total: "Gesamt",
+      status: "Status",
+      actions: "Aktionen",
+      search: "Bestellungen suchen...",
+      viewDetails: "Details ansehen",
+      updateStatus: "Status aktualisieren",
+      printInvoice: "Rechnung drucken",
+    },
   },
   products: {
     featured: "Empfehlungen",

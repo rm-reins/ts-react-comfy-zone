@@ -121,6 +121,18 @@ export const ruRU = {
       editUser: "Редактировать пользователя",
       deleteUser: "Удалить пользователя",
     },
+    ordersContent: {
+      orderId: "Номер заказа",
+      customer: "Клиент",
+      date: "Дата",
+      total: "Сумма",
+      status: "Статус",
+      actions: "Действия",
+      search: "Найти заказы...",
+      viewDetails: "Посмотреть детали",
+      updateStatus: "Обновить статус",
+      printInvoice: "Распечатать счет",
+    },
   },
   products: {
     featured: "Рекомендации",

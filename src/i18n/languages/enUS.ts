@@ -120,6 +120,18 @@ export const enUS = {
       editUser: "Edit User",
       deleteUser: "Delete User",
     },
+    ordersContent: {
+      orderId: "Order ID",
+      customer: "Customer",
+      date: "Date",
+      total: "Total",
+      status: "Status",
+      actions: "Action",
+      search: "Search orders...",
+      viewDetails: "View Details",
+      updateStatus: "Update Status",
+      printInvoice: "Print Invoice",
+    },
   },
   products: {
     featured: "Featured Products",

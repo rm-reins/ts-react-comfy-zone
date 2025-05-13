@@ -58,6 +58,18 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
     }
   };
 
+  const formatStatus = (status: string) => {
+    if (!status) return status;
+
+    const statusKey = status.toLowerCase() as
+      | "pending"
+      | "failed"
+      | "paid"
+      | "delivered"
+      | "cancelled";
+    return t(`orders.status.${statusKey}`);
+  };
+
   const filteredOrders = displayOrders.filter(
     (order) =>
       order?._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -131,7 +143,7 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
               <Input
                 type="search"
-                placeholder="Search orders..."
+                placeholder={t("admin.ordersContent.search")}
                 className="pl-8 w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -142,7 +154,7 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
               size="sm"
             >
               <SlidersHorizontal className="mr-2 h-4 w-4" />
-              Filter
+              {t("common.filter")}
             </Button>
           </div>
           <div className="rounded-md border">
@@ -155,7 +167,7 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                       className="p-0 font-medium text-sm hover:bg-transparent"
                       onClick={() => handleSort("id")}
                     >
-                      Order ID
+                      {t("admin.ordersContent.orderId")}
                       {sortField === "id" &&
                         (sortDirection === "asc" ? (
                           <ChevronUp className="ml-2 h-4 w-4 inline" />
@@ -170,7 +182,7 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                       className="p-0 font-medium text-sm hover:bg-transparent"
                       onClick={() => handleSort("customer")}
                     >
-                      Customer
+                      {t("admin.ordersContent.customer")}
                       {sortField === "customer" &&
                         (sortDirection === "asc" ? (
                           <ChevronUp className="ml-2 h-4 w-4 inline" />
@@ -185,7 +197,7 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                       className="p-0 font-medium text-sm hover:bg-transparent"
                       onClick={() => handleSort("date")}
                     >
-                      Date
+                      {t("admin.ordersContent.date")}
                       {sortField === "date" &&
                         (sortDirection === "asc" ? (
                           <ChevronUp className="ml-2 h-4 w-4 inline" />
@@ -200,7 +212,7 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                       className="p-0 font-medium text-sm hover:bg-transparent"
                       onClick={() => handleSort("total")}
                     >
-                      Total
+                      {t("admin.ordersContent.total")}
                       {sortField === "total" &&
                         (sortDirection === "asc" ? (
                           <ChevronUp className="ml-2 h-4 w-4 inline" />
@@ -209,8 +221,10 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                         ))}
                     </Button>
                   </TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>{t("admin.ordersContent.status")}</TableHead>
+                  <TableHead className="text-right">
+                    {t("admin.ordersContent.actions")}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -236,7 +250,7 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                         variant="secondary"
                         className={getStatusColor(order.status)}
                       >
-                        {order.status}
+                        {formatStatus(order.status) || ""}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
@@ -247,7 +261,6 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                             size="icon"
                           >
                             <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Open menu</span>
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
@@ -256,14 +269,14 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                               handleOpenOrderDetails(order as Order)
                             }
                           >
-                            View details
+                            {t("admin.ordersContent.viewDetails")}
                           </DropdownMenuItem>
                           <DropdownMenuItem disabled={readOnly}>
-                            Update status
+                            {t("admin.ordersContent.updateStatus")}
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem disabled={readOnly}>
-                            Print invoice
+                            {t("admin.ordersContent.printInvoice")}
                           </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
