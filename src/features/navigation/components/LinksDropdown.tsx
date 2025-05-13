@@ -3,11 +3,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./DropdownMenu";
+  Button,
+} from "@/shared/ui";
 import { AlignLeft } from "lucide-react";
-import Button from "./Button";
 import { NavLink, useLocation } from "react-router-dom";
 import { useTranslation } from "@/i18n/useTranslation";
+import { useState } from "react";
 
 type Link = {
   href: string;
@@ -17,6 +18,7 @@ type Link = {
 function LinksDropdown() {
   const { t } = useTranslation();
   const location = useLocation();
+  const [isOpen, setIsOpen] = useState(false);
 
   const links: Link[] = [
     {
@@ -34,7 +36,10 @@ function LinksDropdown() {
   ];
 
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      open={isOpen}
+      onOpenChange={setIsOpen}
+    >
       <DropdownMenuTrigger
         asChild
         className="md:hidden"
@@ -56,6 +61,7 @@ function LinksDropdown() {
           <DropdownMenuItem
             key={link.href}
             className={link.href === location.pathname ? "bg-muted" : ""}
+            onClick={() => setIsOpen(false)}
           >
             <NavLink
               to={link.href}

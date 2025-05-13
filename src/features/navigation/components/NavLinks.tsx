@@ -32,7 +32,6 @@ function NavLinks() {
           <NavLink
             key={link.href}
             to={link.href}
-            className=""
           >
             {({ isActive }) => (
               <Button

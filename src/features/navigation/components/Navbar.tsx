@@ -1,6 +1,7 @@
-import { LinksDropdown, ModeToggle, CartButton, Logo } from "@/shared";
+import { ModeToggle, CartButton, Logo } from "@/shared";
 import { NavLinks } from "@/features/navigation";
-import { UserDropdown } from "@/shared";
+import LinksDropdown from "./LinksDropdown";
+import UserDropdown from "./UserDropdown";
 
 function Navbar() {
   return (

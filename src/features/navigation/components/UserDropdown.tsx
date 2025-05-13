@@ -3,10 +3,10 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./DropdownMenu";
+  Button,
+  LanguageMenuSub,
+} from "@/shared/ui";
 import { User } from "lucide-react";
-import Button from "./Button";
-import LanguageMenuSub from "./LanguageMenuSub";
 import { useTranslation } from "@/i18n/useTranslation";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useClerk, useSignIn } from "@clerk/clerk-react";

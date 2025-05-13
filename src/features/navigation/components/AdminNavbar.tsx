@@ -1,6 +1,6 @@
 import AdminLinksDropdown from "./AdminLinksDropdown";
 import AdminNavLinks from "./AdminNavlinks";
-import { UserDropdown } from "@/shared";
+import UserDropdown from "./UserDropdown";
 import { useTranslation } from "@/i18n/useTranslation";
 import { Logo, ModeToggle, CartButton } from "@/shared";
 import { ReactNode } from "react";
