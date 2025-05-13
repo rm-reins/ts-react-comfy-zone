@@ -12,9 +12,9 @@ function AdminPage({ readOnly = false }: AdminPageProps) {
   const [activeView, setActiveView] = useState<ActiveView>("dashboard");
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen align-element">
       {readOnly && (
-        <div className="bg-amber-100 text-amber-800 p-2 text-center text-sm">
+        <div className="bg-amber-100 text-amber-800 p-2 text-center text-sm rounded-b-xl">
           {t("admin.readOnlyHeader")}
         </div>
       )}
