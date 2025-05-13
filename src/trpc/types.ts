@@ -68,7 +68,7 @@ export interface OrderItem {
 }
 
 export interface Order {
-  _id?: string;
+  _id: string;
   tax: number;
   shippingFee: number;
   subtotal: number;
@@ -88,7 +88,7 @@ export interface Order {
     phone: string;
   };
   paymentMethod: string;
-  status?: "pending" | "paid" | "delivered" | "cancelled";
+  status: "pending" | "paid" | "delivered" | "cancelled";
   clerkId?: string;
   additionalInformation?: string;
   createdAt?: Date;
