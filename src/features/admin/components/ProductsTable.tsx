@@ -3,7 +3,6 @@ import {
   ChevronDown,
   ChevronUp,
   MoreHorizontal,
-  Plus,
   Search,
   SlidersHorizontal,
 } from "lucide-react";
@@ -30,6 +29,7 @@ import {
 import { trpc } from "@/trpc/trpc";
 import { useTranslation } from "@/i18n/useTranslation";
 import { Product } from "@/trpc/types";
+import { AddProductModal } from "./AddProductModal";
 
 interface ProductsTableProps {
   readOnly?: boolean;
@@ -91,17 +91,17 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{t("admin.products")}</CardTitle>
         {readOnly ? (
-          <Badge
-            variant="outline"
-            className="bg-amber-100 text-amber-800 border-amber-200"
-          >
-            {t("admin.readOnlyMode")}
-          </Badge>
+          <>
+            <Badge
+              variant="outline"
+              className="bg-amber-100 text-amber-800 border-amber-200"
+            >
+              {t("admin.readOnlyMode")}
+            </Badge>
+            <AddProductModal readOnly={readOnly} />
+          </>
         ) : (
-          <Button size="sm">
-            <Plus className="mr-2 h-4 w-4" />
-            {t("admin.productsContent.addProduct")}
-          </Button>
+          <AddProductModal readOnly={readOnly} />
         )}
       </CardHeader>
       <CardContent>

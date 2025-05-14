@@ -49,3 +49,41 @@ export {
 export { Badge, badgeVariants } from "./Badge";
 export { Avatar, AvatarImage, AvatarFallback } from "./Avatar";
 export { default as Input } from "./Input";
+export { default as Label } from "./Label";
+export { default as Textarea } from "./Textarea";
+
+export {
+  Dialog,
+  DialogPortal,
+  DialogOverlay,
+  DialogClose,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "./Dialog";
+
+export {
+  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+} from "./Select";
+
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./Tabs";
+
+export {
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  FormField,
+} from "./Form";
