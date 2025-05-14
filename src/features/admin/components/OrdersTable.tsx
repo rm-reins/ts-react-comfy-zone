@@ -39,7 +39,9 @@ interface OrdersTableProps {
 }
 
 function OrdersTable({ readOnly = false }: OrdersTableProps) {
-  const { data: orders = [] } = trpc.order.getAllOrders.useQuery<Order[]>();
+  const { data: orders = [] } = readOnly
+    ? { data: [] }
+    : trpc.order.getAllOrders.useQuery<Order[]>();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [sortField, setSortField] = useState("date");
@@ -139,12 +141,12 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between mb-4">
-            <div className="relative w-full max-w-sm">
+            <div className="relative w-full max-w-sm mr-2">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
               <Input
                 type="search"
                 placeholder={t("admin.ordersContent.search")}
-                className="pl-8 w-full"
+                className="pl-8 w-full rounded-xl"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
