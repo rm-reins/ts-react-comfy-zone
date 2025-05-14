@@ -2,13 +2,7 @@ import { useState } from "react";
 import { trpc } from "@/trpc/trpc";
 import { Order } from "@/trpc/types";
 import { OrderDetailsPopup } from "@/features/orders";
-import {
-  ChevronDown,
-  ChevronUp,
-  MoreHorizontal,
-  Search,
-  SlidersHorizontal,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, MoreHorizontal, Search } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -130,14 +124,6 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>{t("admin.orders")}</CardTitle>
-          {readOnly && (
-            <Badge
-              variant="outline"
-              className="bg-amber-100 text-amber-800 border-amber-200"
-            >
-              {t("admin.readOnlyMode")}
-            </Badge>
-          )}
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between mb-4">
@@ -151,13 +137,14 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-            >
-              <SlidersHorizontal className="mr-2 h-4 w-4" />
-              {t("common.filter")}
-            </Button>
+            {readOnly && (
+              <Badge
+                variant="outline"
+                className="bg-amber-100 text-amber-800 border-amber-200"
+              >
+                {t("admin.readOnlyMode")}
+              </Badge>
+            )}
           </div>
           <div className="rounded-md border">
             <Table>

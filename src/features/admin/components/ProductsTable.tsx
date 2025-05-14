@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  MoreHorizontal,
-  Search,
-  SlidersHorizontal,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, MoreHorizontal, Search } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -90,19 +84,7 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{t("admin.products")}</CardTitle>
-        {readOnly ? (
-          <>
-            <Badge
-              variant="outline"
-              className="bg-amber-100 text-amber-800 border-amber-200"
-            >
-              {t("admin.readOnlyMode")}
-            </Badge>
-            <AddProductModal readOnly={readOnly} />
-          </>
-        ) : (
-          <AddProductModal readOnly={readOnly} />
-        )}
+        <AddProductModal readOnly={readOnly} />
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between mb-4">
@@ -116,13 +98,14 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-          >
-            <SlidersHorizontal className="mr-2 h-4 w-4" />
-            {t("common.filter")}
-          </Button>
+          {readOnly && (
+            <Badge
+              variant="outline"
+              className="bg-amber-100 text-amber-800 border-amber-200"
+            >
+              {t("admin.readOnlyMode")}
+            </Badge>
+          )}
         </div>
         <div className="rounded-xl border">
           <Table>

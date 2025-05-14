@@ -1,12 +1,5 @@
 import { useState } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  Trash2,
-  Pencil,
-  Search,
-  SlidersHorizontal,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Trash2, Pencil, Search } from "lucide-react";
 import { Button } from "@/shared/ui";
 import {
   Table,
@@ -124,14 +117,6 @@ function UsersTable({ readOnly = false }: UsersTableProps) {
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle>{t("admin.users")}</CardTitle>
-        {readOnly && (
-          <Badge
-            variant="outline"
-            className="bg-amber-100 text-amber-800 border-amber-200"
-          >
-            {t("admin.readOnlyMode")}
-          </Badge>
-        )}
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between mb-4">
@@ -145,13 +130,14 @@ function UsersTable({ readOnly = false }: UsersTableProps) {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-          >
-            <SlidersHorizontal className="mr-2 h-4 w-4" />
-            {t("common.filter")}
-          </Button>
+          {readOnly && (
+            <Badge
+              variant="outline"
+              className="bg-amber-100 text-amber-800 border-amber-200"
+            >
+              {t("admin.readOnlyMode")}
+            </Badge>
+          )}
         </div>
         <div className="rounded-xl border">
           <Table>
