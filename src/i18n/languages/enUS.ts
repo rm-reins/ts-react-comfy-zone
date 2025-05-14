@@ -5,6 +5,7 @@ export const enUS = {
     saving: "Saving...",
     error: "An error occurred",
     success: "Success",
+    submit: "Submit",
     save: "Save",
     cancel: "Cancel",
     delete: "Delete",
@@ -100,7 +101,11 @@ export const enUS = {
     productsContent: {
       name: "Product Name",
       category: "Category",
+      selectCategory: "Select Category",
+      company: "Company",
+      color: "Color",
       price: "Price",
+      quantity: "Quantity",
       inventory: "Inventory",
       actions: "Actions",
       search: "Search products...",
@@ -108,6 +113,19 @@ export const enUS = {
       viewDetails: "View Details",
       editProduct: "Edit Product",
       deleteProduct: "Delete Product",
+      productName: "Product Name",
+      productDescription: "Product Description",
+      productDescriptionPlaceholder:
+        "Enter a detailed description of the product",
+      createProduct: "Create Product",
+      addImage: "Add Image",
+      removeImage: "Remove Image",
+      addProductDescription:
+        "Add a new product to your inventory. Fill out the form below to create a new product.",
+      productNamePlaceholder: "Enter product name",
+      productNameError: "Product name must be at least 3 characters long",
+      productDescriptionError:
+        "Product description must be at least 10 characters long",
     },
     usersContent: {
       name: "Name",

@@ -108,6 +108,23 @@ export const deDE = {
       viewDetails: "Details ansehen",
       editProduct: "Produkt bearbeiten",
       deleteProduct: "Produkt löschen",
+      selectCategory: "Kategorie auswählen",
+      company: "Firma",
+      color: "Farbe",
+      quantity: "Menge",
+      productName: "Produktname",
+      productNamePlaceholder: "Produktname eingeben",
+      productDescription: "Produktbeschreibung",
+      productDescriptionPlaceholder:
+        "Geben Sie eine detaillierte Beschreibung des Produkts ein",
+      createProduct: "Produkt erstellen",
+      addImage: "Bild hinzufügen",
+      removeImage: "Bild entfernen",
+      addProductDescription:
+        "Fügen Sie ein neues Produkt zu Ihrem Lager hinzu. Füllen Sie das Formular unten aus, um ein neues Produkt zu erstellen.",
+      productNameError: "Produktname muss mindestens 3 Zeichen lang sein",
+      productDescriptionError:
+        "Produktbeschreibung muss mindestens 10 Zeichen lang sein",
     },
     usersContent: {
       name: "Name",
