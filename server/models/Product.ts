@@ -27,7 +27,7 @@ interface IProduct extends Document {
   inventory: number;
   averageRating: number;
   numOfReviews: number;
-  user: mongoose.Types.ObjectId;
+  user: string;
 }
 
 const ProductSchema = new Schema<IProduct>(
@@ -101,8 +101,7 @@ const ProductSchema = new Schema<IProduct>(
       default: 0,
     },
     user: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
   },

@@ -2,6 +2,7 @@ import { router, publicProcedure, adminProcedure } from "../trpc.js";
 import { z } from "zod";
 import Product from "../../models/Product.js";
 import { TRPCError } from "@trpc/server";
+import cloudinary from "../../utils/cloudinary.js";
 
 const productInputSchema = z.object({
   name: z.object({
@@ -18,7 +19,6 @@ const productInputSchema = z.object({
       .min(3, "Name must be at least 3 characters long")
       .max(100, "Name cannot be more than 100 characters"),
   }),
-  price: z.number().positive("Price must be positive"),
   description: z.object({
     enUS: z
       .string()
@@ -43,6 +43,7 @@ const productInputSchema = z.object({
     "textiles",
     "other",
   ]),
+  price: z.number().positive("Price must be positive"),
   company: z.string(),
   colors: z.array(z.string()),
   featured: z.boolean().optional().default(false),
@@ -99,6 +100,21 @@ export const productRouter = router({
       }
     }),
 
+  uploadImage: adminProcedure
+    .input(
+      z.object({
+        image: z.string(),
+        folder: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const result = await cloudinary.uploader.upload(input.image, {
+        folder: input.folder || "default",
+      });
+
+      return result.secure_url;
+    }),
+
   create: adminProcedure
     .input(productInputSchema)
     .mutation(async ({ ctx, input }) => {
@@ -110,9 +126,7 @@ export const productRouter = router({
           });
         }
 
-        // Create product with user from context
         const productData = { ...input };
-        // Remove user field if it exists, as we'll set it from context
         delete productData.user;
 
         const product = await Product.create({
@@ -126,7 +140,7 @@ export const productRouter = router({
 
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to create product",
+          message: "Failed to create product " + JSON.stringify(error),
           cause: error,
         });
       }
@@ -178,21 +192,26 @@ export const productRouter = router({
     }),
 
   delete: adminProcedure
-    .input(z.string().regex(/^[0-9a-fA-F]{24}$/))
-    .mutation(async ({ input: id }) => {
+    .input(
+      z.object({
+        _id: z.string().regex(/^[0-9a-fA-F]{24}$/),
+      })
+    )
+    .mutation(async ({ input }) => {
       try {
-        const product = await Product.findById(id);
+        const product = await Product.findOneAndDelete({
+          _id: input._id,
+        });
 
         if (!product) {
           throw new TRPCError({
             code: "NOT_FOUND",
-            message: `No product with id: ${id}`,
+            message:
+              "Product not found or you don't have permission to delete it",
           });
         }
 
-        await Product.findByIdAndDelete(id);
-
-        return { id, deleted: true };
+        return product;
       } catch (error) {
         if (error instanceof TRPCError) throw error;
 

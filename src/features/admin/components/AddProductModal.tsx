@@ -30,12 +30,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  Badge,
 } from "@/shared/ui";
 import { useTranslation } from "@/i18n/useTranslation";
-
-// TODO: API integration:
-// - import { trpc } from "@/trpc/trpc"
-// - import { Product } from "@/trpc/types"
+import { trpc } from "@/trpc/trpc";
 
 interface LanguageOption {
   id: "enUS" | "deDE" | "ruRU";
@@ -53,6 +51,7 @@ const productFormSchema = z.object({
     deDE: z.string().min(10),
     ruRU: z.string().min(10),
   }),
+  images: z.array(z.string()),
   category: z.enum([
     "office",
     "kitchen",
@@ -62,13 +61,29 @@ const productFormSchema = z.object({
     "textiles",
     "other",
   ]),
-  company: z.string().min(1),
-  color: z.string().min(1),
   price: z.coerce.number().positive(),
-  quantity: z.coerce.number().int().nonnegative(),
+  company: z.string().min(1),
+  colors: z.array(z.string()),
+  inventory: z.coerce.number().int().nonnegative(),
 });
 
 type ProductFormValues = z.infer<typeof productFormSchema>;
+
+// Predefined color options
+const COLOR_OPTIONS = [
+  { value: "#000000", label: "Black" },
+  { value: "#FFFFFF", label: "White" },
+  { value: "#FF0000", label: "Red" },
+  { value: "#00FF00", label: "Green" },
+  { value: "#0000FF", label: "Blue" },
+  { value: "#FFFF00", label: "Yellow" },
+  { value: "#FFA500", label: "Orange" },
+  { value: "#800080", label: "Purple" },
+  { value: "#A52A2A", label: "Brown" },
+  { value: "#808080", label: "Gray" },
+  { value: "#FFC0CB", label: "Pink" },
+  { value: "#40E0D0", label: "Turquoise" },
+];
 
 export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
   const [open, setOpen] = useState(false);
@@ -79,6 +94,10 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
     "enUS" | "deDE" | "ruRU"
   >("enUS");
   const [images, setImages] = useState<string[]>([]);
+  const [showColorPicker, setShowColorPicker] = useState(false);
+
+  const uploadImage = trpc.product.uploadImage.useMutation();
+  const createProduct = trpc.product.create.useMutation();
 
   const { t } = useTranslation();
 
@@ -112,53 +131,83 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
         deDE: "",
         ruRU: "",
       },
+      images: [],
       category: "other",
-      company: "",
-      color: "",
       price: 0,
-      quantity: 0,
+      company: "",
+      colors: [],
+      inventory: 0,
     },
   });
 
-  // const createProductMutation = trpc.product.create.useMutation({
-  //   onSuccess: () => {
-  //     utils.product.getAll.invalidate();
-  //     setOpen(false);
-  //     setImages([]);
-  //     form.reset();
-  //   }
-  // });
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
 
-  function onSubmit(data: ProductFormValues) {
+      reader.onload = () => {
+        resolve(reader.result as string);
+      };
+
+      reader.onerror = (error) => reject(error);
+
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      try {
+        const fileArray = Array.from(e.target.files);
+
+        for (const file of fileArray) {
+          const base64Image = await convertToBase64(file);
+
+          const imageUrl = await uploadImage.mutateAsync({
+            image: base64Image,
+            folder: "products",
+          });
+
+          setImages((prev) => [...prev, imageUrl]);
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
+  };
+
+  async function onSubmit(data: ProductFormValues) {
     console.log("Form submitted:", { ...data });
 
-    // createProductMutation.mutate({
-    //   ...data,
-    //   colors: [data.color], // Convert single color to array as per API
-    //   images,
-    //   inventory: data.quantity,
-    // });
+    createProduct.mutate({
+      ...data,
+      images: images,
+    });
 
     setOpen(false);
     setImages([]);
     form.reset();
   }
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      const newImages = Array.from(files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setImages([...images, ...newImages]);
+  const addColor = (color: { value: string; label: string }) => {
+    const currentColors = form.getValues("colors") || [];
+    if (!currentColors.includes(color.value)) {
+      form.setValue("colors", [...currentColors, color.value]);
     }
+    setShowColorPicker(false);
   };
 
-  const removeImage = (index: number) => {
-    const newImages = [...images];
-    URL.revokeObjectURL(newImages[index]);
-    newImages.splice(index, 1);
-    setImages(newImages);
+  const removeColor = (colorToRemove: string) => {
+    const currentColors = form.getValues("colors") || [];
+    form.setValue(
+      "colors",
+      currentColors.filter((color) => color !== colorToRemove)
+    );
   };
 
   return (
@@ -391,24 +440,6 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
 
               <FormField
                 control={form.control}
-                name="color"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="pl-3">
-                      {t("admin.productsContent.color")}
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder={t("admin.productsContent.color")}
-                        {...field}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
                 name="price"
                 render={({ field }) => (
                   <FormItem>
@@ -430,11 +461,11 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
 
               <FormField
                 control={form.control}
-                name="quantity"
+                name="inventory"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="pl-3">
-                      {t("admin.productsContent.quantity")}
+                      {t("admin.productsContent.inventory")}
                     </FormLabel>
                     <FormControl>
                       <Input
@@ -443,6 +474,82 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                         min="0"
                         {...field}
                       />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <FormField
+                control={form.control}
+                name="colors"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="pl-3">
+                      {t("admin.productsContent.color")}
+                    </FormLabel>
+                    <FormControl>
+                      <div className="space-y-2">
+                        <div className="flex flex-wrap gap-2">
+                          {field.value.map((color, index) => (
+                            <Badge
+                              key={index}
+                              className="flex items-center gap-1 px-3 py-1 border-1 border-green-100"
+                              style={{ backgroundColor: color }}
+                            >
+                              <span
+                                className={
+                                  color === "#FFFFFF" || color === "#FFFF00"
+                                    ? "text-black"
+                                    : "text-white"
+                                }
+                              >
+                                {COLOR_OPTIONS.find(
+                                  (opt) => opt.value === color
+                                )?.label || color}
+                              </span>
+                              <X
+                                className={
+                                  color === "#FFFFFF" || color === "#FFFF00"
+                                    ? "text-black h-3 w-3 cursor-pointer"
+                                    : "text-white h-3 w-3 cursor-pointer"
+                                }
+                                onClick={() => removeColor(color)}
+                              />
+                            </Badge>
+                          ))}
+                        </div>
+                        <div className="relative">
+                          {showColorPicker && (
+                            <div className="absolute z-10 bottom-0.5 w-64 rounded-md border bg-background p-3 shadow-lg">
+                              <div className="grid grid-cols-4 gap-2">
+                                {COLOR_OPTIONS.map((color) => (
+                                  <button
+                                    key={color.value}
+                                    type="button"
+                                    onClick={() => addColor(color)}
+                                    className="h-8 w-8 rounded-full border"
+                                    style={{ backgroundColor: color.value }}
+                                    title={color.label}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          )}
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            className="mt-1"
+                            onClick={() => setShowColorPicker(!showColorPicker)}
+                          >
+                            <Plus className="mr-1 h-3 w-3" />
+                            {t("admin.productsContent.addColor") || "Add Color"}
+                          </Button>
+                        </div>
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
