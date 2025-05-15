@@ -104,6 +104,7 @@ export const enUS = {
       selectCategory: "Select Category",
       company: "Company",
       color: "Color",
+      addColor: "Add Color",
       price: "Price",
       quantity: "Quantity",
       inventory: "Inventory",
@@ -113,6 +114,7 @@ export const enUS = {
       viewDetails: "View Details",
       editProduct: "Edit Product",
       deleteProduct: "Delete Product",
+      deleteProductDescription: "Are you sure you want to delete this product?",
       productName: "Product Name",
       productDescription: "Product Description",
       productDescriptionPlaceholder:
