@@ -89,7 +89,7 @@ export const orderRouter = router({
     .input(z.string().regex(/^[0-9a-fA-F]{24}$/))
     .query(async ({ ctx, input: orderId }) => {
       try {
-        const order = await Order.findById(orderId);
+        const order = await Order.findById({ _id: orderId });
 
         if (!order) {
           throw new TRPCError({
@@ -222,6 +222,42 @@ export const orderRouter = router({
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Failed to create order",
+          cause: error,
+        });
+      }
+    }),
+
+  updateOrderStatus: adminProcedure
+    .input(
+      z.object({
+        orderId: z.string().regex(/^[0-9a-fA-F]{24}$/),
+        orderStatus: z.enum(["pending", "paid", "delivered", "cancelled"]),
+      })
+    )
+    .mutation(async ({ input }) => {
+      try {
+        const { orderId, orderStatus } = input;
+
+        const order = await Order.findOneAndUpdate(
+          { _id: orderId },
+          { status: orderStatus },
+          { new: true, runValidators: true }
+        );
+
+        if (!order) {
+          throw new TRPCError({
+            code: "NOT_FOUND",
+            message: `No order with id: ${orderId}`,
+          });
+        }
+
+        return order;
+      } catch (error) {
+        if (error instanceof TRPCError) throw error;
+
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to update order status",
           cause: error,
         });
       }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { trpc } from "@/trpc/trpc";
 import { Order } from "@/trpc/types";
 import { OrderDetailsPopup } from "@/features/orders";
+import { OrderStatusUpdateModal } from "./OrderUpdateModal";
 import { ChevronDown, ChevronUp, MoreHorizontal, Search } from "lucide-react";
 import {
   DropdownMenu,
@@ -33,11 +34,12 @@ interface OrdersTableProps {
 }
 
 function OrdersTable({ readOnly = false }: OrdersTableProps) {
-  const { data: orders = [] } = readOnly
-    ? { data: [] }
+  const { data: orders = [], refetch } = readOnly
+    ? { data: [], refetch: () => Promise.resolve() }
     : trpc.order.getAllOrders.useQuery<Order[]>();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+  const [isStatusModalOpen, setStatusModalOpen] = useState(false);
   const [sortField, setSortField] = useState("date");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [searchTerm, setSearchTerm] = useState("");
@@ -112,11 +114,22 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
 
   const handleOpenOrderDetails = (order: Order) => {
     setSelectedOrder(order);
-    setIsPopupOpen(true);
+    setIsDetailModalOpen(true);
+  };
+
+  const handleOpenStatusModal = (order: Order) => {
+    setSelectedOrder(order);
+    setStatusModalOpen(true);
   };
 
   const handleClosePopup = () => {
-    setIsPopupOpen(false);
+    setIsDetailModalOpen(false);
+    setStatusModalOpen(false);
+  };
+
+  const handleStatusUpdateSuccess = async () => {
+    await refetch();
+    setStatusModalOpen(false);
   };
 
   return (
@@ -235,10 +248,7 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                       {order.total.toFixed(2)} €
                     </TableCell>
                     <TableCell>
-                      <Badge
-                        variant="secondary"
-                        className={getStatusColor(order.status)}
-                      >
+                      <Badge className={getStatusColor(order.status)}>
                         {formatStatus(order.status) || ""}
                       </Badge>
                     </TableCell>
@@ -260,7 +270,11 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
                           >
                             {t("admin.ordersContent.viewDetails")}
                           </DropdownMenuItem>
-                          <DropdownMenuItem disabled={readOnly}>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleOpenStatusModal(order as Order)
+                            }
+                          >
                             {t("admin.ordersContent.updateStatus")}
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
@@ -278,10 +292,18 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
         </CardContent>
       </Card>
 
+      <OrderStatusUpdateModal
+        order={selectedOrder}
+        readOnly={readOnly}
+        isOpen={isStatusModalOpen}
+        onClose={handleClosePopup}
+        onSuccess={handleStatusUpdateSuccess}
+      />
+
       {/* Order Details Popup */}
       <OrderDetailsPopup
         order={selectedOrder}
-        isOpen={isPopupOpen}
+        isOpen={isDetailModalOpen}
         onClose={handleClosePopup}
       />
     </>
