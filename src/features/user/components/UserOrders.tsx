@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
-import { OrderDetailsPopup } from "@/features/orders";
+import { OrderDetailsModal } from "@/features/orders";
 import { Order } from "@/trpc/types";
 import { trpc } from "@/trpc/trpc";
 
@@ -307,7 +307,7 @@ function UserOrders() {
       )}
 
       {/* Order Details Popup */}
-      <OrderDetailsPopup
+      <OrderDetailsModal
         order={selectedOrder}
         isOpen={isPopupOpen}
         onClose={handleClosePopup}

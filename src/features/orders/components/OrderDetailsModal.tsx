@@ -1,17 +1,22 @@
-import { useRef, useEffect } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
-import { X, ArrowUpRight, MapPin, Phone, Mail, User, Info } from "lucide-react";
+import { ArrowUpRight, MapPin, Phone, Mail, User, Info } from "lucide-react";
 import { Order } from "@/trpc/types";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+} from "@/shared/ui";
 
-interface OrderDetailsPopupProps {
+interface OrderDetailsModalProps {
   order: Order | null;
   isOpen: boolean;
   onClose: () => void;
 }
 
-function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
+function OrderDetailsModal({ order, isOpen, onClose }: OrderDetailsModalProps) {
   const { t, language } = useTranslation();
-  const popupRef = useRef<HTMLDivElement>(null);
 
   const formatDate = (dateInput: Date | string | undefined) => {
     if (!dateInput) return "";
@@ -80,65 +85,28 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
     }
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        popupRef.current &&
-        !popupRef.current.contains(event.target as Node)
-      ) {
-        onClose();
-      }
-    };
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen, onClose]);
-
-  useEffect(() => {
-    const handleEscapeKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-    if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKey);
-    }
-    return () => {
-      document.removeEventListener("keydown", handleEscapeKey);
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen || !order) return null;
+  if (!order) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-      <div
-        ref={popupRef}
-        className="bg-white dark:bg-green-600 rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
-      >
+    <Dialog
+      open={isOpen}
+      onOpenChange={onClose}
+    >
+      <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto p-0">
         {/* Header */}
-        <div className="bg-green-50 dark:bg-green-900/20 bg-opacity-50 border-b border-green-100 dark:border-green-800 p-6">
+        <DialogHeader className="bg-green-50 dark:bg-green-900/20 bg-opacity-50 border-b border-green-100 dark:border-green-800 p-6">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="text-base sm:text-2xl font-medium text-gray-900 dark:text-white">
+              <DialogTitle className="text-base sm:text-2xl font-medium text-gray-900 dark:text-white">
                 {t("orders.orderDetails")}
                 <br /> #{order._id}
-              </h2>
+              </DialogTitle>
               <p className="text-gray-600 dark:text-gray-200 mt-2">
                 {formatDate(order.createdAt)}
               </p>
             </div>
-            <button
-              onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-200 dark:hover:text-gray-200 transition-colors"
-            >
-              <X className="h-6 w-6" />
-            </button>
           </div>
-        </div>
+        </DialogHeader>
 
         {/* Order Summary */}
         <div className="p-6 border-b border-green-100 dark:border-green-800">
@@ -361,7 +329,7 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
         </div>
 
         {/* Footer Actions */}
-        <div className="p-6">
+        <DialogFooter className="p-6">
           <div className="flex justify-end">
             <button
               onClick={onClose}
@@ -371,10 +339,10 @@ function OrderDetailsPopup({ order, isOpen, onClose }: OrderDetailsPopupProps) {
               <ArrowUpRight className="h-5 w-5" />
             </button>
           </div>
-        </div>
-      </div>
-    </div>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
 
-export default OrderDetailsPopup;
+export default OrderDetailsModal;

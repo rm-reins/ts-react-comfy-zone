@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { trpc } from "@/trpc/trpc";
 import { Order } from "@/trpc/types";
-import { OrderDetailsPopup } from "@/features/orders";
+import { OrderDetailsModal } from "@/features/orders";
 import { OrderStatusUpdateModal } from "./OrderUpdateModal";
 import { ChevronDown, ChevronUp, MoreHorizontal, Search } from "lucide-react";
 import {
@@ -301,7 +301,7 @@ function OrdersTable({ readOnly = false }: OrdersTableProps) {
       />
 
       {/* Order Details Popup */}
-      <OrderDetailsPopup
+      <OrderDetailsModal
         order={selectedOrder}
         isOpen={isDetailModalOpen}
         onClose={handleClosePopup}
