@@ -150,6 +150,8 @@ export const enUS = {
       search: "Search orders...",
       viewDetails: "View Details",
       updateStatus: "Update Status",
+      updateStatusDescription: "Update completion status of selected product.",
+      selectStatus: "Select status",
       printInvoice: "Print Invoice",
     },
   },

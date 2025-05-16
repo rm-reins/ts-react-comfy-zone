@@ -150,6 +150,8 @@ export const ruRU = {
       search: "Найти заказы...",
       viewDetails: "Посмотреть детали",
       updateStatus: "Обновить статус",
+      updateStatusDescription: "Обновить статус выполнения заказа",
+      selectStatus: "Выберите статус",
       printInvoice: "Распечатать счет",
     },
   },

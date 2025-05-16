@@ -151,6 +151,8 @@ export const deDE = {
       search: "Bestellungen suchen...",
       viewDetails: "Details ansehen",
       updateStatus: "Status aktualisieren",
+      updateStatusDescription: "Status des ausgewählten Produkts aktualisieren",
+      selectStatus: "Status auswählen",
       printInvoice: "Rechnung drucken",
     },
   },
