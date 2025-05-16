@@ -2,7 +2,6 @@ import { Order } from "@/trpc/types";
 import { useEffect } from "react";
 import { useTranslation } from "@/i18n/useTranslation";
 import { trpc } from "@/trpc/trpc";
-import { Plus, Upload, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -14,26 +13,18 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  Input,
   Button,
-  Textarea,
-  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-  Badge,
 } from "@/shared/ui";
 
 const orderStatusFormSchema = z.object({
@@ -42,19 +33,6 @@ const orderStatusFormSchema = z.object({
 });
 
 type OrderStatusFormValues = z.infer<typeof orderStatusFormSchema>;
-
-// function OrderUpdateModal({
-//   readOnly,
-//   order,
-// }: {
-//   readOnly?: boolean;
-//   order: Order;
-// }) {
-//   const [open, setOpen] = useState(false);
-//   const { t } = useTranslation();
-
-//   return <div>OrderUpdateModal</div>;
-// }
 
 function OrderStatusUpdateModal({
   readOnly,
