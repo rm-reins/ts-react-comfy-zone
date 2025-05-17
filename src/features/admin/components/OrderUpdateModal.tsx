@@ -12,7 +12,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   Button,
   Select,
   SelectContent,
@@ -102,9 +101,6 @@ function OrderStatusUpdateModal({
       open={isOpen}
       onOpenChange={onClose}
     >
-      <DialogTrigger asChild>
-        <p>{t("admin.ordersContent.updateStatus")}</p>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{t("admin.ordersContent.updateStatus")}</DialogTitle>
