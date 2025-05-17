@@ -1,11 +1,6 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, MoreHorizontal, Search } from "lucide-react";
+import { ChevronDown, ChevronUp, Pencil, Trash2, Search } from "lucide-react";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
   Button,
   Input,
   Table,
@@ -24,7 +19,7 @@ import {
 import { trpc } from "@/trpc/trpc";
 import { useTranslation } from "@/i18n/useTranslation";
 import { Product } from "@/trpc/types";
-import { AddProductModal } from "./AddProductModal";
+import { ProductFormModal } from "./ProductFormModal";
 import { useToast } from "@/shared/ui";
 
 interface ProductsTableProps {
@@ -116,12 +111,18 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>{t("admin.products")}</CardTitle>
-          <AddProductModal readOnly={readOnly} />
+
+          <ProductFormModal
+            readOnly={readOnly}
+            onSuccess={refetchProducts}
+          />
         </CardHeader>
+
         <CardContent>
           <div className="flex items-center justify-between mb-4">
             <div className="relative w-full max-w-sm mr-2">
               <Search className="absolute left-2.5 top-3 h-4 w-4 text-gray-500" />
+
               <Input
                 type="search"
                 placeholder={t("admin.productsContent.search")}
@@ -130,6 +131,7 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
+
             {readOnly && (
               <Badge
                 variant="outline"
@@ -139,6 +141,7 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
               </Badge>
             )}
           </div>
+
           <div className="rounded-xl border">
             <Table>
               <TableHeader>
@@ -159,6 +162,7 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
                         ))}
                     </Button>
                   </TableHead>
+
                   <TableHead>
                     <Button
                       variant="ghost"
@@ -175,6 +179,7 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
                         ))}
                     </Button>
                   </TableHead>
+
                   <TableHead>
                     <Button
                       variant="ghost"
@@ -191,6 +196,7 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
                         ))}
                     </Button>
                   </TableHead>
+
                   <TableHead>
                     <Button
                       variant="ghost"
@@ -207,11 +213,13 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
                         ))}
                     </Button>
                   </TableHead>
+
                   <TableHead className="text-right text-sm">
                     {t("admin.productsContent.actions")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
+
               <TableBody>
                 {sortedProducts.map((product) => (
                   <TableRow key={product._id}>
@@ -223,47 +231,48 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
                         </p>
                       </div>
                     </TableCell>
+
                     <TableCell>
                       <Badge variant="outline">
                         {t(`products.categoryType.${product.category}`)}
                       </Badge>
                     </TableCell>
+
                     <TableCell className="text-nowrap">
                       {product.price.toFixed(2)} €
                     </TableCell>
+
                     <TableCell className="text-sm">
                       {product.inventory}
                     </TableCell>
+
                     <TableCell className="text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                      <ProductFormModal
+                        readOnly={readOnly}
+                        product={product}
+                        onSuccess={refetchProducts}
+                        trigger={
                           <Button
                             variant="ghost"
                             size="icon"
-                          >
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            {t("admin.productsContent.viewDetails")}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem disabled={readOnly}>
-                            {t("admin.productsContent.editProduct")}
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            className="text-red-600 cursor-pointer"
                             disabled={readOnly}
-                            onClick={() => {
-                              setSelectedProduct(product);
-                              setIsDeleteDialogOpen(true);
-                            }}
                           >
-                            {t("admin.productsContent.deleteProduct")}
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                        }
+                      />
+
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        disabled={readOnly}
+                        onClick={() => {
+                          setSelectedProduct(product);
+                          setIsDeleteDialogOpen(true);
+                        }}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}

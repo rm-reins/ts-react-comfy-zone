@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { Plus, Upload, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Plus, Upload, X, Pencil } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { HexColorPicker } from "react-colorful";
 import {
   Dialog,
   DialogContent,
@@ -34,6 +35,7 @@ import {
 } from "@/shared/ui";
 import { useTranslation } from "@/i18n/useTranslation";
 import { trpc } from "@/trpc/trpc";
+import { Product } from "@/trpc/types";
 
 interface LanguageOption {
   id: "enUS" | "deDE" | "ruRU";
@@ -69,23 +71,19 @@ const productFormSchema = z.object({
 
 type ProductFormValues = z.infer<typeof productFormSchema>;
 
-// Predefined color options
-const COLOR_OPTIONS = [
-  { value: "#000000", label: "Black" },
-  { value: "#FFFFFF", label: "White" },
-  { value: "#FF0000", label: "Red" },
-  { value: "#00FF00", label: "Green" },
-  { value: "#0000FF", label: "Blue" },
-  { value: "#FFFF00", label: "Yellow" },
-  { value: "#FFA500", label: "Orange" },
-  { value: "#800080", label: "Purple" },
-  { value: "#A52A2A", label: "Brown" },
-  { value: "#808080", label: "Gray" },
-  { value: "#FFC0CB", label: "Pink" },
-  { value: "#40E0D0", label: "Turquoise" },
-];
+interface ProductFormModalProps {
+  readOnly?: boolean;
+  product?: Product | null;
+  onSuccess?: () => void;
+  trigger?: React.ReactNode;
+}
 
-export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
+export function ProductFormModal({
+  readOnly = false,
+  product = null,
+  onSuccess,
+  trigger,
+}: ProductFormModalProps) {
   const [open, setOpen] = useState(false);
   const [activeLanguage, setActiveLanguage] = useState<
     "enUS" | "deDE" | "ruRU"
@@ -95,11 +93,14 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
   >("enUS");
   const [images, setImages] = useState<string[]>([]);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [currentColor, setCurrentColor] = useState("#6366f1");
 
   const uploadImage = trpc.product.uploadImage.useMutation();
   const createProduct = trpc.product.create.useMutation();
+  const updateProduct = trpc.product.update.useMutation();
 
   const { t } = useTranslation();
+  const isEditMode = !!product;
 
   const PRODUCT_CATEGORIES = [
     { id: "office", name: t("products.categoryType.office") },
@@ -117,7 +118,6 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
     { id: "ruRU", label: "Русский" },
   ];
 
-  // Initialize form with default values
   const form = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
     defaultValues: {
@@ -139,6 +139,42 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
       inventory: 0,
     },
   });
+
+  useEffect(() => {
+    if (open && product) {
+      form.reset({
+        name: product.name,
+        description: product.description,
+        images: product.images,
+        category: product.category,
+        price: product.price,
+        company: product.company,
+        colors: product.colors,
+        inventory: product.inventory,
+      });
+      setImages(product.images);
+    } else if (open && !product) {
+      form.reset({
+        name: {
+          enUS: "",
+          deDE: "",
+          ruRU: "",
+        },
+        description: {
+          enUS: "",
+          deDE: "",
+          ruRU: "",
+        },
+        images: [],
+        category: "other",
+        price: 0,
+        company: "",
+        colors: [],
+        inventory: 0,
+      });
+      setImages([]);
+    }
+  }, [open, product, form]);
 
   const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -182,22 +218,34 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
   };
 
   async function onSubmit(data: ProductFormValues) {
-    console.log("Form submitted:", { ...data });
+    try {
+      const formData = {
+        ...data,
+        images: images,
+      };
 
-    createProduct.mutate({
-      ...data,
-      images: images,
-    });
+      if (isEditMode && product) {
+        await updateProduct.mutateAsync({
+          id: product._id,
+          product: formData,
+        });
+      } else {
+        await createProduct.mutateAsync(formData);
+      }
 
-    setOpen(false);
-    setImages([]);
-    form.reset();
+      setOpen(false);
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (error) {
+      console.error("Error saving product:", error);
+    }
   }
 
-  const addColor = (color: { value: string; label: string }) => {
+  const addColor = () => {
     const currentColors = form.getValues("colors") || [];
-    if (!currentColors.includes(color.value)) {
-      form.setValue("colors", [...currentColors, color.value]);
+    if (!currentColors.includes(currentColor)) {
+      form.setValue("colors", [...currentColors, currentColor]);
     }
     setShowColorPicker(false);
   };
@@ -210,22 +258,54 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
     );
   };
 
+  const isLightColor = (color: string) => {
+    const hex = color.replace("#", "");
+    const r = parseInt(hex.substr(0, 2), 16);
+    const g = parseInt(hex.substr(2, 2), 16);
+    const b = parseInt(hex.substr(4, 2), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness > 155;
+  };
+
+  const getDefaultTrigger = () => {
+    if (isEditMode) {
+      return (
+        <Button
+          variant="ghost"
+          size="icon"
+        >
+          <Pencil className="h-4 w-4" />
+        </Button>
+      );
+    }
+
+    return (
+      <Button>
+        <Plus className="mr-2 h-4 w-4" />
+        {t("admin.productsContent.addProduct")}
+      </Button>
+    );
+  };
+
   return (
     <Dialog
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogTrigger asChild>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          {t("admin.productsContent.addProduct")}
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger || getDefaultTrigger()}</DialogTrigger>
+
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t("admin.productsContent.createProduct")}</DialogTitle>
+          <DialogTitle>
+            {isEditMode
+              ? t("admin.productsContent.editProduct")
+              : t("admin.productsContent.createProduct")}
+          </DialogTitle>
+
           <DialogDescription>
-            {t("admin.productsContent.addProductDescription")}
+            {isEditMode
+              ? t("admin.productsContent.editProductDescription")
+              : t("admin.productsContent.addProductDescription")}
           </DialogDescription>
         </DialogHeader>
 
@@ -247,6 +327,7 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                       alt={`Product image ${index + 1}`}
                       className="h-32 w-full rounded-xl object-cover"
                     />
+
                     <Button
                       type="button"
                       variant="ghost"
@@ -255,6 +336,7 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                       onClick={() => removeImage(index)}
                     >
                       <X className="h-4 w-4" />
+
                       <span className="sr-only">
                         {t("admin.productsContent.removeImage")}
                       </span>
@@ -267,6 +349,7 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                 >
                   <Upload className="mb-2 h-6 w-6" />
                   {t("admin.productsContent.addImage")}
+
                   <Input
                     id="image-upload"
                     type="file"
@@ -306,11 +389,12 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                     <FormField
                       control={form.control}
                       name={`name.${lang.id}`}
-                      render={({ field }) => (
+                      render={({ field, fieldState }) => (
                         <FormItem>
                           <FormLabel className="pl-3">
                             {t("admin.productsContent.productName")}
                           </FormLabel>
+
                           <FormControl>
                             <Input
                               placeholder={t(
@@ -319,8 +403,10 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                               {...field}
                             />
                           </FormControl>
-                          <FormMessage className="pl-3">
-                            {t("admin.productsContent.productNameError")}
+
+                          <FormMessage>
+                            {fieldState.error &&
+                              t("admin.productsContent.productNameError")}
                           </FormMessage>
                         </FormItem>
                       )}
@@ -357,11 +443,12 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                     <FormField
                       control={form.control}
                       name={`description.${lang.id}`}
-                      render={({ field }) => (
+                      render={({ field, fieldState }) => (
                         <FormItem>
                           <FormLabel className="pl-3">
                             {t("admin.productsContent.productDescription")}
                           </FormLabel>
+
                           <FormControl>
                             <Textarea
                               placeholder={t(
@@ -371,8 +458,12 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                               {...field}
                             />
                           </FormControl>
-                          <FormMessage className="pl-3">
-                            {t("admin.productsContent.productDescriptionError")}
+
+                          <FormMessage>
+                            {fieldState.error &&
+                              t(
+                                "admin.productsContent.productDescriptionError"
+                              )}
                           </FormMessage>
                         </FormItem>
                       )}
@@ -392,9 +483,11 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                     <FormLabel className="pl-3">
                       {t("admin.productsContent.category")}
                     </FormLabel>
+
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
+                      value={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -405,6 +498,7 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                           />
                         </SelectTrigger>
                       </FormControl>
+
                       <SelectContent>
                         {PRODUCT_CATEGORIES.map((category) => (
                           <SelectItem
@@ -428,6 +522,7 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                     <FormLabel className="pl-3">
                       {t("admin.productsContent.company")}
                     </FormLabel>
+
                     <FormControl>
                       <Input
                         placeholder={t("admin.productsContent.company")}
@@ -446,6 +541,7 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                     <FormLabel className="pl-3">
                       {t("admin.productsContent.price")}
                     </FormLabel>
+
                     <FormControl>
                       <Input
                         placeholder="0.00"
@@ -467,6 +563,7 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                     <FormLabel className="pl-3">
                       {t("admin.productsContent.inventory")}
                     </FormLabel>
+
                     <FormControl>
                       <Input
                         placeholder="0"
@@ -475,6 +572,7 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                         {...field}
                       />
                     </FormControl>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -490,8 +588,9 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                     <FormLabel className="pl-3">
                       {t("admin.productsContent.color")}
                     </FormLabel>
+
                     <FormControl>
-                      <div className="space-y-2">
+                      <div className="space-y-4">
                         <div className="flex flex-wrap gap-2">
                           {field.value.map((color, index) => (
                             <Badge
@@ -501,18 +600,16 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                             >
                               <span
                                 className={
-                                  color === "#FFFFFF" || color === "#FFFF00"
+                                  isLightColor(color)
                                     ? "text-black"
                                     : "text-white"
                                 }
                               >
-                                {COLOR_OPTIONS.find(
-                                  (opt) => opt.value === color
-                                )?.label || color}
+                                {color}
                               </span>
                               <X
                                 className={
-                                  color === "#FFFFFF" || color === "#FFFF00"
+                                  isLightColor(color)
                                     ? "text-black h-3 w-3 cursor-pointer"
                                     : "text-white h-3 w-3 cursor-pointer"
                                 }
@@ -521,36 +618,74 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                             </Badge>
                           ))}
                         </div>
-                        <div className="relative">
-                          {showColorPicker && (
-                            <div className="absolute z-10 bottom-0.5 w-64 rounded-md border bg-background p-3 shadow-lg">
-                              <div className="grid grid-cols-4 gap-2">
-                                {COLOR_OPTIONS.map((color) => (
-                                  <button
-                                    key={color.value}
-                                    type="button"
-                                    onClick={() => addColor(color)}
-                                    className="h-8 w-8 rounded-full border"
-                                    style={{ backgroundColor: color.value }}
-                                    title={color.label}
+
+                        {showColorPicker && (
+                          <div className="p-4 border rounded-md bg-background shadow-sm">
+                            <div className="grid sm:grid-cols-2 grid-cols-1 items-center gap-4">
+                              <div className="flex justify-center  w-full">
+                                <HexColorPicker
+                                  color={currentColor}
+                                  onChange={setCurrentColor}
+                                  className="mb-4"
+                                />
+                              </div>
+
+                              <div className="flex flex-col gap-2 w-full">
+                                <div className="flex items-center gap-2 w-full">
+                                  <div
+                                    className="w-10 h-10 rounded-md border"
+                                    style={{ backgroundColor: currentColor }}
                                   />
-                                ))}
+
+                                  <div className="relative flex-1">
+                                    <Input
+                                      value={currentColor}
+                                      onChange={(e) =>
+                                        setCurrentColor(e.target.value)
+                                      }
+                                      className="pr-10"
+                                    />
+                                  </div>
+                                </div>
+
+                                <Button
+                                  type="button"
+                                  onClick={addColor}
+                                  style={{
+                                    backgroundColor: currentColor,
+                                    color: isLightColor(currentColor)
+                                      ? "#000"
+                                      : "#fff",
+                                    border: isLightColor(currentColor)
+                                      ? "1px solid #ddd"
+                                      : "none",
+                                  }}
+                                >
+                                  {t("admin.productsContent.addColor")}
+                                </Button>
                               </div>
                             </div>
+                          </div>
+                        )}
+
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setShowColorPicker(!showColorPicker)}
+                        >
+                          {showColorPicker ? (
+                            t("admin.productsContent.hideColorPicker")
+                          ) : (
+                            <>
+                              <Plus className="mr-1 h-3 w-3" />
+                              {t("admin.productsContent.addColor")}
+                            </>
                           )}
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            className="mt-1"
-                            onClick={() => setShowColorPicker(!showColorPicker)}
-                          >
-                            <Plus className="mr-1 h-3 w-3" />
-                            {t("admin.productsContent.addColor") || "Add Color"}
-                          </Button>
-                        </div>
+                        </Button>
                       </div>
                     </FormControl>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -569,7 +704,7 @@ export function AddProductModal({ readOnly }: { readOnly?: boolean }) {
                 disabled={readOnly}
                 type="submit"
               >
-                {t("common.submit")}
+                {isEditMode ? t("common.update") : t("common.submit")}
               </Button>
             </DialogFooter>
           </form>
