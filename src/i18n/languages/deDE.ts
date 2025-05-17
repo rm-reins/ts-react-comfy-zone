@@ -7,6 +7,7 @@ export const deDE = {
     success: "Erfolg",
     save: "Speichern",
     submit: "Absenden",
+    update: "Aktualisieren",
     cancel: "Abbrechen",
     delete: "Löschen",
     edit: "Bearbeiten",
@@ -108,6 +109,7 @@ export const deDE = {
       addProduct: "Produkt hinzufügen",
       viewDetails: "Details ansehen",
       editProduct: "Produkt bearbeiten",
+      editProductDescription: "Produktdetails bearbeiten",
       deleteProduct: "Produkt löschen",
       deleteProductDescription:
         "Sind Sie sicher, dass Sie dieses Produkt löschen möchten?",
@@ -129,6 +131,7 @@ export const deDE = {
       productNameError: "Produktname muss mindestens 3 Zeichen lang sein",
       productDescriptionError:
         "Produktbeschreibung muss mindestens 10 Zeichen lang sein",
+      hideColorPicker: "Farbauswahl ausblenden",
     },
     usersContent: {
       name: "Name",

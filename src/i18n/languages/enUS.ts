@@ -6,6 +6,7 @@ export const enUS = {
     error: "An error occurred",
     success: "Success",
     submit: "Submit",
+    update: "Update",
     save: "Save",
     cancel: "Cancel",
     delete: "Delete",
@@ -113,6 +114,7 @@ export const enUS = {
       addProduct: "Add Product",
       viewDetails: "View Details",
       editProduct: "Edit Product",
+      editProductDescription: "Edit the product details",
       deleteProduct: "Delete Product",
       deleteProductDescription: "Are you sure you want to delete this product?",
       productName: "Product Name",
@@ -128,6 +130,7 @@ export const enUS = {
       productNameError: "Product name must be at least 3 characters long",
       productDescriptionError:
         "Product description must be at least 10 characters long",
+      hideColorPicker: "Hide Color Picker",
     },
     usersContent: {
       name: "Name",

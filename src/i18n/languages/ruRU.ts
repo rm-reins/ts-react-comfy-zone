@@ -6,6 +6,7 @@ export const ruRU = {
     error: "Произошла ошибка",
     success: "Успех",
     submit: "Отправить",
+    update: "Обновить",
     save: "Сохранить",
     cancel: "Отмена",
     delete: "Удалить",
@@ -109,6 +110,7 @@ export const ruRU = {
       addProduct: "Добавить товар",
       viewDetails: "Посмотреть детали",
       editProduct: "Редактировать товар",
+      editProductDescription: "Редактировать детали товара",
       deleteProduct: "Удалить товар",
       deleteProductDescription: "Вы уверены, что хотите удалить этот товар?",
       selectCategory: "Выберите категорию",
@@ -128,6 +130,7 @@ export const ruRU = {
       productNameError: "Название товара должно быть не менее 3 символов",
       productDescriptionError:
         "Описание товара должно быть не менее 10 символов",
+      hideColorPicker: "Скрыть выбор цвета",
     },
     usersContent: {
       name: "Имя",
