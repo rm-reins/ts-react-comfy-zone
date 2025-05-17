@@ -20,7 +20,6 @@ import {
 } from "@/shared/ui";
 import { useTranslation } from "@/i18n/useTranslation";
 
-// Sample data
 const users = [
   {
     id: "USR001",
@@ -28,7 +27,7 @@ const users = [
     email: "john.doe@example.com",
     role: "Admin",
     status: "Active",
-    lastActive: "2 hours ago",
+    lastActive: "10-05-2025",
     avatar: "/placeholder.svg?height=40&width=40",
     initials: "JD",
   },
@@ -38,7 +37,7 @@ const users = [
     email: "jane.smith@example.com",
     role: "Editor",
     status: "Active",
-    lastActive: "1 day ago",
+    lastActive: "9-05-2025",
     avatar: "/placeholder.svg?height=40&width=40",
     initials: "JS",
   },
@@ -48,7 +47,7 @@ const users = [
     email: "mike.johnson@example.com",
     role: "User",
     status: "Inactive",
-    lastActive: "1 week ago",
+    lastActive: "13-05-2025",
     avatar: "/placeholder.svg?height=40&width=40",
     initials: "MJ",
   },
@@ -58,7 +57,7 @@ const users = [
     email: "sarah.williams@example.com",
     role: "Editor",
     status: "Active",
-    lastActive: "3 hours ago",
+    lastActive: "12-05-2025",
     avatar: "/placeholder.svg?height=40&width=40",
     initials: "SW",
   },
@@ -68,7 +67,7 @@ const users = [
     email: "david.brown@example.com",
     role: "User",
     status: "Active",
-    lastActive: "Just now",
+    lastActive: "12-05-2025",
     avatar: "/placeholder.svg?height=40&width=40",
     initials: "DB",
   },
