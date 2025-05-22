@@ -78,6 +78,7 @@ export const enUS = {
     demoLoginDescription: "You are logged in as a demo user",
     signInAccount: "Sign in to your account",
     errorDemoLogin: "Error logging in as demo user",
+    createAccount: "Create your account",
   },
   admin: {
     dashboard: "Dashboard",

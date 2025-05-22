@@ -78,6 +78,7 @@ export const ruRU = {
     demoLoginDescription: "Вы вошли как демо-пользователь",
     signInAccount: "Войдите в учетную запись",
     errorDemoLogin: "Ошибка при входе в демо-аккаунт",
+    createAccount: "Создать аккаунт",
   },
   admin: {
     dashboard: "Консоль",

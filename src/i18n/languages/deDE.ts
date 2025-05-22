@@ -78,6 +78,7 @@ export const deDE = {
     demoLoginDescription: "Sie sind als Demo-Benutzer angemeldet",
     signInAccount: "Anmelden zu Ihrem Konto",
     errorDemoLogin: "Fehler beim Anmelden als Demo-Benutzer",
+    createAccount: "Konto erstellen",
   },
   admin: {
     dashboard: "Dashboard",
