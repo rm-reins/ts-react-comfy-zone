@@ -255,7 +255,6 @@ function ProductsTable({ readOnly = false }: ProductsTableProps) {
                           <Button
                             variant="ghost"
                             size="icon"
-                            disabled={readOnly}
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
