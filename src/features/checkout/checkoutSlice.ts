@@ -33,7 +33,7 @@ const initialState: CheckoutState = {
     },
     paymentMethod: "",
     status: "pending",
-    user: "",
+    clerkId: "",
     additionalInformation: "",
   },
   error: null,
