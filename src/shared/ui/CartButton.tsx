@@ -1,12 +1,11 @@
 import Button from "./Button";
 import { ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 
 function CartButton() {
-  const cartState = useSelector((state: RootState) => state.cartState);
+  const cartState = useAppSelector((state) => state.cartState);
   const [itemCount, setItemCount] = useState(cartState.numItemsInCart);
 
   // Update the item count whenever cartState changes

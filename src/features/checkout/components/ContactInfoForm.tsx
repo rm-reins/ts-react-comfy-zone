@@ -1,6 +1,5 @@
 import { useTranslation } from "@/i18n/useTranslation";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useState, useEffect } from "react";
 import { setOrder } from "../checkoutSlice";
 import { useUser } from "@clerk/clerk-react";
@@ -9,8 +8,8 @@ import { DeliveryAddress } from "@/trpc/types";
 function ContactInfoForm({ address }: { address: DeliveryAddress }) {
   const { t } = useTranslation();
   const { user } = useUser();
-  const dispatch = useDispatch();
-  const checkoutState = useSelector((state: RootState) => state.checkoutState);
+  const dispatch = useAppDispatch();
+  const checkoutState = useAppSelector((state) => state.checkoutState);
 
   const [contactInfo, setContactInfo] = useState({
     name:

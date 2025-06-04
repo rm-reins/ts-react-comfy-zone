@@ -1,6 +1,6 @@
 import { Moon, Sun } from "lucide-react";
 import Button from "./Button";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setTheme } from "@/features/theme/themeSlice";
 import type { Theme } from "@/features/theme/themeSlice";
 import { useTranslation } from "@/i18n/useTranslation";

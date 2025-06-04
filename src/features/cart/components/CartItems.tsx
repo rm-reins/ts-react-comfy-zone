@@ -3,17 +3,16 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Image } from "@/shared/ui";
-import { RootState } from "@/store/store";
-import { useSelector, useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setCartItemQuantity, removeItem } from "../cartSlice";
 import { useToast } from "@/shared/ui";
 
 function CartItems() {
   const { t, language } = useTranslation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { showToast } = useToast();
-  const cartState = useSelector((state: RootState) => state.cartState);
+  const cartState = useAppSelector((state) => state.cartState);
   const { cartItems } = cartState;
 
   // Handle quantity changes

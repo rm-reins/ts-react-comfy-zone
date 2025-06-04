@@ -7,7 +7,7 @@ import React, {
 import { enUS } from "./languages/enUS";
 import { deDE } from "./languages/deDE";
 import { ruRU } from "./languages/ruRU";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setLanguage } from "@/features/language/languageSlice";
 import type { Language } from "@/features/language/languageSlice";
 
@@ -57,7 +57,8 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({
   const t = useCallback(
     (key: string, params?: Record<string, string | number>) => {
       const keys = key.split(".");
-      let value: TranslationValue = translations[language];
+      let value: TranslationValue =
+        translations[language as keyof typeof translations];
 
       for (const k of keys) {
         if (value === undefined || typeof value === "string") {

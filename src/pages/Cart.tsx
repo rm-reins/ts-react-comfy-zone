@@ -1,12 +1,11 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { EmptyCart, OrderSummary, CartItems } from "@/features/cart";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 
 function Cart() {
   const { t } = useTranslation();
-  const cartState = useSelector((state: RootState) => state.cartState);
+  const cartState = useAppSelector((state) => state.cartState);
   const [hasItems, setHasItems] = useState(cartState.cartItems.length > 0);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { useTranslation } from "@/i18n/useTranslation";
 import { ArrowUpRight } from "lucide-react";
 import { CartState } from "@/features/cart/cartSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useNavigate } from "react-router-dom";
 import { trpc } from "@/trpc/trpc";
 import { Order, OrderItem } from "@/trpc/types";
@@ -13,7 +13,6 @@ import {
   calculateTotals,
 } from "@/features/checkout/checkoutSlice";
 import { clearCart } from "@/features/cart/cartSlice";
-import type { RootState } from "@/store/store";
 import { useState, useEffect, useRef } from "react";
 
 interface OrderSummaryProps {
@@ -24,9 +23,9 @@ interface OrderSummaryProps {
 
 function OrderSummary({ cart, setIsLoading, setError }: OrderSummaryProps) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const checkoutState = useSelector((state: RootState) => state.checkoutState);
+  const checkoutState = useAppSelector((state) => state.checkoutState);
   const createOrderMutation = trpc.order.createOrder.useMutation();
   const { user } = useUser();
   const [termsAccepted, setTermsAccepted] = useState(false);

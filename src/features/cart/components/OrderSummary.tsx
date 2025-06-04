@@ -3,13 +3,12 @@ import { useTranslation } from "@/i18n/useTranslation";
 import { ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/shared/ui";
-import { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "@/store/hooks";
 
 function OrderSummary() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const cartState = useSelector((state: RootState) => state.cartState);
+  const cartState = useAppSelector((state) => state.cartState);
 
   const { cartTotal: subtotal, shipping, orderTotal: total } = cartState;
 

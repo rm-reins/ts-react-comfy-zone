@@ -1,7 +1,6 @@
 import { DeliveryAddress } from "@/trpc/types";
 import { useTranslation } from "@/i18n/useTranslation";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useState, useEffect, useRef } from "react";
 import { setOrder } from "../checkoutSlice";
 
@@ -11,8 +10,8 @@ interface ShippingAddressFormProps {
 
 function ShippingAddressForm({ defaultAddress }: ShippingAddressFormProps) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const checkoutState = useSelector((state: RootState) => state.checkoutState);
+  const dispatch = useAppDispatch();
+  const checkoutState = useAppSelector((state) => state.checkoutState);
   const isInitializedRef = useRef(false);
 
   const [address, setAddress] = useState({

@@ -3,8 +3,7 @@ import { DeliveryAddress } from "@/trpc/types";
 import { trpc } from "@/trpc/trpc";
 import { useUser } from "@clerk/clerk-react";
 import { useState, useMemo } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useAppSelector } from "@/store/hooks";
 import {
   CheckoutAccordion,
   ContactInfoForm,
@@ -17,8 +16,8 @@ import {
 function Checkout() {
   const { t } = useTranslation();
   const { user } = useUser();
-  const cart = useSelector((state: RootState) => state.cartState);
-  const checkoutState = useSelector((state: RootState) => state.checkoutState);
+  const cart = useAppSelector((state) => state.cartState);
+  const checkoutState = useAppSelector((state) => state.checkoutState);
   const [openSection, setOpenSection] = useState<string>("contactInfo");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

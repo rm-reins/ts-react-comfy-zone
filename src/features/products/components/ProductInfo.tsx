@@ -4,7 +4,7 @@ import { cn } from "@/utils/utils";
 import { Product } from "@/trpc/types";
 import { useTranslation } from "@/i18n/useTranslation";
 import ProductAccordion from "./ProductAccordion";
-import { useDispatch } from "react-redux";
+import { useAppDispatch } from "@/store/hooks";
 import { addItem } from "@/features/cart/cartSlice";
 import { Button } from "@/shared";
 import { useToast } from "@/shared/ui";
@@ -17,7 +17,7 @@ function ProductInfo({ product }: ProductInfoProps) {
   const { t } = useTranslation();
   const { showToast } = useToast();
   const [selectedColor, setSelectedColor] = useState(0);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleAddToCart = () => {
     try {
