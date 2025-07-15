@@ -50,6 +50,10 @@ function ProductInfo({ product }: ProductInfoProps) {
     <div className="space-y-6">
       <div className="flex sm:flex-row flex-col justify-between items-start">
         <div className="space-y-4">
+          <div className="text-3xl font-bold">
+            {`${product.price.toFixed(2)} €`}
+          </div>
+
           <div className="text-gray-500 dark:text-gray-200">
             SKU: {product._id.substring(0, 8)}
           </div>
@@ -74,9 +78,6 @@ function ProductInfo({ product }: ProductInfoProps) {
               ))}
             </div>
           </div>
-        </div>
-        <div className="text-3xl font-bold">
-          {`${product.price.toFixed(2)} €`}
         </div>
       </div>
 
